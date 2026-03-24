@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model SiteSettings {
+  id           Int      @id @default(1)
+  brandName    String
+  contactEmail String
+  contactPhone String
+  footerAddress String
+  inquiryLabel String   @default("Inquiry Now")
+  updatedAt    DateTime @updatedAt
+}
+
+model SectionContent {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  title     String
+  subtitle  String?
+  body      String
+  imageUrl  String?
+  updatedAt DateTime @updatedAt
+}
+
+model Package {
+  id          Int      @id @default(autoincrement())
+  title       String
+  duration    String
+  inclusions  String
+  pricingNote String
+  imageUrl    String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model GalleryItem {
+  id        Int      @id @default(autoincrement())
+  imageUrl  String
+  caption   String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Testimonial {
+  id        Int      @id @default(autoincrement())
+  name      String
+  team      String
+  quote     String
+  imageUrl  String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FaqItem {
+  id        Int      @id @default(autoincrement())
+  question  String
+  answer    String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TopicTile {
+  id        Int      @id @default(autoincrement())
+  groupKey  String
+  title     String
+  body      String
+  imageUrl  String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Inquiry {
+  id              Int      @id @default(autoincrement())
+  name            String
+  email           String
+  phone           String?
+  teamName        String?
+  preferredPackage String?
+  message         String
+  status          String   @default("new")
+  createdAt       DateTime @default(now())
+}
+
+model AdminUser {
+  id           Int      @id @default(1)
+  username     String   @unique
+  passwordHash String
+  updatedAt    DateTime @updatedAt
+}

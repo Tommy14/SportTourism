@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --bg: #0b0f12;
+  --panel: #12181d;
+  --panel-soft: #171f25;
+  --line: rgba(255, 255, 255, 0.12);
+  --text: #f4f7f8;
+  --text-soft: rgba(244, 247, 248, 0.72);
+  --mint: #89d7ae;
+  --mint-strong: #79d29d;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #162028 0%, var(--bg) 36%);
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+.section-shell {
+  @apply mx-auto w-full max-w-6xl px-4 md:px-8 lg:px-10;
+}
+
+.pill-button {
+  @apply inline-flex items-center justify-center rounded-full border px-5 py-2 text-sm font-semibold transition;
+  border-color: color-mix(in srgb, var(--mint) 70%, transparent);
+  background: linear-gradient(135deg, var(--mint) 0%, var(--mint-strong) 100%);
+  color: #0c1216;
+  box-shadow: 0 8px 24px rgba(121, 210, 157, 0.2);
+}
+
+.pill-button:hover {
+  transform: translateY(-1px);
+}
+
+.ghost-button {
+  @apply inline-flex items-center justify-center rounded-full border bg-white/5 px-5 py-2 text-sm font-semibold text-white transition;
+  border-color: var(--line);
+}
+
+.ghost-button:hover {
+  @apply bg-white/15;
+}
+
+.section-title {
+  @apply text-3xl font-bold leading-tight md:text-5xl;
+}
+
+.section-subtitle {
+  color: var(--text-soft);
+  @apply mt-3 max-w-3xl text-sm md:text-base;
+}
+
+.badge-chip {
+  @apply inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wider;
+  border-color: rgba(137, 215, 174, 0.55);
+  color: var(--mint);
+  background: rgba(137, 215, 174, 0.08);
+}
+
+.panel-card {
+  @apply rounded-2xl border p-5 md:p-6;
+  border-color: var(--line);
+  background: linear-gradient(160deg, rgba(23, 31, 37, 0.92) 0%, rgba(18, 24, 29, 0.95) 100%);
+}
+
+.section-block {
+  @apply py-14 md:py-20;
+}
+
+.hero-backdrop {
+  background: linear-gradient(180deg, rgba(9, 13, 16, 0.58) 0%, rgba(9, 13, 16, 0.82) 72%, rgba(11, 15, 18, 1) 100%);
+}
+
+.input-dark {
+  @apply w-full rounded-xl border px-3 py-3 text-sm text-white outline-none transition;
+  border-color: var(--line);
+  background: rgba(8, 12, 15, 0.7);
+}
+
+.input-dark:focus {
+  border-color: rgba(137, 215, 174, 0.8);
+  box-shadow: 0 0 0 3px rgba(137, 215, 174, 0.15);
+}
