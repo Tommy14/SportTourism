@@ -24,6 +24,13 @@ const WHAT_WE_DO_CHILD_ORDER = [
   "Special Coaching Sessions"
 ] as const;
 
+const WHAT_WE_HAVE_DONE_CHILD_ORDER = [
+  "Club & Country Level Teams",
+  "School and Junior Tours",
+  "Player Adaption to Sri Lankan Arenas",
+  "Coaching Sessions"
+] as const;
+
 type TopicTileRecord = {
   id: number;
   groupKey: string;
@@ -75,6 +82,59 @@ function buildWhatWeDoTiles(records: TopicTileRecord[]): TopicTileRecord[] {
   });
 }
 
+function buildWhatWeHaveDoneTiles(records: TopicTileRecord[]): TopicTileRecord[] {
+  const group = records.filter((t) => t.groupKey === "what-we-have-done");
+  const defaults: Record<
+    (typeof WHAT_WE_HAVE_DONE_CHILD_ORDER)[number],
+    { body: string; imageUrl: string }
+  > = {
+    "Club & Country Level Teams": {
+      body: "Hosted club sides and representative squads with fixtures, nets and full tour coordination.",
+      imageUrl:
+        "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1000&q=80"
+    },
+    "School and Junior Tours": {
+      body: "Ran school and junior programs with age-appropriate schedules, supervision and travel.",
+      imageUrl:
+        "https://images.unsplash.com/photo-1521417531039-3f3b4fd1f8c5?auto=format&fit=crop&w=1000&q=80"
+    },
+    "Player Adaption to Sri Lankan Arenas": {
+      body: "Helped visiting players adjust to local wickets, weather and ground characteristics across the island.",
+      imageUrl:
+        "https://images.unsplash.com/photo-1624526267942-ab0ff8a9f7ba?auto=format&fit=crop&w=1000&q=80"
+    },
+    "Coaching Sessions": {
+      body: "Delivered structured coaching blocks with specialist staff, video and intensive net work.",
+      imageUrl:
+        "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80"
+    }
+  };
+
+  const legacyToCanonical: Record<string, (typeof WHAT_WE_HAVE_DONE_CHILD_ORDER)[number]> = {
+    "Regional Teams Hosted": "Club & Country Level Teams",
+    "School And Club Tours": "School and Junior Tours",
+    "Complete Logistics": "Player Adaption to Sri Lankan Arenas",
+    "Trusted Execution": "Coaching Sessions"
+  };
+
+  return WHAT_WE_HAVE_DONE_CHILD_ORDER.map((title, i) => {
+    const existing =
+      group.find((t) => t.title === title) ??
+      group.find((t) => legacyToCanonical[t.title] === title);
+    const d = defaults[title];
+    if (existing) {
+      const exact = existing.title === title;
+      return {
+        ...existing,
+        title,
+        body: exact ? existing.body : d.body,
+        imageUrl: existing.imageUrl ?? d.imageUrl
+      };
+    }
+    return { id: -(i + 1), groupKey: "what-we-have-done", title, body: d.body, imageUrl: d.imageUrl };
+  });
+}
+
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
@@ -86,10 +146,10 @@ export default async function Home() {
     { id: 2, groupKey: "what-we-do", title: "Fixtures", body: "Competitive matches coordinated with suitable schools, clubs, and academies.", imageUrl: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1000&q=80" },
     { id: 3, groupKey: "what-we-do", title: "Transport", body: "Reliable team transport organized for airport pickups, grounds, and excursions.", imageUrl: "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1000&q=80" },
     { id: 4, groupKey: "what-we-do", title: "Special Coaching Sessions", body: "Expert coaching for batting, bowling and fielding tailored to your squad.", imageUrl: "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80" },
-    { id: 5, groupKey: "what-we-have-done", title: "Regional Teams Hosted", body: "Welcomed clubs and school teams from across the region for tour programs.", imageUrl: "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1000&q=80" },
-    { id: 6, groupKey: "what-we-have-done", title: "Complete Logistics", body: "Delivered accommodation, fixtures, practice, and transport as one service.", imageUrl: "https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=1000&q=80" },
-    { id: 7, groupKey: "what-we-have-done", title: "School And Club Tours", body: "Handled varied group sizes and formats for both school and club squads.", imageUrl: "https://images.unsplash.com/photo-1521417531039-3f3b4fd1f8c5?auto=format&fit=crop&w=1000&q=80" },
-    { id: 8, groupKey: "what-we-have-done", title: "Trusted Execution", body: "Supported teams throughout their tour with consistent planning and coordination.", imageUrl: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1000&q=80" },
+    { id: 5, groupKey: "what-we-have-done", title: "Club & Country Level Teams", body: "Hosted club sides and representative squads with fixtures, nets and full tour coordination.", imageUrl: "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1000&q=80" },
+    { id: 6, groupKey: "what-we-have-done", title: "School and Junior Tours", body: "Ran school and junior programs with age-appropriate schedules, supervision and travel.", imageUrl: "https://images.unsplash.com/photo-1521417531039-3f3b4fd1f8c5?auto=format&fit=crop&w=1000&q=80" },
+    { id: 7, groupKey: "what-we-have-done", title: "Player Adaption to Sri Lankan Arenas", body: "Helped visiting players adjust to local wickets, weather and ground characteristics across the island.", imageUrl: "https://images.unsplash.com/photo-1624526267942-ab0ff8a9f7ba?auto=format&fit=crop&w=1000&q=80" },
+    { id: 8, groupKey: "what-we-have-done", title: "Coaching Sessions", body: "Delivered structured coaching blocks with specialist staff, video and intensive net work.", imageUrl: "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80" },
     { id: 9, groupKey: "where-play", title: "Colombo Grounds", body: "Play on established city grounds with strong facilities and match-ready wickets.", imageUrl: "https://images.unsplash.com/photo-1624526267942-ab0ff8a9f7ba?auto=format&fit=crop&w=1000&q=80" },
     { id: 10, groupKey: "where-play", title: "Kandy Venues", body: "Experience hill-country cricket settings with quality practice environments.", imageUrl: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1000&q=80" },
     { id: 11, groupKey: "where-play", title: "Galle Facilities", body: "Train and play near iconic coastal venues with excellent cricket conditions.", imageUrl: "https://images.unsplash.com/photo-1471295253337-3ceaaedca402?auto=format&fit=crop&w=1000&q=80" },
@@ -188,7 +248,9 @@ export default async function Home() {
               const tiles =
                 item.key === "what-we-do"
                   ? buildWhatWeDoTiles(tileRecords as TopicTileRecord[])
-                  : tileRecords.filter((tile) => tile.groupKey === item.key).slice(0, 4);
+                  : item.key === "what-we-have-done"
+                    ? buildWhatWeHaveDoneTiles(tileRecords as TopicTileRecord[])
+                    : tileRecords.filter((tile) => tile.groupKey === item.key).slice(0, 4);
               return (
                 <article key={item.key} id={item.key} className="panel-card scroll-mt-28">
                   <span className="badge-chip">{item.subtitle}</span>
@@ -230,6 +292,25 @@ export default async function Home() {
                         ))}
                       </div>
                     </>
+                  ) : item.key === "what-we-have-done" ? (
+                    <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                      {tiles.map((tile) => (
+                        <div key={tile.id} className="rounded-xl border border-white/10 bg-black/25 p-4">
+                          <Image
+                            src={
+                              tile.imageUrl ||
+                              "https://images.unsplash.com/photo-1521540216272-a50305cd4421?auto=format&fit=crop&w=1000&q=80"
+                            }
+                            alt={tile.title}
+                            width={800}
+                            height={500}
+                            className="h-36 w-full rounded-lg object-cover"
+                          />
+                          <h3 className="mt-3 text-base font-semibold leading-snug">{tile.title}</h3>
+                          <p className="mt-2 text-sm text-white/75">{tile.body}</p>
+                        </div>
+                      ))}
+                    </div>
                   ) : (
                     <div className="mt-5 grid gap-4 md:grid-cols-2">
                       {tiles.map((tile) => (
