@@ -471,14 +471,33 @@ export default async function Home() {
           {(testimonials.length
             ? testimonials
             : [{ id: 1, quote: "Well organized and memorable cricket experience.", name: "Coach Daniel", team: "Royal Academy" }]
-          ).map((item) => (
-              <blockquote key={item.id} className="panel-card">
-                <p className="text-white/85">&ldquo;{item.quote}&rdquo;</p>
-                <footer className="mt-4 text-sm text-accent">
-                  {item.name} - {item.team}
-                </footer>
+          ).map((item) => {
+            const photo =
+              "imageUrl" in item && item.imageUrl && String(item.imageUrl).trim() !== ""
+                ? String(item.imageUrl).trim()
+                : null;
+            return (
+              <blockquote key={item.id} className="panel-card flex flex-col gap-4 sm:flex-row sm:items-start">
+                {photo ? (
+                  <div className="relative mx-auto h-20 w-20 flex-shrink-0 overflow-hidden rounded-full border border-white/15 bg-black/30 sm:mx-0">
+                    <Image
+                      src={photo}
+                      alt={`${item.name}`}
+                      fill
+                      sizes="80px"
+                      className="object-cover"
+                    />
+                  </div>
+                ) : null}
+                <div className="min-w-0 flex-1">
+                  <p className="text-white/85">&ldquo;{item.quote}&rdquo;</p>
+                  <footer className="mt-4 text-sm text-accent">
+                    {item.name} - {item.team}
+                  </footer>
+                </div>
               </blockquote>
-            ))}
+            );
+          })}
         </div>
       </section>
 
