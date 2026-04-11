@@ -67,17 +67,29 @@ export default async function Home() {
 
   return (
     <main>
-      <HeaderNav brand={settings?.brandName || "Cricket Tour Sri Lanka"} />
+      <HeaderNav brand={settings?.brandName || "Pitch to Paradise"} />
 
       <section id="home" className="relative overflow-hidden">
         <div className="hero-backdrop absolute inset-0 z-10" />
-        <div
-          className="h-[62vh] bg-cover bg-center md:h-[70vh]"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=1400&q=80')"
-          }}
-        />
+        <div className="grid h-[62vh] grid-cols-4 grid-rows-2 gap-1 md:h-[70vh]">
+          {[
+            "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=1200&q=80",
+            "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1624526267942-ab0ff8a9f7ba?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1471295253337-3ceaaedca402?auto=format&fit=crop&w=800&q=80"
+          ].map((src, i) => (
+            <div
+              key={i}
+              className={
+                i === 0
+                  ? "col-span-2 row-span-2 bg-cover bg-center"
+                  : "min-h-0 bg-cover bg-center"
+              }
+              style={{ backgroundImage: `url('${src}')` }}
+            />
+          ))}
+        </div>
         <div className="section-shell relative z-20 -mt-64 pb-16 pt-10 text-center md:-mt-72 md:pb-24">
           <span className="badge-chip">{hero?.subtitle || "Sri Lanka Cricket Experience"}</span>
           <h1 className="section-title mx-auto mt-5 max-w-3xl">
@@ -88,10 +100,10 @@ export default async function Home() {
               "Custom tours for schools, academies and clubs with matches, camps, net practices and island sightseeing."}
           </p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
-            <InquiryButton label={settings?.inquiryLabel} />
             <a href="#packages" className="ghost-button">
               Explore Plans
             </a>
+            <InquiryButton label={settings?.inquiryLabel} />
           </div>
         </div>
       </section>
@@ -110,7 +122,7 @@ export default async function Home() {
             .map((item) => {
               const tiles = tileRecords.filter((tile) => tile.groupKey === item.key).slice(0, 4);
               return (
-                <article key={item.key} className="panel-card">
+                <article key={item.key} id={item.key} className="panel-card scroll-mt-28">
                   <span className="badge-chip">{item.subtitle}</span>
                   <h2 className="mt-4 text-2xl font-bold">{item.title}</h2>
                   <p className="mt-3 text-sm text-white/75 md:text-base">{item.body}</p>
@@ -135,7 +147,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="gallery" className="section-block bg-black/25">
+      <section id="gallery" className="section-block scroll-mt-28 bg-black/25">
         <div className="section-shell">
           <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
             <div>
@@ -161,7 +173,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="packages" className="section-shell section-block">
+      <section id="packages" className="section-shell section-block scroll-mt-28">
         <div className="text-center">
           <span className="badge-chip">Pricing Plans</span>
           <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-bold md:text-5xl">Choose The Perfect Plan For Your Team</h2>
@@ -189,7 +201,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="section-shell section-block">
+      <section id="testimonials" className="section-shell section-block scroll-mt-28">
         <span className="badge-chip">Testimonials</span>
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           {(testimonials.length
@@ -206,7 +218,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="faq" className="section-block bg-black/25">
+      <section id="faq" className="section-block scroll-mt-28 bg-black/25">
         <div className="section-shell">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div>
@@ -229,7 +241,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="section-shell section-block">
+      <section id="contact" className="section-shell section-block scroll-mt-28">
         <div className="panel-card border-accent/25">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div>
@@ -243,7 +255,7 @@ export default async function Home() {
       </section>
 
       <Footer
-        brandName={settings?.brandName || "Cricket Tour Sri Lanka"}
+        brandName={settings?.brandName || "Pitch to Paradise"}
         phone={settings?.contactPhone || "-"}
         email={settings?.contactEmail || "-"}
         address={settings?.footerAddress || "-"}

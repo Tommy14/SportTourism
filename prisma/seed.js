@@ -13,7 +13,7 @@ async function main() {
     update: {},
     create: {
       id: 1,
-      brandName: "Cricket Tour Sri Lanka",
+      brandName: "Pitch to Paradise",
       contactEmail: "hello@crickettoursrilanka.com",
       contactPhone: "+94 77 123 4567",
       footerAddress: "Colombo, Sri Lanka",

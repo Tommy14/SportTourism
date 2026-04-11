@@ -5,9 +5,14 @@ import { InquiryButton } from "../ui/InquiryButton";
 
 const links = [
   { href: "#home", label: "Home" },
+  { href: "#what-we-do", label: "What We Do" },
+  { href: "#what-we-have-done", label: "What We've Done" },
+  { href: "#where-play", label: "Where You Play" },
   { href: "#gallery", label: "Gallery" },
   { href: "#packages", label: "Packages" },
-  { href: "#faq", label: "FAQ" }
+  { href: "#testimonials", label: "Testimonials" },
+  { href: "#faq", label: "FAQ" },
+  { href: "#contact", label: "Contact" }
 ];
 
 export function HeaderNav({ brand }: { brand: string }) {
@@ -20,9 +25,9 @@ export function HeaderNav({ brand }: { brand: string }) {
           <span className="inline-block h-7 w-7 rounded-md bg-gradient-to-br from-accent to-accentSoft" />
           <span className="text-xs font-extrabold uppercase tracking-wider text-white">{brand}</span>
         </a>
-        <nav className="hidden items-center gap-6 text-sm text-white/85 md:flex">
+        <nav className="hidden min-w-0 flex-1 items-center justify-center gap-x-4 overflow-x-auto overflow-y-hidden text-xs text-white/85 md:flex md:py-1 lg:text-sm">
           {links.map((link) => (
-            <a key={link.href} href={link.href} className="transition hover:text-accent">
+            <a key={link.href} href={link.href} className="shrink-0 transition hover:text-accent">
               {link.label}
             </a>
           ))}
