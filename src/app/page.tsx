@@ -486,6 +486,7 @@ export default async function Home() {
                       fill
                       sizes="80px"
                       className="object-cover"
+                      unoptimized
                     />
                   </div>
                 ) : null}
