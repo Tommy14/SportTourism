@@ -71,7 +71,7 @@ export default async function Home() {
 
       <section id="home" className="relative overflow-hidden">
         <div className="hero-backdrop absolute inset-0 z-10" />
-        <div className="grid h-[62vh] grid-cols-4 grid-rows-2 gap-1 md:h-[70vh]">
+        <div className="grid h-[62vh] grid-cols-5 gap-1 md:h-[70vh]">
           {[
             "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=1200&q=80",
             "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80",
@@ -81,11 +81,7 @@ export default async function Home() {
           ].map((src, i) => (
             <div
               key={i}
-              className={
-                i === 0
-                  ? "col-span-2 row-span-2 bg-cover bg-center"
-                  : "min-h-0 bg-cover bg-center"
-              }
+              className="min-h-0 min-w-0 bg-cover bg-center"
               style={{ backgroundImage: `url('${src}')` }}
             />
           ))}
@@ -246,7 +242,7 @@ export default async function Home() {
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div>
               <span className="badge-chip">Join Our Cricket Family</span>
-              <h3 className="mt-3 text-2xl font-bold md:text-3xl">Plan Your Sri Lanka Cricket Tour</h3>
+              <h3 className="mt-3 text-2xl font-bold md:text-3xl">Plan Your Tour With Pitch to Paradise</h3>
             </div>
             <InquiryButton />
           </div>
