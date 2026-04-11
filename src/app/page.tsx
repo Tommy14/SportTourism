@@ -73,16 +73,16 @@ export default async function Home() {
         <div className="hero-backdrop absolute inset-0 z-10" />
         <div className="grid h-[62vh] grid-cols-5 gap-1 md:h-[70vh]">
           {[
-            "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=1200&q=80",
-            "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1624526267942-ab0ff8a9f7ba?auto=format&fit=crop&w=800&q=80",
-            "https://images.unsplash.com/photo-1471295253337-3ceaaedca402?auto=format&fit=crop&w=800&q=80"
+            "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=1600&q=85",
+            "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1600&q=85",
+            "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=85",
+            "https://images.unsplash.com/photo-1521417531039-3f3b4fd1f8c5?auto=format&fit=crop&w=1600&q=85",
+            "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1600&q=85"
           ].map((src, i) => (
             <div
               key={i}
               className="min-h-0 min-w-0 bg-cover bg-center"
-              style={{ backgroundImage: `url('${src}')` }}
+              style={{ backgroundImage: `url("${src}")` }}
             />
           ))}
         </div>
