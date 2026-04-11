@@ -1,6 +1,7 @@
 import { InquiryForm } from "@/components/forms/InquiryForm";
 import { Footer } from "@/components/sections/Footer";
 import { HeaderNav } from "@/components/sections/HeaderNav";
+import { PackageShowcase } from "@/components/sections/PackageShowcase";
 import { InquiryButton } from "@/components/ui/InquiryButton";
 import { getSiteContent } from "@/lib/content";
 import Image from "next/image";
@@ -32,6 +33,20 @@ const WHAT_WE_HAVE_DONE_CHILD_ORDER = [
 ] as const;
 
 const WHERE_PLAY_CHILD_ORDER = ["CMB", "Dambulla", "Galle", "Indoor / Nets"] as const;
+
+/** Wikimedia Commons — R. Premadasa Stadium; Galle International Stadium; Rangiri Dambulla; indoor cricket (CC0). */
+const WHERE_PLAY_IMAGE = {
+  cmb: "https://upload.wikimedia.org/wikipedia/commons/2/23/R_Premadasa_Stadium.jpg",
+  dambulla: "https://upload.wikimedia.org/wikipedia/commons/5/54/Rangiri_Dambulla_International_Stadium.jpg",
+  galle: "https://upload.wikimedia.org/wikipedia/commons/f/f7/Galle_International_Stadium.jpg",
+  indoorNets: "https://upload.wikimedia.org/wikipedia/commons/6/68/Indoor_cricket.jpg"
+} as const;
+
+function pickWherePlayImageUrl(stored: string | null, fallback: string): string {
+  if (!stored) return fallback;
+  if (stored.includes("images.unsplash.com")) return fallback;
+  return stored;
+}
 
 type TopicTileRecord = {
   id: number;
@@ -145,23 +160,19 @@ function buildWherePlayTiles(records: TopicTileRecord[]): TopicTileRecord[] {
   > = {
     CMB: {
       body: "Colombo-region grounds and clubs — city wickets, strong facilities and easy logistics.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1624526267942-ab0ff8a9f7ba?auto=format&fit=crop&w=1000&q=80"
+      imageUrl: WHERE_PLAY_IMAGE.cmb
     },
     Dambulla: {
       body: "Central Province cricket around Dambulla — stadium-standard venues and training blocks.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1530549387789-4fa101d86679?auto=format&fit=crop&w=1000&q=80"
+      imageUrl: WHERE_PLAY_IMAGE.dambulla
     },
     Galle: {
       body: "Southern coastal cricket — historic fort setting, sea breeze and true low-country conditions.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1471295253337-3ceaaedca402?auto=format&fit=crop&w=1000&q=80"
+      imageUrl: WHERE_PLAY_IMAGE.galle
     },
     "Indoor / Nets": {
       body: "Indoor nets and outdoor practice wickets so weather never cancels a session.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80"
+      imageUrl: WHERE_PLAY_IMAGE.indoorNets
     }
   };
 
@@ -183,7 +194,7 @@ function buildWherePlayTiles(records: TopicTileRecord[]): TopicTileRecord[] {
         ...existing,
         title,
         body: exact ? existing.body : d.body,
-        imageUrl: existing.imageUrl ?? d.imageUrl
+        imageUrl: pickWherePlayImageUrl(existing.imageUrl, d.imageUrl)
       };
     }
     return { id: -(i + 1), groupKey: "where-play", title, body: d.body, imageUrl: d.imageUrl };
@@ -205,10 +216,10 @@ export default async function Home() {
     { id: 6, groupKey: "what-we-have-done", title: "School and Junior Tours", body: "Ran school and junior programs with age-appropriate schedules, supervision and travel.", imageUrl: "https://images.unsplash.com/photo-1521417531039-3f3b4fd1f8c5?auto=format&fit=crop&w=1000&q=80" },
     { id: 7, groupKey: "what-we-have-done", title: "Player Adaption to Sri Lankan Arenas", body: "Helped visiting players adjust to local wickets, weather and ground characteristics across the island.", imageUrl: "https://images.unsplash.com/photo-1624526267942-ab0ff8a9f7ba?auto=format&fit=crop&w=1000&q=80" },
     { id: 8, groupKey: "what-we-have-done", title: "Coaching Sessions", body: "Delivered structured coaching blocks with specialist staff, video and intensive net work.", imageUrl: "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80" },
-    { id: 9, groupKey: "where-play", title: "CMB", body: "Colombo-region grounds and clubs — city wickets, strong facilities and easy logistics.", imageUrl: "https://images.unsplash.com/photo-1624526267942-ab0ff8a9f7ba?auto=format&fit=crop&w=1000&q=80" },
-    { id: 10, groupKey: "where-play", title: "Dambulla", body: "Central Province cricket around Dambulla — stadium-standard venues and training blocks.", imageUrl: "https://images.unsplash.com/photo-1530549387789-4fa101d86679?auto=format&fit=crop&w=1000&q=80" },
-    { id: 11, groupKey: "where-play", title: "Galle", body: "Southern coastal cricket — historic fort setting, sea breeze and true low-country conditions.", imageUrl: "https://images.unsplash.com/photo-1471295253337-3ceaaedca402?auto=format&fit=crop&w=1000&q=80" },
-    { id: 12, groupKey: "where-play", title: "Indoor / Nets", body: "Indoor nets and outdoor practice wickets so weather never cancels a session.", imageUrl: "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80" }
+    { id: 9, groupKey: "where-play", title: "CMB", body: "Colombo-region grounds and clubs — city wickets, strong facilities and easy logistics.", imageUrl: WHERE_PLAY_IMAGE.cmb },
+    { id: 10, groupKey: "where-play", title: "Dambulla", body: "Central Province cricket around Dambulla — stadium-standard venues and training blocks.", imageUrl: WHERE_PLAY_IMAGE.dambulla },
+    { id: 11, groupKey: "where-play", title: "Galle", body: "Southern coastal cricket — historic fort setting, sea breeze and true low-country conditions.", imageUrl: WHERE_PLAY_IMAGE.galle },
+    { id: 12, groupKey: "where-play", title: "Indoor / Nets", body: "Indoor nets and outdoor practice wickets so weather never cancels a session.", imageUrl: WHERE_PLAY_IMAGE.indoorNets }
   ];
   const tileRecords = topicTiles.length ? topicTiles : fallbackTopicTiles;
   const topicGroupOrder = ["what-we-do", "what-we-have-done", "where-play"];
@@ -425,26 +436,8 @@ export default async function Home() {
           <span className="badge-chip">Pricing Plans</span>
           <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-bold md:text-5xl">Choose The Perfect Plan For Your Team</h2>
         </div>
-        <div className="mt-9 grid gap-5 md:grid-cols-3">
-          {packageCards.slice(0, 3).map((item, idx) => (
-            <article
-              key={item.id}
-              className={`rounded-2xl border p-6 ${
-                idx === 1 ? "border-accent/50 bg-black shadow-2xl shadow-accent/10" : "border-white/10 bg-[#121a20]"
-              }`}
-            >
-              <h3 className="text-xl font-semibold">{item.title}</h3>
-              <p className="mt-2 text-sm text-accent">{item.duration}</p>
-              <p className="mt-3 text-3xl font-extrabold">{item.pricingNote.replace("From ", "")}</p>
-              <p className="mt-3 text-sm text-white/70">{item.inclusions}</p>
-              <ul className="mt-4 space-y-2 text-sm text-white/80">
-                {item.inclusions.split(",").slice(0, 4).map((feature, featureIndex) => (
-                  <li key={featureIndex}>✓ {feature.trim()}</li>
-                ))}
-              </ul>
-              <InquiryButton className="mt-6 w-full" label="Get Started" />
-            </article>
-          ))}
+        <div className="mt-9">
+          <PackageShowcase packages={packageCards.slice(0, 3)} />
         </div>
       </section>
 

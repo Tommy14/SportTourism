@@ -90,3 +90,22 @@ body {
   border-color: rgba(137, 215, 174, 0.8);
   box-shadow: 0 0 0 3px rgba(137, 215, 174, 0.15);
 }
+
+.packages-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 211, 138, 0.35) transparent;
+}
+
+.packages-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.packages-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 999px;
+}
+
+.packages-scroll::-webkit-scrollbar-thumb {
+  background: rgba(100, 211, 138, 0.35);
+  border-radius: 999px;
+}
