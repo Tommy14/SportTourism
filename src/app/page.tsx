@@ -377,6 +377,7 @@ export default async function Home() {
                               width={800}
                               height={500}
                               className="h-36 w-full rounded-lg object-cover"
+                              unoptimized
                             />
                             <h3 className="mt-3 text-base font-semibold">{tile.title}</h3>
                             <p className="mt-2 text-sm text-white/75">{tile.body}</p>
@@ -397,6 +398,7 @@ export default async function Home() {
                             width={800}
                             height={500}
                             className="h-36 w-full rounded-lg object-cover"
+                            unoptimized
                           />
                           <h3 className="mt-3 text-base font-semibold leading-snug">{tile.title}</h3>
                           <p className="mt-2 text-sm text-white/75">{tile.body}</p>
@@ -416,6 +418,7 @@ export default async function Home() {
                             width={800}
                             height={500}
                             className="h-36 w-full rounded-lg object-cover"
+                            unoptimized
                           />
                           <h3 className="mt-3 text-base font-semibold">{tile.title}</h3>
                           <p className="mt-2 text-sm text-white/75">{tile.body}</p>
@@ -447,6 +450,7 @@ export default async function Home() {
                   className="h-56 w-full object-cover transition duration-500 group-hover:scale-105"
                   width={800}
                   height={500}
+                  unoptimized
                 />
                 <p className="p-3 text-sm text-white/70">{item?.caption || "Cricket tour memory"}</p>
               </div>
