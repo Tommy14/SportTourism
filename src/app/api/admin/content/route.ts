@@ -20,6 +20,26 @@ const packageCreatePayload = z.object({
   sortOrder: z.coerce.number().int().optional()
 });
 
+const faqCreatePayload = z.object({
+  question: z.string().min(1),
+  answer: z.string().min(1),
+  sortOrder: z.coerce.number().int().optional()
+});
+
+const testimonialCreatePayload = z.object({
+  name: z.string().min(1),
+  team: z.string(),
+  quote: z.string().min(1),
+  imageUrl: z.union([z.string(), z.null()]).optional(),
+  sortOrder: z.coerce.number().int().optional()
+});
+
+const galleryCreatePayload = z.object({
+  imageUrl: z.string().min(1),
+  caption: z.string(),
+  sortOrder: z.coerce.number().int().optional()
+});
+
 export async function POST(request: Request) {
   const session = await requireSession();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -49,6 +69,51 @@ export async function POST(request: Request) {
         imageUrl: p.imageUrl ?? null,
         sortOrder
       }
+    });
+    return NextResponse.json({ ok: true, id: created.id });
+  } else if (data.type === "faq" && data.create) {
+    const parsed = faqCreatePayload.safeParse(data.payload);
+    if (!parsed.success) {
+      const msg = parsed.error.flatten().fieldErrors.question?.[0] || "Invalid FAQ fields";
+      return NextResponse.json({ error: msg }, { status: 400 });
+    }
+    const p = parsed.data;
+    const maxSort = await db.faqItem.aggregate({ _max: { sortOrder: true } });
+    const sortOrder = p.sortOrder ?? (maxSort._max.sortOrder ?? 0) + 1;
+    const created = await db.faqItem.create({
+      data: { question: p.question, answer: p.answer, sortOrder }
+    });
+    return NextResponse.json({ ok: true, id: created.id });
+  } else if (data.type === "testimonial" && data.create) {
+    const parsed = testimonialCreatePayload.safeParse(data.payload);
+    if (!parsed.success) {
+      const msg = parsed.error.flatten().fieldErrors.name?.[0] || "Invalid testimonial fields";
+      return NextResponse.json({ error: msg }, { status: 400 });
+    }
+    const p = parsed.data;
+    const maxSort = await db.testimonial.aggregate({ _max: { sortOrder: true } });
+    const sortOrder = p.sortOrder ?? (maxSort._max.sortOrder ?? 0) + 1;
+    const created = await db.testimonial.create({
+      data: {
+        name: p.name,
+        team: p.team,
+        quote: p.quote,
+        imageUrl: p.imageUrl ?? null,
+        sortOrder
+      }
+    });
+    return NextResponse.json({ ok: true, id: created.id });
+  } else if (data.type === "gallery" && data.create) {
+    const parsed = galleryCreatePayload.safeParse(data.payload);
+    if (!parsed.success) {
+      const msg = parsed.error.flatten().fieldErrors.imageUrl?.[0] || "Invalid gallery fields";
+      return NextResponse.json({ error: msg }, { status: 400 });
+    }
+    const p = parsed.data;
+    const maxSort = await db.galleryItem.aggregate({ _max: { sortOrder: true } });
+    const sortOrder = p.sortOrder ?? (maxSort._max.sortOrder ?? 0) + 1;
+    const created = await db.galleryItem.create({
+      data: { imageUrl: p.imageUrl, caption: p.caption, sortOrder }
     });
     return NextResponse.json({ ok: true, id: created.id });
   } else if (data.type === "package" && data.id) {

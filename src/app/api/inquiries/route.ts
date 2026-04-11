@@ -6,9 +6,7 @@ import { sendInquiryEmail } from "@/lib/email";
 const inquirySchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
-  phone: z.string().optional(),
-  teamName: z.string().optional(),
-  preferredPackage: z.string().optional(),
+  phone: z.string().min(5),
   message: z.string().min(10)
 });
 
@@ -22,8 +20,8 @@ export async function POST(request: Request) {
         name: data.name,
         email: data.email,
         phone: data.phone,
-        teamName: data.teamName,
-        preferredPackage: data.preferredPackage,
+        teamName: null,
+        preferredPackage: null,
         message: data.message
       }
     });

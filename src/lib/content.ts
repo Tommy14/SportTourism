@@ -8,8 +8,7 @@ export async function getSiteContent() {
       db.siteSettings.findUnique({ where: { id: 1 } }),
       db.sectionContent.findMany({ orderBy: { key: "asc" } }),
       db.topicTile.findMany({ orderBy: [{ groupKey: "asc" }, { sortOrder: "asc" }] }),
-      // Public site: three pricing plans only (ignore extra rows if present)
-      db.package.findMany({ orderBy: { sortOrder: "asc" }, take: 3 }),
+      db.package.findMany({ orderBy: { sortOrder: "asc" } }),
       db.faqItem.findMany({ orderBy: { sortOrder: "asc" } }),
       db.testimonial.findMany({ orderBy: { sortOrder: "asc" } }),
       db.galleryItem.findMany({ orderBy: { sortOrder: "asc" } })

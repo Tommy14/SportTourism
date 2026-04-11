@@ -9,9 +9,7 @@ export default async function DashboardPage() {
   const session = await requireSession();
   if (!session) redirect("/portal/login");
 
-  const [sections, topicTiles, packages, faqs, testimonials, gallery, settings] = await Promise.all([
-    db.sectionContent.findMany({ orderBy: { key: "asc" } }),
-    db.topicTile.findMany({ orderBy: [{ groupKey: "asc" }, { sortOrder: "asc" }] }),
+  const [packages, faqs, testimonials, gallery, settings] = await Promise.all([
     db.package.findMany({ orderBy: { sortOrder: "asc" } }),
     db.faqItem.findMany({ orderBy: { sortOrder: "asc" } }),
     db.testimonial.findMany({ orderBy: { sortOrder: "asc" } }),
@@ -31,8 +29,6 @@ export default async function DashboardPage() {
           </form>
         </div>
         <div className="space-y-6">
-          <AdminEditor title="Sections" type="section" items={sections as never[]} keyField="key" />
-          <AdminEditor title="Topic Tiles" type="topicTile" items={topicTiles as never[]} />
           <AdminEditor title="Packages" type="package" items={packages as never[]} />
           <AdminEditor title="FAQs" type="faq" items={faqs as never[]} />
           <AdminEditor title="Testimonials" type="testimonial" items={testimonials as never[]} />

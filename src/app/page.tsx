@@ -514,7 +514,7 @@ export default async function Home() {
             </div>
             <InquiryButton />
           </div>
-          <InquiryForm packageOptions={packageCards.map((item) => item.title)} />
+          <InquiryForm />
         </div>
       </section>
 

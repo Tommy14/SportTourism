@@ -2,11 +2,7 @@
 
 import { useState } from "react";
 
-type InquiryFormProps = {
-  packageOptions: string[];
-};
-
-export function InquiryForm({ packageOptions }: InquiryFormProps) {
+export function InquiryForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
   async function handleSubmit(formData: FormData) {
@@ -27,16 +23,7 @@ export function InquiryForm({ packageOptions }: InquiryFormProps) {
       <div className="grid gap-3 md:grid-cols-2">
         <input required name="name" placeholder="Name" className="input-dark" />
         <input required type="email" name="email" placeholder="Email" className="input-dark" />
-        <input name="phone" placeholder="Phone" className="input-dark" />
-        <input name="teamName" placeholder="Team name" className="input-dark" />
-        <select name="preferredPackage" className="input-dark md:col-span-2">
-          <option value="">Preferred package</option>
-          {packageOptions.map((item) => (
-            <option key={item} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
+        <input required name="phone" placeholder="Phone" className="input-dark md:col-span-2" />
         <textarea
           required
           name="message"

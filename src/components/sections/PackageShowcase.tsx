@@ -16,17 +16,18 @@ type PackageShowcaseProps = {
 };
 
 export function PackageShowcase({ packages }: PackageShowcaseProps) {
-  const cards = packages.slice(0, 3);
+  const cards = packages;
+  const featuredIndex = cards.length > 0 ? Math.floor((cards.length - 1) / 2) : 0;
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const root = scrollRef.current;
-    const middle = root?.children[1] as HTMLElement | undefined;
-    if (!root || !middle) return;
+    const featuredEl = root?.children[featuredIndex] as HTMLElement | undefined;
+    if (!root || !featuredEl) return;
     const target =
-      middle.offsetLeft - (root.clientWidth - middle.getBoundingClientRect().width) / 2;
+      featuredEl.offsetLeft - (root.clientWidth - featuredEl.getBoundingClientRect().width) / 2;
     root.scrollTo({ left: Math.max(0, target), behavior: "instant" });
-  }, [cards.length]);
+  }, [cards.length, featuredIndex]);
 
   return (
     <div className="relative">
@@ -43,7 +44,7 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
         className="packages-scroll flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-visible scroll-smooth px-3 pb-4 pt-3 [-webkit-overflow-scrolling:touch] sm:gap-5 sm:px-4 md:gap-6 md:pb-5 md:pt-4"
       >
         {cards.map((item, idx) => {
-          const featured = idx === 1;
+          const featured = idx === featuredIndex;
           return (
             <article
               key={item.id}

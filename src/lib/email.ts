@@ -14,18 +14,14 @@ const transporter = nodemailer.createTransport({
 export async function sendInquiryEmail(content: {
   name: string;
   email: string;
-  phone?: string;
-  teamName?: string;
-  preferredPackage?: string;
+  phone: string;
   message: string;
 }) {
   const html = `
     <h2>New Pitch to Paradise Inquiry</h2>
     <p><b>Name:</b> ${content.name}</p>
     <p><b>Email:</b> ${content.email}</p>
-    <p><b>Phone:</b> ${content.phone || "-"}</p>
-    <p><b>Team:</b> ${content.teamName || "-"}</p>
-    <p><b>Package:</b> ${content.preferredPackage || "-"}</p>
+    <p><b>Phone:</b> ${content.phone}</p>
     <p><b>Message:</b><br/>${content.message}</p>
   `;
 
