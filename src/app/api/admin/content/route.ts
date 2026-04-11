@@ -6,8 +6,18 @@ import { db } from "@/lib/db";
 const updateSchema = z.object({
   type: z.enum(["section", "topicTile", "package", "faq", "testimonial", "gallery", "settings"]),
   id: z.number().optional(),
+  create: z.boolean().optional(),
   key: z.string().optional(),
   payload: z.record(z.any())
+});
+
+const packageCreatePayload = z.object({
+  title: z.string().min(1),
+  duration: z.string(),
+  inclusions: z.string(),
+  pricingNote: z.string(),
+  imageUrl: z.union([z.string(), z.null()]).optional(),
+  sortOrder: z.coerce.number().int().optional()
 });
 
 export async function POST(request: Request) {
@@ -21,6 +31,26 @@ export async function POST(request: Request) {
     await db.sectionContent.update({ where: { key: data.key }, data: data.payload });
   } else if (data.type === "topicTile" && data.id) {
     await db.topicTile.update({ where: { id: data.id }, data: data.payload });
+  } else if (data.type === "package" && data.create) {
+    const parsed = packageCreatePayload.safeParse(data.payload);
+    if (!parsed.success) {
+      const msg = parsed.error.flatten().fieldErrors.title?.[0] || "Invalid package fields";
+      return NextResponse.json({ error: msg }, { status: 400 });
+    }
+    const p = parsed.data;
+    const maxSort = await db.package.aggregate({ _max: { sortOrder: true } });
+    const sortOrder = p.sortOrder ?? (maxSort._max.sortOrder ?? 0) + 1;
+    const created = await db.package.create({
+      data: {
+        title: p.title,
+        duration: p.duration,
+        inclusions: p.inclusions,
+        pricingNote: p.pricingNote,
+        imageUrl: p.imageUrl ?? null,
+        sortOrder
+      }
+    });
+    return NextResponse.json({ ok: true, id: created.id });
   } else if (data.type === "package" && data.id) {
     await db.package.update({ where: { id: data.id }, data: data.payload });
   } else if (data.type === "faq" && data.id) {
