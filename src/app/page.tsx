@@ -14,6 +14,67 @@ const HERO_COLLAGE_SRC = [
   "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1600&q=85"
 ] as const;
 
+const WHAT_WE_DO_HERO_SRC =
+  "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=2000&q=85";
+
+const WHAT_WE_DO_CHILD_ORDER = [
+  "Accommodation",
+  "Fixtures",
+  "Transport",
+  "Special Coaching Sessions"
+] as const;
+
+type TopicTileRecord = {
+  id: number;
+  groupKey: string;
+  title: string;
+  body: string;
+  imageUrl: string | null;
+};
+
+function buildWhatWeDoTiles(records: TopicTileRecord[]): TopicTileRecord[] {
+  const group = records.filter((t) => t.groupKey === "what-we-do");
+  const defaults: Record<(typeof WHAT_WE_DO_CHILD_ORDER)[number], { body: string; imageUrl: string }> = {
+    Accommodation: {
+      body: "Team-friendly hotel stays arranged close to training and match venues.",
+      imageUrl:
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80"
+    },
+    Fixtures: {
+      body: "Competitive matches coordinated with suitable schools, clubs, and academies.",
+      imageUrl:
+        "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1000&q=80"
+    },
+    Transport: {
+      body: "Reliable team transport organized for airport pickups, grounds, and excursions.",
+      imageUrl:
+        "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1000&q=80"
+    },
+    "Special Coaching Sessions": {
+      body: "Expert coaching for batting, bowling and fielding tailored to your squad.",
+      imageUrl:
+        "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80"
+    }
+  };
+
+  return WHAT_WE_DO_CHILD_ORDER.map((title, i) => {
+    const existing =
+      group.find((t) => t.title === title) ??
+      (title === "Special Coaching Sessions" ? group.find((t) => t.title === "Practice Venues") : undefined);
+    if (existing) {
+      const isLegacyCoaching = existing.title === "Practice Venues" && title === "Special Coaching Sessions";
+      return {
+        ...existing,
+        title,
+        body: isLegacyCoaching ? defaults[title].body : existing.body,
+        imageUrl: existing.imageUrl ?? defaults[title].imageUrl
+      };
+    }
+    const d = defaults[title];
+    return { id: -(i + 1), groupKey: "what-we-do", title, body: d.body, imageUrl: d.imageUrl };
+  });
+}
+
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
@@ -22,9 +83,9 @@ export default async function Home() {
   const topicSections = sections.filter((item) => item.key !== "hero");
   const fallbackTopicTiles = [
     { id: 1, groupKey: "what-we-do", title: "Accommodation", body: "Team-friendly hotel stays arranged close to training and match venues.", imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80" },
-    { id: 2, groupKey: "what-we-do", title: "Practice Venues", body: "Quality nets and practice wickets booked for productive training sessions.", imageUrl: "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80" },
-    { id: 3, groupKey: "what-we-do", title: "Fixtures", body: "Competitive matches coordinated with suitable schools, clubs, and academies.", imageUrl: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1000&q=80" },
-    { id: 4, groupKey: "what-we-do", title: "Transport", body: "Reliable team transport organized for airport pickups, grounds, and excursions.", imageUrl: "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1000&q=80" },
+    { id: 2, groupKey: "what-we-do", title: "Fixtures", body: "Competitive matches coordinated with suitable schools, clubs, and academies.", imageUrl: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1000&q=80" },
+    { id: 3, groupKey: "what-we-do", title: "Transport", body: "Reliable team transport organized for airport pickups, grounds, and excursions.", imageUrl: "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1000&q=80" },
+    { id: 4, groupKey: "what-we-do", title: "Special Coaching Sessions", body: "Expert coaching for batting, bowling and fielding tailored to your squad.", imageUrl: "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80" },
     { id: 5, groupKey: "what-we-have-done", title: "Regional Teams Hosted", body: "Welcomed clubs and school teams from across the region for tour programs.", imageUrl: "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1000&q=80" },
     { id: 6, groupKey: "what-we-have-done", title: "Complete Logistics", body: "Delivered accommodation, fixtures, practice, and transport as one service.", imageUrl: "https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=1000&q=80" },
     { id: 7, groupKey: "what-we-have-done", title: "School And Club Tours", body: "Handled varied group sizes and formats for both school and club squads.", imageUrl: "https://images.unsplash.com/photo-1521417531039-3f3b4fd1f8c5?auto=format&fit=crop&w=1000&q=80" },
@@ -124,27 +185,71 @@ export default async function Home() {
           )
             .sort((a, b) => topicGroupOrder.indexOf(a.key) - topicGroupOrder.indexOf(b.key))
             .map((item) => {
-              const tiles = tileRecords.filter((tile) => tile.groupKey === item.key).slice(0, 4);
+              const tiles =
+                item.key === "what-we-do"
+                  ? buildWhatWeDoTiles(tileRecords as TopicTileRecord[])
+                  : tileRecords.filter((tile) => tile.groupKey === item.key).slice(0, 4);
               return (
                 <article key={item.key} id={item.key} className="panel-card scroll-mt-28">
                   <span className="badge-chip">{item.subtitle}</span>
                   <h2 className="mt-4 text-2xl font-bold">{item.title}</h2>
                   <p className="mt-3 text-sm text-white/75 md:text-base">{item.body}</p>
-                  <div className="mt-5 grid gap-4 md:grid-cols-2">
-                    {tiles.map((tile) => (
-                      <div key={tile.id} className="rounded-xl border border-white/10 bg-black/25 p-4">
+                  {item.key === "what-we-do" ? (
+                    <>
+                      <div className="relative mt-5 aspect-[16/10] w-full overflow-hidden rounded-2xl border border-white/10 md:aspect-[21/9]">
                         <Image
-                          src={tile.imageUrl || "https://images.unsplash.com/photo-1521540216272-a50305cd4421?auto=format&fit=crop&w=1000&q=80"}
-                          alt={tile.title}
-                          width={800}
-                          height={500}
-                          className="h-36 w-full rounded-lg object-cover"
+                          src={WHAT_WE_DO_HERO_SRC}
+                          alt="Cricket tour"
+                          fill
+                          sizes="(max-width: 1200px) 100vw, 1100px"
+                          className="object-cover object-center"
                         />
-                        <h3 className="mt-3 text-base font-semibold">{tile.title}</h3>
-                        <p className="mt-2 text-sm text-white/75">{tile.body}</p>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/20" />
+                        <div className="absolute inset-0 flex items-end justify-center p-6 pb-8 md:items-center md:pb-6">
+                          <p className="text-center text-2xl font-bold tracking-tight md:text-4xl">
+                            Arranging cricket tours
+                          </p>
+                        </div>
                       </div>
-                    ))}
-                  </div>
+                      <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        {tiles.map((tile) => (
+                          <div key={tile.id} className="rounded-xl border border-white/10 bg-black/25 p-4">
+                            <Image
+                              src={
+                                tile.imageUrl ||
+                                "https://images.unsplash.com/photo-1521540216272-a50305cd4421?auto=format&fit=crop&w=1000&q=80"
+                              }
+                              alt={tile.title}
+                              width={800}
+                              height={500}
+                              className="h-36 w-full rounded-lg object-cover"
+                            />
+                            <h3 className="mt-3 text-base font-semibold">{tile.title}</h3>
+                            <p className="mt-2 text-sm text-white/75">{tile.body}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="mt-5 grid gap-4 md:grid-cols-2">
+                      {tiles.map((tile) => (
+                        <div key={tile.id} className="rounded-xl border border-white/10 bg-black/25 p-4">
+                          <Image
+                            src={
+                              tile.imageUrl ||
+                              "https://images.unsplash.com/photo-1521540216272-a50305cd4421?auto=format&fit=crop&w=1000&q=80"
+                            }
+                            alt={tile.title}
+                            width={800}
+                            height={500}
+                            className="h-36 w-full rounded-lg object-cover"
+                          />
+                          <h3 className="mt-3 text-base font-semibold">{tile.title}</h3>
+                          <p className="mt-2 text-sm text-white/75">{tile.body}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </article>
               );
             })}
