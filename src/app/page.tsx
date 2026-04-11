@@ -5,6 +5,15 @@ import { InquiryButton } from "@/components/ui/InquiryButton";
 import { getSiteContent } from "@/lib/content";
 import Image from "next/image";
 
+/** Hero strip backgrounds — img + object-cover avoids empty CSS background cells; URLs are landscape-friendly for narrow columns. */
+const HERO_COLLAGE_SRC = [
+  "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=1600&q=85",
+  "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1600&q=85",
+  "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=85",
+  "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1600&q=85",
+  "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1600&q=85"
+] as const;
+
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
@@ -71,19 +80,18 @@ export default async function Home() {
 
       <section id="home" className="relative overflow-hidden">
         <div className="hero-backdrop absolute inset-0 z-10" />
-        <div className="grid h-[62vh] grid-cols-5 gap-1 md:h-[70vh]">
-          {[
-            "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=1600&q=85",
-            "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1600&q=85",
-            "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=85",
-            "https://images.unsplash.com/photo-1521417531039-3f3b4fd1f8c5?auto=format&fit=crop&w=1600&q=85",
-            "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1600&q=85"
-          ].map((src, i) => (
-            <div
-              key={i}
-              className="min-h-0 min-w-0 bg-cover bg-center"
-              style={{ backgroundImage: `url("${src}")` }}
-            />
+        <div className="relative z-0 grid h-[62vh] grid-cols-5 gap-1 md:h-[70vh] [&>*]:min-h-0 [&>*]:min-w-0">
+          {HERO_COLLAGE_SRC.map((src, i) => (
+            <div key={src} className="relative h-full w-full overflow-hidden">
+              <Image
+                src={src}
+                alt=""
+                fill
+                sizes="20vw"
+                className="object-cover object-center"
+                priority={i === 0}
+              />
+            </div>
           ))}
         </div>
         <div className="section-shell relative z-20 -mt-64 pb-16 pt-10 text-center md:-mt-72 md:pb-24">
