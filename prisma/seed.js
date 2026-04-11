@@ -42,25 +42,43 @@ async function main() {
     });
   }
 
+  /** Site is designed for exactly three pricing packages (carousel + inquiry). */
   const packageCount = await prisma.package.count();
   if (!packageCount) {
     await prisma.package.createMany({
       data: [
         {
-          title: "5 Day Cricket Essentials",
+          title: "Starter Plan",
           duration: "5 Days / 4 Nights",
-          inclusions: "2 friendly matches, 2 net sessions, city tour, hotel + transport.",
-          pricingNote: "Starting from USD 420 per player",
+          inclusions: "2 warm-up matches, shared nets, city sightseeing and transport support.",
+          pricingNote: "From USD 399",
           sortOrder: 1
         },
         {
-          title: "8 Day High Performance Tour",
+          title: "Pro Player Plan",
           duration: "8 Days / 7 Nights",
-          inclusions: "3 matches, batting & bowling clinics, conditioning support, sightseeing days.",
-          pricingNote: "Starting from USD 690 per player",
+          inclusions: "3 match fixtures, batting & bowling camp, team analysis and fitness sessions.",
+          pricingNote: "From USD 699",
           sortOrder: 2
+        },
+        {
+          title: "Elite Champion Plan",
+          duration: "10 Days / 9 Nights",
+          inclusions: "4 high-intensity fixtures, specialist clinics, full island cricket + leisure itinerary.",
+          pricingNote: "From USD 999",
+          sortOrder: 3
         }
       ]
+    });
+  } else if (packageCount === 2) {
+    await prisma.package.create({
+      data: {
+        title: "Elite Champion Plan",
+        duration: "10 Days / 9 Nights",
+        inclusions: "4 high-intensity fixtures, specialist clinics, full island cricket + leisure itinerary.",
+        pricingNote: "From USD 999",
+        sortOrder: 3
+      }
     });
   }
 
