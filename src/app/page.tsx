@@ -31,6 +31,8 @@ const WHAT_WE_HAVE_DONE_CHILD_ORDER = [
   "Coaching Sessions"
 ] as const;
 
+const WHERE_PLAY_CHILD_ORDER = ["CMB", "Dambulla", "Galle", "Indoor / Nets"] as const;
+
 type TopicTileRecord = {
   id: number;
   groupKey: string;
@@ -135,6 +137,59 @@ function buildWhatWeHaveDoneTiles(records: TopicTileRecord[]): TopicTileRecord[]
   });
 }
 
+function buildWherePlayTiles(records: TopicTileRecord[]): TopicTileRecord[] {
+  const group = records.filter((t) => t.groupKey === "where-play");
+  const defaults: Record<
+    (typeof WHERE_PLAY_CHILD_ORDER)[number],
+    { body: string; imageUrl: string }
+  > = {
+    CMB: {
+      body: "Colombo-region grounds and clubs — city wickets, strong facilities and easy logistics.",
+      imageUrl:
+        "https://images.unsplash.com/photo-1624526267942-ab0ff8a9f7ba?auto=format&fit=crop&w=1000&q=80"
+    },
+    Dambulla: {
+      body: "Central Province cricket around Dambulla — stadium-standard venues and training blocks.",
+      imageUrl:
+        "https://images.unsplash.com/photo-1530549387789-4fa101d86679?auto=format&fit=crop&w=1000&q=80"
+    },
+    Galle: {
+      body: "Southern coastal cricket — historic fort setting, sea breeze and true low-country conditions.",
+      imageUrl:
+        "https://images.unsplash.com/photo-1471295253337-3ceaaedca402?auto=format&fit=crop&w=1000&q=80"
+    },
+    "Indoor / Nets": {
+      body: "Indoor nets and outdoor practice wickets so weather never cancels a session.",
+      imageUrl:
+        "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80"
+    }
+  };
+
+  const legacyToCanonical: Record<string, (typeof WHERE_PLAY_CHILD_ORDER)[number]> = {
+    "Colombo Grounds": "CMB",
+    "Kandy Venues": "Dambulla",
+    "Galle Facilities": "Galle",
+    "Nets And Wickets": "Indoor / Nets"
+  };
+
+  return WHERE_PLAY_CHILD_ORDER.map((title, i) => {
+    const existing =
+      group.find((t) => t.title === title) ??
+      group.find((t) => legacyToCanonical[t.title] === title);
+    const d = defaults[title];
+    if (existing) {
+      const exact = existing.title === title;
+      return {
+        ...existing,
+        title,
+        body: exact ? existing.body : d.body,
+        imageUrl: existing.imageUrl ?? d.imageUrl
+      };
+    }
+    return { id: -(i + 1), groupKey: "where-play", title, body: d.body, imageUrl: d.imageUrl };
+  });
+}
+
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
@@ -150,10 +205,10 @@ export default async function Home() {
     { id: 6, groupKey: "what-we-have-done", title: "School and Junior Tours", body: "Ran school and junior programs with age-appropriate schedules, supervision and travel.", imageUrl: "https://images.unsplash.com/photo-1521417531039-3f3b4fd1f8c5?auto=format&fit=crop&w=1000&q=80" },
     { id: 7, groupKey: "what-we-have-done", title: "Player Adaption to Sri Lankan Arenas", body: "Helped visiting players adjust to local wickets, weather and ground characteristics across the island.", imageUrl: "https://images.unsplash.com/photo-1624526267942-ab0ff8a9f7ba?auto=format&fit=crop&w=1000&q=80" },
     { id: 8, groupKey: "what-we-have-done", title: "Coaching Sessions", body: "Delivered structured coaching blocks with specialist staff, video and intensive net work.", imageUrl: "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80" },
-    { id: 9, groupKey: "where-play", title: "Colombo Grounds", body: "Play on established city grounds with strong facilities and match-ready wickets.", imageUrl: "https://images.unsplash.com/photo-1624526267942-ab0ff8a9f7ba?auto=format&fit=crop&w=1000&q=80" },
-    { id: 10, groupKey: "where-play", title: "Kandy Venues", body: "Experience hill-country cricket settings with quality practice environments.", imageUrl: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1000&q=80" },
-    { id: 11, groupKey: "where-play", title: "Galle Facilities", body: "Train and play near iconic coastal venues with excellent cricket conditions.", imageUrl: "https://images.unsplash.com/photo-1471295253337-3ceaaedca402?auto=format&fit=crop&w=1000&q=80" },
-    { id: 12, groupKey: "where-play", title: "Nets And Wickets", body: "Access dependable nets and well-prepared wickets for all sessions.", imageUrl: "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=1000&q=80" }
+    { id: 9, groupKey: "where-play", title: "CMB", body: "Colombo-region grounds and clubs — city wickets, strong facilities and easy logistics.", imageUrl: "https://images.unsplash.com/photo-1624526267942-ab0ff8a9f7ba?auto=format&fit=crop&w=1000&q=80" },
+    { id: 10, groupKey: "where-play", title: "Dambulla", body: "Central Province cricket around Dambulla — stadium-standard venues and training blocks.", imageUrl: "https://images.unsplash.com/photo-1530549387789-4fa101d86679?auto=format&fit=crop&w=1000&q=80" },
+    { id: 11, groupKey: "where-play", title: "Galle", body: "Southern coastal cricket — historic fort setting, sea breeze and true low-country conditions.", imageUrl: "https://images.unsplash.com/photo-1471295253337-3ceaaedca402?auto=format&fit=crop&w=1000&q=80" },
+    { id: 12, groupKey: "where-play", title: "Indoor / Nets", body: "Indoor nets and outdoor practice wickets so weather never cancels a session.", imageUrl: "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80" }
   ];
   const tileRecords = topicTiles.length ? topicTiles : fallbackTopicTiles;
   const topicGroupOrder = ["what-we-do", "what-we-have-done", "where-play"];
@@ -240,7 +295,7 @@ export default async function Home() {
             : [
                 { key: "what-we-do", title: "What We Do", subtitle: "Tour Planning", body: "We arrange accommodation, practice venues, fixtures and transport for your squad." },
                 { key: "what-we-have-done", title: "What We Have Done", subtitle: "Track Record", body: "Hosted clubs and school teams from across the region with complete logistics." },
-                { key: "where-play", title: "Where Would You Be Playing", subtitle: "Venues", body: "Colombo, Kandy and Galle grounds with excellent wickets and net facilities." }
+                { key: "where-play", title: "Where Would You Be Playing", subtitle: "Venues", body: "CMB, Dambulla and Galle — plus indoor nets and all-weather practice." }
               ]
           )
             .sort((a, b) => topicGroupOrder.indexOf(a.key) - topicGroupOrder.indexOf(b.key))
@@ -250,7 +305,9 @@ export default async function Home() {
                   ? buildWhatWeDoTiles(tileRecords as TopicTileRecord[])
                   : item.key === "what-we-have-done"
                     ? buildWhatWeHaveDoneTiles(tileRecords as TopicTileRecord[])
-                    : tileRecords.filter((tile) => tile.groupKey === item.key).slice(0, 4);
+                    : item.key === "where-play"
+                      ? buildWherePlayTiles(tileRecords as TopicTileRecord[])
+                      : tileRecords.filter((tile) => tile.groupKey === item.key).slice(0, 4);
               return (
                 <article key={item.key} id={item.key} className="panel-card scroll-mt-28">
                   <span className="badge-chip">{item.subtitle}</span>

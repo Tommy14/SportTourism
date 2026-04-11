@@ -31,7 +31,7 @@ async function main() {
     { key: "hero", title: "Cricket Tours In Sri Lanka", subtitle: "Play. Train. Explore.", body: "We organize complete tours for teams with matches, camps, net practices and curated sightseeing." },
     { key: "what-we-do", title: "What We Do", subtitle: "Tour + Cricket Experience", body: "From logistics to on-field planning, we arrange grounds, practice sessions, coaches, travel, and accommodation." },
     { key: "what-we-have-done", title: "What We Have Done", subtitle: "Our Track Record", body: "Hosted school, club and academy teams from multiple countries with end-to-end support." },
-    { key: "where-play", title: "Where Would You Be Playing", subtitle: "Stadiums And Grounds", body: "Colombo, Kandy, Galle and other cricket centers with practice nets and quality wickets." }
+    { key: "where-play", title: "Where Would You Be Playing", subtitle: "Stadiums And Grounds", body: "CMB, Dambulla and Galle — plus indoor nets and all-weather practice wickets." }
   ];
 
   for (const section of sections) {
@@ -76,10 +76,10 @@ async function main() {
         { groupKey: "what-we-have-done", title: "School and Junior Tours", body: "Ran school and junior programs with age-appropriate schedules, supervision and travel.", imageUrl: "https://images.unsplash.com/photo-1521417531039-3f3b4fd1f8c5?auto=format&fit=crop&w=1000&q=80", sortOrder: 2 },
         { groupKey: "what-we-have-done", title: "Player Adaption to Sri Lankan Arenas", body: "Helped visiting players adjust to local wickets, weather and ground characteristics across the island.", imageUrl: "https://images.unsplash.com/photo-1624526267942-ab0ff8a9f7ba?auto=format&fit=crop&w=1000&q=80", sortOrder: 3 },
         { groupKey: "what-we-have-done", title: "Coaching Sessions", body: "Delivered structured coaching blocks with specialist staff, video and intensive net work.", imageUrl: "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80", sortOrder: 4 },
-        { groupKey: "where-play", title: "Colombo Grounds", body: "Play on established city grounds with strong facilities and match-ready wickets.", imageUrl: "https://images.unsplash.com/photo-1624526267942-ab0ff8a9f7ba?auto=format&fit=crop&w=1000&q=80", sortOrder: 1 },
-        { groupKey: "where-play", title: "Kandy Venues", body: "Experience hill-country cricket settings with quality practice environments.", imageUrl: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1000&q=80", sortOrder: 2 },
-        { groupKey: "where-play", title: "Galle Facilities", body: "Train and play near iconic coastal venues with excellent cricket conditions.", imageUrl: "https://images.unsplash.com/photo-1471295253337-3ceaaedca402?auto=format&fit=crop&w=1000&q=80", sortOrder: 3 },
-        { groupKey: "where-play", title: "Nets And Wickets", body: "Access dependable nets and well-prepared wickets for all sessions.", imageUrl: "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=1000&q=80", sortOrder: 4 }
+        { groupKey: "where-play", title: "CMB", body: "Colombo-region grounds and clubs — city wickets, strong facilities and easy logistics.", imageUrl: "https://images.unsplash.com/photo-1624526267942-ab0ff8a9f7ba?auto=format&fit=crop&w=1000&q=80", sortOrder: 1 },
+        { groupKey: "where-play", title: "Dambulla", body: "Central Province cricket around Dambulla — stadium-standard venues and training blocks.", imageUrl: "https://images.unsplash.com/photo-1530549387789-4fa101d86679?auto=format&fit=crop&w=1000&q=80", sortOrder: 2 },
+        { groupKey: "where-play", title: "Galle", body: "Southern coastal cricket — historic fort setting, sea breeze and true low-country conditions.", imageUrl: "https://images.unsplash.com/photo-1471295253337-3ceaaedca402?auto=format&fit=crop&w=1000&q=80", sortOrder: 3 },
+        { groupKey: "where-play", title: "Indoor / Nets", body: "Indoor nets and outdoor practice wickets so weather never cancels a session.", imageUrl: "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80", sortOrder: 4 }
       ]
     });
   }
