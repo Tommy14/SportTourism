@@ -6,17 +6,18 @@ import { InquiryButton } from "@/components/ui/InquiryButton";
 import { getSiteContent } from "@/lib/content";
 import Image from "next/image";
 
-/** Hero strip backgrounds — img + object-cover avoids empty CSS background cells; URLs are landscape-friendly for narrow columns. */
+/** Hero strip — Sri Lankan venues, cricket, hotel, and team transport (Wikimedia + verified Unsplash). */
 const HERO_COLLAGE_SRC = [
   "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=1600&q=85",
+  "https://upload.wikimedia.org/wikipedia/commons/2/23/R_Premadasa_Stadium.jpg",
   "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1600&q=85",
-  "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=85",
-  "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1600&q=85",
-  "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1600&q=85"
+  "https://upload.wikimedia.org/wikipedia/commons/f/f7/Galle_International_Stadium.jpg",
+  "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1600&q=85"
 ] as const;
 
+/** Main “What We Do” banner — R. Premadasa Stadium, Colombo (real Sri Lanka international venue). */
 const WHAT_WE_DO_HERO_SRC =
-  "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=2000&q=85";
+  "https://upload.wikimedia.org/wikipedia/commons/2/23/R_Premadasa_Stadium.jpg";
 
 const WHAT_WE_DO_CHILD_ORDER = [
   "Accommodation",
@@ -39,13 +40,36 @@ const WHERE_PLAY_IMAGE = {
   cmb: "https://upload.wikimedia.org/wikipedia/commons/2/23/R_Premadasa_Stadium.jpg",
   dambulla: "https://upload.wikimedia.org/wikipedia/commons/5/54/Rangiri_Dambulla_International_Stadium.jpg",
   galle: "https://upload.wikimedia.org/wikipedia/commons/f/f7/Galle_International_Stadium.jpg",
-  indoorNets: "https://upload.wikimedia.org/wikipedia/commons/6/68/Indoor_cricket.jpg"
+  /** Outdoor practice wicket — pairs with “all-weather” indoor options in copy; indoor nets photo used on coaching tiles. */
+  indoorNets:
+    "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1600&q=85"
 } as const;
+
+const GALLERY_FALLBACK_SRC = [
+  "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80",
+  "https://upload.wikimedia.org/wikipedia/commons/2/23/R_Premadasa_Stadium.jpg",
+  "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80",
+  "https://upload.wikimedia.org/wikipedia/commons/f/f7/Galle_International_Stadium.jpg",
+  "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=800&q=80"
+] as const;
 
 function pickWherePlayImageUrl(stored: string | null, fallback: string): string {
   if (!stored) return fallback;
   if (stored.includes("images.unsplash.com")) return fallback;
   return stored;
+}
+
+/** Unsplash removed several photo IDs we used; treat those stored URLs as missing so defaults apply. */
+function resolveTopicImageUrl(stored: string | null | undefined, fallback: string): string {
+  const t = stored?.trim();
+  if (!t) return fallback;
+  const deprecated =
+    t.includes("photo-1593766788306-28561086694a") ||
+    t.includes("photo-1521417531039-3f3b4fd1f8c5") ||
+    t.includes("photo-1624526267942-ab0ff8a9f7ba");
+  if (deprecated) return fallback;
+  return t;
 }
 
 type TopicTileRecord = {
@@ -62,22 +86,22 @@ function buildWhatWeDoTiles(records: TopicTileRecord[]): TopicTileRecord[] {
     Accommodation: {
       body: "Team-friendly hotel stays arranged close to training and match venues.",
       imageUrl:
-        "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80"
+        "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1000&q=80"
     },
     Fixtures: {
       body: "Competitive matches coordinated with suitable schools, clubs, and academies.",
       imageUrl:
-        "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1000&q=80"
+        "https://upload.wikimedia.org/wikipedia/commons/5/54/Rangiri_Dambulla_International_Stadium.jpg"
     },
     Transport: {
       body: "Reliable team transport organized for airport pickups, grounds, and excursions.",
       imageUrl:
-        "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1000&q=80"
+        "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1000&q=80"
     },
     "Special Coaching Sessions": {
       body: "Expert coaching for batting, bowling and fielding tailored to your squad.",
       imageUrl:
-        "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80"
+        "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1000&q=80"
     }
   };
 
@@ -91,7 +115,7 @@ function buildWhatWeDoTiles(records: TopicTileRecord[]): TopicTileRecord[] {
         ...existing,
         title,
         body: isLegacyCoaching ? defaults[title].body : existing.body,
-        imageUrl: existing.imageUrl ?? defaults[title].imageUrl
+        imageUrl: resolveTopicImageUrl(existing.imageUrl, defaults[title].imageUrl)
       };
     }
     const d = defaults[title];
@@ -108,22 +132,22 @@ function buildWhatWeHaveDoneTiles(records: TopicTileRecord[]): TopicTileRecord[]
     "Club & Country Level Teams": {
       body: "Hosted club sides and representative squads with fixtures, nets and full tour coordination.",
       imageUrl:
-        "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1000&q=80"
+        "https://upload.wikimedia.org/wikipedia/commons/2/23/R_Premadasa_Stadium.jpg"
     },
     "School and Junior Tours": {
       body: "Ran school and junior programs with age-appropriate schedules, supervision and travel.",
       imageUrl:
-        "https://images.unsplash.com/photo-1521417531039-3f3b4fd1f8c5?auto=format&fit=crop&w=1000&q=80"
+        "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1000&q=80"
     },
     "Player Adaption to Sri Lankan Arenas": {
       body: "Helped visiting players adjust to local wickets, weather and ground characteristics across the island.",
       imageUrl:
-        "https://images.unsplash.com/photo-1624526267942-ab0ff8a9f7ba?auto=format&fit=crop&w=1000&q=80"
+        "https://upload.wikimedia.org/wikipedia/commons/f/f7/Galle_International_Stadium.jpg"
     },
     "Coaching Sessions": {
       body: "Delivered structured coaching blocks with specialist staff, video and intensive net work.",
       imageUrl:
-        "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80"
+        "https://upload.wikimedia.org/wikipedia/commons/6/68/Indoor_cricket.jpg"
     }
   };
 
@@ -145,7 +169,7 @@ function buildWhatWeHaveDoneTiles(records: TopicTileRecord[]): TopicTileRecord[]
         ...existing,
         title,
         body: exact ? existing.body : d.body,
-        imageUrl: existing.imageUrl ?? d.imageUrl
+        imageUrl: resolveTopicImageUrl(existing.imageUrl, d.imageUrl)
       };
     }
     return { id: -(i + 1), groupKey: "what-we-have-done", title, body: d.body, imageUrl: d.imageUrl };
@@ -208,14 +232,14 @@ export default async function Home() {
   const hero = sections.find((item) => item.key === "hero");
   const topicSections = sections.filter((item) => item.key !== "hero");
   const fallbackTopicTiles = [
-    { id: 1, groupKey: "what-we-do", title: "Accommodation", body: "Team-friendly hotel stays arranged close to training and match venues.", imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80" },
-    { id: 2, groupKey: "what-we-do", title: "Fixtures", body: "Competitive matches coordinated with suitable schools, clubs, and academies.", imageUrl: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1000&q=80" },
-    { id: 3, groupKey: "what-we-do", title: "Transport", body: "Reliable team transport organized for airport pickups, grounds, and excursions.", imageUrl: "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1000&q=80" },
-    { id: 4, groupKey: "what-we-do", title: "Special Coaching Sessions", body: "Expert coaching for batting, bowling and fielding tailored to your squad.", imageUrl: "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80" },
-    { id: 5, groupKey: "what-we-have-done", title: "Club & Country Level Teams", body: "Hosted club sides and representative squads with fixtures, nets and full tour coordination.", imageUrl: "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1000&q=80" },
-    { id: 6, groupKey: "what-we-have-done", title: "School and Junior Tours", body: "Ran school and junior programs with age-appropriate schedules, supervision and travel.", imageUrl: "https://images.unsplash.com/photo-1521417531039-3f3b4fd1f8c5?auto=format&fit=crop&w=1000&q=80" },
-    { id: 7, groupKey: "what-we-have-done", title: "Player Adaption to Sri Lankan Arenas", body: "Helped visiting players adjust to local wickets, weather and ground characteristics across the island.", imageUrl: "https://images.unsplash.com/photo-1624526267942-ab0ff8a9f7ba?auto=format&fit=crop&w=1000&q=80" },
-    { id: 8, groupKey: "what-we-have-done", title: "Coaching Sessions", body: "Delivered structured coaching blocks with specialist staff, video and intensive net work.", imageUrl: "https://images.unsplash.com/photo-1593766788306-28561086694a?auto=format&fit=crop&w=1000&q=80" },
+    { id: 1, groupKey: "what-we-do", title: "Accommodation", body: "Team-friendly hotel stays arranged close to training and match venues.", imageUrl: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1000&q=80" },
+    { id: 2, groupKey: "what-we-do", title: "Fixtures", body: "Competitive matches coordinated with suitable schools, clubs, and academies.", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/54/Rangiri_Dambulla_International_Stadium.jpg" },
+    { id: 3, groupKey: "what-we-do", title: "Transport", body: "Reliable team transport organized for airport pickups, grounds, and excursions.", imageUrl: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1000&q=80" },
+    { id: 4, groupKey: "what-we-do", title: "Special Coaching Sessions", body: "Expert coaching for batting, bowling and fielding tailored to your squad.", imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1000&q=80" },
+    { id: 5, groupKey: "what-we-have-done", title: "Club & Country Level Teams", body: "Hosted club sides and representative squads with fixtures, nets and full tour coordination.", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/2/23/R_Premadasa_Stadium.jpg" },
+    { id: 6, groupKey: "what-we-have-done", title: "School and Junior Tours", body: "Ran school and junior programs with age-appropriate schedules, supervision and travel.", imageUrl: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1000&q=80" },
+    { id: 7, groupKey: "what-we-have-done", title: "Player Adaption to Sri Lankan Arenas", body: "Helped visiting players adjust to local wickets, weather and ground characteristics across the island.", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f7/Galle_International_Stadium.jpg" },
+    { id: 8, groupKey: "what-we-have-done", title: "Coaching Sessions", body: "Delivered structured coaching blocks with specialist staff, video and intensive net work.", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/6/68/Indoor_cricket.jpg" },
     { id: 9, groupKey: "where-play", title: "CMB", body: "Colombo-region grounds and clubs — city wickets, strong facilities and easy logistics.", imageUrl: WHERE_PLAY_IMAGE.cmb },
     { id: 10, groupKey: "where-play", title: "Dambulla", body: "Central Province cricket around Dambulla — stadium-standard venues and training blocks.", imageUrl: WHERE_PLAY_IMAGE.dambulla },
     { id: 11, groupKey: "where-play", title: "Galle", body: "Southern coastal cricket — historic fort setting, sea breeze and true low-country conditions.", imageUrl: WHERE_PLAY_IMAGE.galle },
@@ -418,7 +442,7 @@ export default async function Home() {
             {(gallery.length ? gallery : new Array(6).fill(null)).map((item, idx) => (
               <div key={idx} className="group overflow-hidden rounded-2xl border border-white/10 bg-[#10161b]">
                 <Image
-                  src={item?.imageUrl || "https://images.unsplash.com/photo-1521540216272-a50305cd4421?auto=format&fit=crop&w=800&q=80"}
+                  src={item?.imageUrl || GALLERY_FALLBACK_SRC[idx % GALLERY_FALLBACK_SRC.length]}
                   alt={item?.caption || "Cricket tour"}
                   className="h-56 w-full object-cover transition duration-500 group-hover:scale-105"
                   width={800}
