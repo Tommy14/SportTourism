@@ -9,7 +9,9 @@ export type GenerateItineraryResult = {
   source: ItineraryGenerationSource;
 };
 
-export async function generateItinerary(input: GenerateItineraryInput): Promise<GenerateItineraryResult> {
+export async function generateItinerary(
+  input: GenerateItineraryInput
+): Promise<GenerateItineraryResult> {
   const llmDays = await generateItineraryWithLlm(input);
   if (llmDays?.length) {
     return { days: llmDays, source: "llm" };

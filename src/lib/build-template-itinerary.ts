@@ -1,55 +1,19 @@
 import { pickHotelForCity } from "@/data/reference-hotels";
 import type { HotelStars } from "@/data/tour-options";
+import {
+  buildMatchActivityText,
+  buildPackageMatchSpec,
+  type DayMatchSpec
+} from "@/lib/itinerary-match-spec";
 import type { CustomItineraryDay, PackageItinerary } from "@/types/package-itinerary";
 
-type DayType = "arrival" | "training" | "match" | "leisure" | "transfer" | "departure";
-
-function inferDayType(activity: string, location: string): DayType {
-  const text = `${activity} ${location}`.toLowerCase();
-  if (/airport|arrival|meet & greet|check-in/.test(text) && !/departure/.test(text)) return "arrival";
-  if (/departure|airport transfer/.test(text)) return "departure";
-  if (/match/.test(text)) return "match";
-  if (/training|net session|nets/.test(text)) return "training";
-  if (/→|transfer/.test(text)) return "transfer";
-  if (/orphanage|sightseeing|cocktail|shopping|leisure|safari/.test(text)) return "leisure";
-  return "leisure";
-}
-
-function isFiftyOver(activity: string): boolean {
-  return /50-over|fifty-over|50 over/i.test(activity);
-}
-
-function buildActivity(
-  type: DayType,
+function buildLocation(
+  daySpec: DayMatchSpec,
   city: string,
-  opponentLevel: string,
-  matchIndex: number,
-  fiftyOver: boolean,
   fromCity?: string,
   toCity?: string
 ): string {
-  switch (type) {
-    case "arrival":
-      return `Airport meet & greet, transfer to ${city}, check-in`;
-    case "training":
-      return `Training / net session at a 1st-class ground in ${city} (opposition standard: ${opponentLevel})`;
-    case "match":
-      return fiftyOver
-        ? `50-over match vs ${opponentLevel} opposition at ${city} — Match #${matchIndex}`
-        : `T20 vs ${opponentLevel} opposition at ${city} — Match #${matchIndex}`;
-    case "leisure":
-      return `Team leisure time and local experience in ${city}`;
-    case "transfer":
-      return `Transfer from ${fromCity ?? city} to ${toCity ?? city}, luggage and team coach`;
-    case "departure":
-      return `Match or wrap-up in ${city} if scheduled, Colombo shopping optional, airport transfer`;
-    default:
-      return `Activities in ${city}`;
-  }
-}
-
-function buildLocation(type: DayType, city: string, fromCity?: string, toCity?: string): string {
-  switch (type) {
+  switch (daySpec.dayType) {
     case "arrival":
       return `Arrival → ${city}`;
     case "departure":
@@ -58,6 +22,35 @@ function buildLocation(type: DayType, city: string, fromCity?: string, toCity?: 
       return `${fromCity ?? city} → ${toCity ?? city}`;
     default:
       return city;
+  }
+}
+
+function buildNonMatchActivity(
+  daySpec: DayMatchSpec,
+  city: string,
+  opponentLevel: string,
+  toCity?: string
+): string {
+  const canonical = daySpec.canonicalActivity;
+
+  switch (daySpec.dayType) {
+    case "arrival":
+      return `Airport meet & greet, transfer to ${city}, check-in`;
+    case "training":
+      return `Training / net session at a 1st-class ground in ${city} (opposition standard: ${opponentLevel})`;
+    case "leisure":
+      return canonical.replace(
+        /Negombo|Kandy|Hikkaduwa|Kalutara|Galle|Colombo|Dambulla/gi,
+        city
+      );
+    case "transfer":
+      return `Transfer to ${toCity ?? city}, team coach and luggage`;
+    case "departure":
+      return canonical.toLowerCase().includes("match")
+        ? `${buildMatchActivityText(daySpec.matches, city, opponentLevel)}, Colombo shopping, airport transfer`
+        : `Team wrap-up in ${city}, Colombo shopping optional, airport transfer`;
+    default:
+      return canonical;
   }
 }
 
@@ -88,44 +81,41 @@ export function buildTemplateItinerary(
   const cities = options.cities;
   if (!cities.length) return [];
 
+  const matchSpec = buildPackageMatchSpec(base);
   const citySchedule = assignCitiesToDays(base.days.length, cities);
-  let matchCounter = 0;
 
   return base.days.map((day, index) => {
-    const type = inferDayType(day.activity, day.location);
+    const daySpec = matchSpec.perDay[index];
     const city = citySchedule[index] ?? cities[0];
     const prevCity = index > 0 ? citySchedule[index - 1] : city;
     const nextCity = index < base.days.length - 1 ? citySchedule[index + 1] : city;
 
-    const effectiveType: DayType =
+    const hasTransfer =
       cities.length > 1 &&
-      prevCity !== city &&
-      type !== "arrival" &&
-      type !== "departure" &&
-      (type === "transfer" || index > 0)
-        ? "transfer"
-        : type;
+      daySpec.dayType === "transfer" &&
+      (daySpec.canonicalLocation.includes("→") || /transfer/i.test(daySpec.canonicalActivity));
 
+    const effectiveType = hasTransfer ? "transfer" : daySpec.dayType;
     const fromCity = effectiveType === "transfer" ? prevCity : city;
-    const toCity = effectiveType === "transfer" ? city : city;
+    const toCity = effectiveType === "transfer" ? nextCity : city;
 
-    if (effectiveType === "match") matchCounter += 1;
+    let activity: string;
+    if (daySpec.matches.length > 0) {
+      activity = buildMatchActivityText(daySpec.matches, city, options.opponentLevel);
+      if (/transfer/i.test(daySpec.canonicalActivity) && nextCity && nextCity !== city) {
+        activity += `, transfer to ${nextCity}`;
+      }
+    } else {
+      activity = buildNonMatchActivity(daySpec, city, options.opponentLevel, toCity);
+    }
 
     const hotelCity = effectiveType === "transfer" ? toCity : city;
     const hotel = pickHotelForCity(hotelCity, options.hotelStars);
 
     return {
       day: day.day,
-      location: buildLocation(effectiveType, city, fromCity, toCity),
-      activity: buildActivity(
-        effectiveType,
-        effectiveType === "transfer" ? toCity : city,
-        options.opponentLevel,
-        matchCounter || 1,
-        isFiftyOver(day.activity),
-        fromCity,
-        toCity
-      ),
+      location: buildLocation({ ...daySpec, dayType: effectiveType }, city, fromCity, toCity),
+      activity,
       hotelName: hotel?.name ?? "Hotel TBD",
       hotelStars: options.hotelStars
     };

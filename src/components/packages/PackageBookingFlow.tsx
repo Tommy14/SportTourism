@@ -72,9 +72,7 @@ export function PackageBookingFlow({ pkg, onClose }: PackageBookingFlowProps) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          packageTitle: pkg.title,
-          packageDuration: pkg.duration,
-          baseItinerary: itinerary,
+          packageId: pkg.id,
           cities: preferences.cities,
           hotelStars: preferences.hotelStars,
           opponentLevel: preferences.opponentLevel,
