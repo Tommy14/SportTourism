@@ -36,6 +36,7 @@ export function AdminEditor({
         inclusions: "",
         pricingNote: "",
         imageUrl: null,
+        itineraryJson: null,
         sortOrder: nextSortOrder(r),
         draftKey: crypto.randomUUID()
       }
@@ -95,12 +96,33 @@ export function AdminEditor({
     return null;
   }
 
+  function parseItineraryJson(raw: unknown): { ok: true; value: unknown } | { ok: false; error: string } {
+    if (raw === null || raw === undefined || raw === "") return { ok: true, value: null };
+    if (typeof raw === "object") return { ok: true, value: raw };
+    if (typeof raw !== "string") return { ok: false, error: "Itinerary must be valid JSON." };
+    try {
+      return { ok: true, value: JSON.parse(raw) };
+    } catch {
+      return { ok: false, error: "Itinerary JSON is invalid. Fix the JSON before saving." };
+    }
+  }
+
   async function saveRow(row: Item, index: number) {
     setStatus("Saving...");
     const payload: Record<string, unknown> = {};
-    Object.entries(row).forEach(([key, value]) => {
-      if (!PAYLOAD_SKIP.has(key)) payload[key] = value;
-    });
+    for (const [key, value] of Object.entries(row)) {
+      if (PAYLOAD_SKIP.has(key)) continue;
+      if (key === "itineraryJson") {
+        const parsed = parseItineraryJson(value);
+        if (!parsed.ok) {
+          setStatus(parsed.error);
+          return;
+        }
+        payload[key] = parsed.value;
+        continue;
+      }
+      payload[key] = value;
+    }
 
     const isNew = CREATABLE_TYPES.has(type) && Number(row.id) === 0;
     const response = await fetch("/api/admin/content", {
@@ -182,6 +204,30 @@ export function AdminEditor({
               {Object.entries(row).map(([key, value]) => {
                 if (key === "id" || key === "createdAt" || key === "updatedAt" || key === "draftKey")
                   return null;
+                if (key === "itineraryJson") {
+                  const display =
+                    value === null || value === undefined
+                      ? ""
+                      : typeof value === "string"
+                        ? value
+                        : JSON.stringify(value, null, 2);
+                  return (
+                    <label key={key} className="text-sm md:col-span-2">
+                      <span className="mb-1 block text-white/70">itineraryJson</span>
+                      <textarea
+                        rows={12}
+                        value={display}
+                        placeholder='{"summary":"...","days":[{"day":1,"location":"...","activity":"..."}]}'
+                        onChange={(event) => {
+                          const next = [...rows];
+                          next[index] = { ...next[index], [key]: event.target.value };
+                          setRows(next);
+                        }}
+                        className="w-full rounded-md bg-ink/70 p-2 font-mono text-xs"
+                      />
+                    </label>
+                  );
+                }
                 return (
                   <label key={key} className="text-sm">
                     <span className="mb-1 block text-white/70">{key}</span>

@@ -4,6 +4,7 @@ import { HeaderNav } from "@/components/sections/HeaderNav";
 import { PackageShowcase } from "@/components/sections/PackageShowcase";
 import { InquiryButton } from "@/components/ui/InquiryButton";
 import { getSiteContent } from "@/lib/content";
+import { toPackageShowcaseItems } from "@/lib/package-showcase";
 import Image from "next/image";
 
 /** Hero strip — Sri Lankan venues, cricket, hotel, and team transport (Wikimedia + verified Unsplash). */
@@ -247,43 +248,33 @@ export default async function Home() {
   ];
   const tileRecords = topicTiles.length ? topicTiles : fallbackTopicTiles;
   const topicGroupOrder = ["what-we-do", "what-we-have-done", "where-play"];
-  const packageCards = packages.length
-    ? packages
-    : [
-        {
-          id: 1,
-          title: "Starter Plan",
-          duration: "5 Days / 4 Nights",
-          inclusions: "2 warm-up matches, shared nets, city sightseeing and transport support.",
-          pricingNote: "From USD 399",
-          imageUrl: null,
-          sortOrder: 1,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        },
-        {
-          id: 2,
-          title: "Pro Player Plan",
-          duration: "8 Days / 7 Nights",
-          inclusions: "3 match fixtures, batting & bowling camp, team analysis and fitness sessions.",
-          pricingNote: "From USD 699",
-          imageUrl: null,
-          sortOrder: 2,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        },
-        {
-          id: 3,
-          title: "Elite Champion Plan",
-          duration: "10 Days / 9 Nights",
-          inclusions: "4 high-intensity fixtures, specialist clinics, full island cricket + leisure itinerary.",
-          pricingNote: "From USD 999",
-          imageUrl: null,
-          sortOrder: 3,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
-      ];
+  const packageCards = toPackageShowcaseItems(
+    packages.length
+      ? packages
+      : [
+          {
+            id: 1,
+            title: "Starter Plan",
+            duration: "5 Days / 4 Nights",
+            inclusions: "2 warm-up matches, shared nets, city sightseeing and transport support.",
+            pricingNote: "From USD 399"
+          },
+          {
+            id: 2,
+            title: "Pro Player Plan",
+            duration: "8 Days / 7 Nights",
+            inclusions: "3 match fixtures, batting & bowling camp, team analysis and fitness sessions.",
+            pricingNote: "From USD 699"
+          },
+          {
+            id: 3,
+            title: "Elite Champion Plan",
+            duration: "10 Days / 9 Nights",
+            inclusions: "4 high-intensity fixtures, specialist clinics, full island cricket + leisure itinerary.",
+            pricingNote: "From USD 999"
+          }
+        ]
+  );
 
   return (
     <main>

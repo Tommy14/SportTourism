@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { requireSession } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -11,12 +12,24 @@ const updateSchema = z.object({
   payload: z.record(z.any())
 });
 
+const packageItinerarySchema = z.object({
+  summary: z.string(),
+  days: z.array(
+    z.object({
+      day: z.number(),
+      location: z.string(),
+      activity: z.string()
+    })
+  )
+});
+
 const packageCreatePayload = z.object({
   title: z.string().min(1),
   duration: z.string(),
   inclusions: z.string(),
   pricingNote: z.string(),
   imageUrl: z.union([z.string(), z.null()]).optional(),
+  itineraryJson: z.union([packageItinerarySchema, z.null()]).optional(),
   sortOrder: z.coerce.number().int().optional()
 });
 
@@ -67,6 +80,7 @@ export async function POST(request: Request) {
         inclusions: p.inclusions,
         pricingNote: p.pricingNote,
         imageUrl: p.imageUrl ?? null,
+        itineraryJson: p.itineraryJson ?? Prisma.DbNull,
         sortOrder
       }
     });

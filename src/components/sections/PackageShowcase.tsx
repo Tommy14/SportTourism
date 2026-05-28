@@ -1,7 +1,9 @@
 "use client";
 
+import { PackageBookingFlow } from "@/components/packages/PackageBookingFlow";
 import { InquiryButton } from "@/components/ui/InquiryButton";
-import { useLayoutEffect, useRef } from "react";
+import type { PackageItinerary } from "@/types/package-itinerary";
+import { useLayoutEffect, useRef, useState } from "react";
 
 export type PackageShowcaseItem = {
   id: number;
@@ -9,6 +11,7 @@ export type PackageShowcaseItem = {
   duration: string;
   inclusions: string;
   pricingNote: string;
+  itineraryJson: PackageItinerary | null;
 };
 
 type PackageShowcaseProps = {
@@ -19,6 +22,7 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
   const cards = packages;
   const featuredIndex = cards.length > 0 ? Math.floor((cards.length - 1) / 2) : 0;
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [openPackage, setOpenPackage] = useState<PackageShowcaseItem | null>(null);
 
   useLayoutEffect(() => {
     const root = scrollRef.current;
@@ -84,11 +88,21 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
                   <li key={featureIndex}>✓ {feature.trim()}</li>
                 ))}
               </ul>
-              <InquiryButton className="mt-6 w-full" label="Get Started" />
+              <button
+                type="button"
+                className="ghost-button mt-4 w-full text-sm"
+                onClick={() => setOpenPackage(item)}
+              >
+                View itinerary
+              </button>
+              <InquiryButton className="mt-3 w-full" label="Get Started" />
             </article>
           );
         })}
       </div>
+      {openPackage ? (
+        <PackageBookingFlow pkg={openPackage} onClose={() => setOpenPackage(null)} />
+      ) : null}
     </div>
   );
 }
