@@ -1,0 +1,75 @@
+{
+  "summary": "8 T20s + 2 fifty-over matches • Star-grade hotels • AC luxury coach • Team manager • Ambulance & medical staff • Bottled water • Airport transfers • Baggage vehicle • Farewell dinner • Yala safari • SIM card assistance • Group souvenir photo",
+  "days": [
+    {
+      "day": 1,
+      "location": "Arrival → Negombo",
+      "activity": "Airport meet & greet, transfer to hotel, check-in"
+    },
+    {
+      "day": 2,
+      "location": "Negombo",
+      "activity": "Training / Net Session at a 1st class ground"
+    },
+    {
+      "day": 3,
+      "location": "Negombo → Kandy",
+      "activity": "Match #01 & #02 (T20s at Negombo), transfer to Kandy"
+    },
+    {
+      "day": 4,
+      "location": "Kandy",
+      "activity": "Match #03 & #04 (T20s at Kandy)"
+    },
+    {
+      "day": 5,
+      "location": "Kandy → Colombo",
+      "activity": "Pinnawela Elephant Orphanage, riverside lunch, transfer to Colombo"
+    },
+    {
+      "day": 6,
+      "location": "Colombo → Galle",
+      "activity": "Match #05 & #06 (T20s in Colombo), transfer to Galle"
+    },
+    {
+      "day": 7,
+      "location": "Colombo",
+      "activity": "Sri Lanka Cricket Museum, cricket shops, Colombo city tour"
+    },
+    {
+      "day": 8,
+      "location": "Colombo → Galle",
+      "activity": "Transfer to Galle, UNESCO Galle Fort city tour"
+    },
+    {
+      "day": 9,
+      "location": "Galle → Hambantota",
+      "activity": "Match #07 (50-over match at Galle International Cricket Stadium), transfer to Hambantota"
+    },
+    {
+      "day": 10,
+      "location": "Hambantota",
+      "activity": "Yala National Park safari"
+    },
+    {
+      "day": 11,
+      "location": "Hambantota → Colombo",
+      "activity": "Transfer to Colombo, hotel leisure time"
+    },
+    {
+      "day": 12,
+      "location": "Colombo",
+      "activity": "Match #08 & #09 (T20s at P Sara Oval International Ground)"
+    },
+    {
+      "day": 13,
+      "location": "Colombo",
+      "activity": "Match #10 (50-over match in Colombo), end-of-tour farewell dinner"
+    },
+    {
+      "day": 14,
+      "location": "Colombo → Departure",
+      "activity": "City tour & shopping, airport transfer"
+    }
+  ]
+}

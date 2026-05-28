@@ -1,0 +1,40 @@
+{
+  "summary": "5 T20s + 1 fifty-over match • Star-grade hotels • AC luxury coach • Team manager • Ambulance & medical staff • Bottled water • Airport transfers • Baggage vehicle • SIM card assistance • Group souvenir photo",
+  "days": [
+    {
+      "day": 1,
+      "location": "Arrival → Negombo",
+      "activity": "Airport meet & greet, transfer to hotel, check-in"
+    },
+    {
+      "day": 2,
+      "location": "Negombo",
+      "activity": "Training / Net Session at a 1st class ground"
+    },
+    {
+      "day": 3,
+      "location": "Negombo → Kandy",
+      "activity": "Match #01 & #02 (T20s at Negombo), transfer to Kandy"
+    },
+    {
+      "day": 4,
+      "location": "Kandy",
+      "activity": "Match #03 & #04 (T20s at Kandy)"
+    },
+    {
+      "day": 5,
+      "location": "Kandy → Hikkaduwa",
+      "activity": "Pinnawela Elephant Orphanage, lunch at riverside café, transfer south"
+    },
+    {
+      "day": 6,
+      "location": "Hikkaduwa → Kalutara",
+      "activity": "Match #05 (50-over match at Hikkaduwa), transfer to Kalutara"
+    },
+    {
+      "day": 7,
+      "location": "Kalutara → Colombo → Departure",
+      "activity": "Match #06 (T20 at Kalutara), cocktail party, shopping in Colombo, airport transfer"
+    }
+  ]
+}

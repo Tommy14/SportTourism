@@ -4,12 +4,14 @@ import { useState } from "react";
 import type { CustomItineraryDay } from "@/types/package-itinerary";
 import type { PackageShowcaseItem } from "@/components/sections/PackageShowcase";
 import type { TourPreferences } from "@/components/packages/PreferencesStep";
-import { formatTravelDates } from "@/lib/build-custom-itinerary";
+import { formatTravelDates } from "@/lib/build-template-itinerary";
+import type { ItineraryGenerationSource } from "@/lib/generate-itinerary";
 
 type ReviewSubmitStepProps = {
   pkg: PackageShowcaseItem;
   preferences: TourPreferences;
   itinerary: CustomItineraryDay[];
+  generationSource: ItineraryGenerationSource | null;
   referenceHotelsShown: { city: string; name: string; stars: number }[];
   onBack: () => void;
 };
@@ -18,6 +20,7 @@ export function ReviewSubmitStep({
   pkg,
   preferences,
   itinerary,
+  generationSource,
   referenceHotelsShown,
   onBack
 }: ReviewSubmitStepProps) {
@@ -48,7 +51,8 @@ export function ReviewSubmitStep({
         travelStart: preferences.travelStart,
         travelEnd: preferences.travelEnd || undefined,
         generatedItinerary: itinerary,
-        referenceHotelsShown
+        referenceHotelsShown,
+        generationSource: generationSource ?? undefined
       })
     });
 
@@ -61,6 +65,12 @@ export function ReviewSubmitStep({
 
   return (
     <div className="space-y-5">
+      {generationSource ? (
+        <span className="badge-chip text-[10px]">
+          {generationSource === "llm" ? "AI-personalized itinerary" : "Template-based itinerary"}
+        </span>
+      ) : null}
+
       <div className="rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-white/75">
         <p>
           <span className="text-white/50">Opponent:</span> {preferences.opponentLevel}

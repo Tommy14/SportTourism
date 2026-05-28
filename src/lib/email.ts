@@ -48,6 +48,7 @@ export async function sendPackageInquiryEmail(content: {
   travelEnd?: string;
   generatedItinerary: CustomItineraryDay[];
   referenceHotelsShown: { city: string; name: string; stars: number }[];
+  generationSource?: "llm" | "template";
   message: string;
 }) {
   const itineraryRows = content.generatedItinerary
@@ -79,6 +80,7 @@ export async function sendPackageInquiryEmail(content: {
       <li><b>Cities:</b> ${escapeHtml(content.cities.join(", "))}</li>
       <li><b>Hotel standard:</b> ${content.hotelStars} stars</li>
       <li><b>Travel dates:</b> ${escapeHtml(content.travelStart)}${content.travelEnd ? ` → ${escapeHtml(content.travelEnd)}` : ""}</li>
+      ${content.generationSource ? `<li><b>Itinerary source:</b> ${content.generationSource === "llm" ? "AI-personalized" : "Template"}</li>` : ""}
     </ul>
     ${referenceList ? `<h3>Reference hotels shown</h3><ul>${referenceList}</ul>` : ""}
     <h3>Generated itinerary</h3>

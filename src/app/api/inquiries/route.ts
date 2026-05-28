@@ -38,7 +38,8 @@ const packageInquirySchema = z.object({
       name: z.string(),
       stars: z.number()
     })
-  )
+  ),
+  generationSource: z.enum(["llm", "template"]).optional()
 });
 
 function buildPackageMessage(data: z.infer<typeof packageInquirySchema>): string {
@@ -48,6 +49,7 @@ function buildPackageMessage(data: z.infer<typeof packageInquirySchema>): string
     `Cities: ${data.cities.join(", ")}`,
     `Hotel standard: ${data.hotelStars} stars`,
     `Travel: ${data.travelStart}${data.travelEnd ? ` → ${data.travelEnd}` : ""}`,
+    data.generationSource ? `Itinerary source: ${data.generationSource}` : "",
     "",
     "Generated itinerary:",
     ...data.generatedItinerary.map(
@@ -94,6 +96,7 @@ export async function POST(request: Request) {
           travelEnd: data.travelEnd,
           generatedItinerary: data.generatedItinerary,
           referenceHotelsShown: data.referenceHotelsShown,
+          generationSource: data.generationSource,
           message
         });
       } catch {

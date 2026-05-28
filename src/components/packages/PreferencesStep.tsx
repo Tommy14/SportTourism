@@ -13,12 +13,23 @@ export type TourPreferences = {
 
 type PreferencesStepProps = {
   preferences: TourPreferences;
+  hasItinerary: boolean;
+  previewLoading?: boolean;
+  previewError?: string | null;
   onChange: (next: TourPreferences) => void;
-  onPreview: () => void;
+  onPreview: () => void | Promise<void>;
   onBack: () => void;
 };
 
-export function PreferencesStep({ preferences, onChange, onPreview, onBack }: PreferencesStepProps) {
+export function PreferencesStep({
+  preferences,
+  hasItinerary,
+  previewLoading = false,
+  previewError = null,
+  onChange,
+  onPreview,
+  onBack
+}: PreferencesStepProps) {
   const referenceHotels =
     preferences.cities.length > 0 && preferences.hotelStars
       ? getReferenceHotels(preferences.cities, preferences.hotelStars)
@@ -31,7 +42,17 @@ export function PreferencesStep({ preferences, onChange, onPreview, onBack }: Pr
     onChange({ ...preferences, cities });
   }
 
-  const canPreview = preferences.opponentLevel && preferences.cities.length > 0 && preferences.travelStart;
+  const canPreview =
+    hasItinerary &&
+    Boolean(preferences.opponentLevel) &&
+    preferences.cities.length > 0 &&
+    Boolean(preferences.travelStart);
+
+  const missingFields: string[] = [];
+  if (!hasItinerary) missingFields.push("package itinerary");
+  if (!preferences.opponentLevel) missingFields.push("opponent level");
+  if (!preferences.cities.length) missingFields.push("at least one city");
+  if (!preferences.travelStart) missingFields.push("start date");
 
   return (
     <div className="space-y-6">
@@ -147,12 +168,23 @@ export function PreferencesStep({ preferences, onChange, onPreview, onBack }: Pr
         </div>
       ) : null}
 
+      {!canPreview && missingFields.length > 0 ? (
+        <p className="text-sm text-white/55">Complete: {missingFields.join(", ")}.</p>
+      ) : null}
+
+      {previewError ? <p className="text-sm text-red-400">{previewError}</p> : null}
+
       <div className="flex flex-wrap gap-3">
-        <button type="button" className="ghost-button" onClick={onBack}>
+        <button type="button" className="ghost-button" onClick={onBack} disabled={previewLoading}>
           Back
         </button>
-        <button type="button" className="pill-button" disabled={!canPreview} onClick={onPreview}>
-          Preview itinerary
+        <button
+          type="button"
+          className="pill-button disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
+          disabled={!canPreview || previewLoading}
+          onClick={onPreview}
+        >
+          {previewLoading ? "Generating…" : "Preview itinerary"}
         </button>
       </div>
     </div>

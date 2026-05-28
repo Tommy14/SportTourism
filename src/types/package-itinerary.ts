@@ -22,10 +22,12 @@ export function parsePackageItinerary(value: unknown): PackageItinerary | null {
     .map((d) => {
       if (!d || typeof d !== "object") return null;
       const day = d as Record<string, unknown>;
-      if (typeof day.day !== "number" || typeof day.location !== "string" || typeof day.activity !== "string") {
+      const dayNum =
+        typeof day.day === "number" ? day.day : typeof day.day === "string" ? Number(day.day) : NaN;
+      if (!Number.isFinite(dayNum) || typeof day.location !== "string" || typeof day.activity !== "string") {
         return null;
       }
-      return { day: day.day, location: day.location, activity: day.activity };
+      return { day: dayNum, location: day.location, activity: day.activity };
     })
     .filter((d): d is ItineraryDay => d !== null);
   if (!days.length) return null;

@@ -1,3 +1,4 @@
+import { itineraryFallbackForPackage } from "@/data/itineraries";
 import { PACKAGE_ITINERARY_BY_TITLE } from "@/data/package-itinerary-seeds";
 import type { PackageShowcaseItem } from "@/components/sections/PackageShowcase";
 import { parsePackageItinerary } from "@/types/package-itinerary";
@@ -20,6 +21,7 @@ export function toPackageShowcaseItems(packages: RawPackage[]): PackageShowcaseI
     pricingNote: pkg.pricingNote,
     itineraryJson:
       parsePackageItinerary(pkg.itineraryJson) ??
+      itineraryFallbackForPackage(pkg) ??
       PACKAGE_ITINERARY_BY_TITLE[pkg.title] ??
       null
   }));
