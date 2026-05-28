@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { InquiryButton } from "../ui/InquiryButton";
-
 const links = [
   { href: "#home", label: "Home" },
   { href: "#gallery", label: "Gallery" },
@@ -27,9 +25,6 @@ export function HeaderNav({ brand }: { brand: string }) {
             </a>
           ))}
         </nav>
-        <div className="hidden md:block">
-          <InquiryButton />
-        </div>
         <button
           onClick={() => setOpen((value) => !value)}
           className="rounded-lg border border-white/20 px-3 py-2 text-xs font-semibold md:hidden"
@@ -46,7 +41,6 @@ export function HeaderNav({ brand }: { brand: string }) {
                 {link.label}
               </a>
             ))}
-            <InquiryButton />
           </nav>
         </div>
       )}

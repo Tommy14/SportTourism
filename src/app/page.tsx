@@ -434,12 +434,9 @@ export default async function Home() {
 
       <section id="gallery" className="section-block scroll-mt-28 bg-black/25">
         <div className="section-shell">
-          <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <span className="badge-chip">Gallery</span>
-              <h2 className="mt-3 text-3xl font-bold md:text-4xl">Tour Moments And Team Spirit</h2>
-            </div>
-            <InquiryButton />
+          <div className="mb-8">
+            <span className="badge-chip">Gallery</span>
+            <h2 className="mt-3 text-3xl font-bold md:text-4xl">Tour Moments And Team Spirit</h2>
           </div>
           <div className="grid gap-4 md:grid-cols-3">
             {(gallery.length ? gallery : new Array(6).fill(null)).map((item, idx) => (
@@ -508,12 +505,9 @@ export default async function Home() {
 
       <section id="faq" className="section-block scroll-mt-28 bg-black/25">
         <div className="section-shell">
-          <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <span className="badge-chip">FAQ</span>
-              <h2 className="mt-3 text-3xl font-bold md:text-4xl">We Heard It All - And We Are Answering</h2>
-            </div>
-            <InquiryButton />
+          <div className="mb-6">
+            <span className="badge-chip">FAQ</span>
+            <h2 className="mt-3 text-3xl font-bold md:text-4xl">We Heard It All - And We Are Answering</h2>
           </div>
           <div className="space-y-3">
             {(faqs.length
@@ -531,12 +525,9 @@ export default async function Home() {
 
       <section id="contact" className="section-shell section-block scroll-mt-28">
         <div className="panel-card border-accent/25">
-          <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <span className="badge-chip">Get in Touch</span>
-              <h3 className="mt-3 text-2xl font-bold md:text-3xl">Contact Us</h3>
-            </div>
-            <InquiryButton />
+          <div className="mb-6">
+            <span className="badge-chip">Get in Touch</span>
+            <h3 className="mt-3 text-2xl font-bold md:text-3xl">Contact Us</h3>
           </div>
           <InquiryForm />
         </div>
