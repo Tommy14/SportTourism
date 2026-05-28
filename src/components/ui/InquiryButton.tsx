@@ -6,7 +6,7 @@ type InquiryButtonProps = {
   className?: string;
 };
 
-export function InquiryButton({ href = "#inquiry", label = "Inquiry Now", className = "" }: InquiryButtonProps) {
+export function InquiryButton({ href = "#contact", label = "Contact Us", className = "" }: InquiryButtonProps) {
   return (
     <a href={href} className={`pill-button inline-flex items-center justify-center ${className}`}>
       {label}

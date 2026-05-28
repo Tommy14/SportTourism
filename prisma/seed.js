@@ -17,7 +17,7 @@ async function main() {
       contactEmail: "hello@crickettoursrilanka.com",
       contactPhone: "+94 77 123 4567",
       footerAddress: "Colombo, Sri Lanka",
-      inquiryLabel: "Send Inquiry"
+      inquiryLabel: "Contact Us"
     }
   });
 

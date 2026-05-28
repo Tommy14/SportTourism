@@ -13,7 +13,7 @@ model SiteSettings {
   contactEmail String
   contactPhone String
   footerAddress String
-  inquiryLabel String   @default("Inquiry Now")
+  inquiryLabel String   @default("Contact Us")
   updatedAt    DateTime @updatedAt
 }
 

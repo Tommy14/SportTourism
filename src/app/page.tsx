@@ -318,7 +318,7 @@ export default async function Home() {
             <a href="#packages" className="ghost-button">
               Explore Plans
             </a>
-            <InquiryButton label={settings?.inquiryLabel} />
+            <InquiryButton />
           </div>
         </div>
       </section>
@@ -533,8 +533,8 @@ export default async function Home() {
         <div className="panel-card border-accent/25">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <span className="badge-chip">Join Our Cricket Family</span>
-              <h3 className="mt-3 text-2xl font-bold md:text-3xl">Plan Your Tour With Pitch to Paradise</h3>
+              <span className="badge-chip">Get in Touch</span>
+              <h3 className="mt-3 text-2xl font-bold md:text-3xl">Contact Us</h3>
             </div>
             <InquiryButton />
           </div>

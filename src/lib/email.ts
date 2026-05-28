@@ -18,7 +18,7 @@ export async function sendInquiryEmail(content: {
   message: string;
 }) {
   const html = `
-    <h2>New Pitch to Paradise Inquiry</h2>
+    <h2>New Pitch to Paradise Contact Message</h2>
     <p><b>Name:</b> ${content.name}</p>
     <p><b>Email:</b> ${content.email}</p>
     <p><b>Phone:</b> ${content.phone}</p>
@@ -28,7 +28,7 @@ export async function sendInquiryEmail(content: {
   await transporter.sendMail({
     from: env.INQUIRY_FROM_EMAIL,
     to: env.INQUIRY_TO_EMAIL,
-    subject: "New Pitch to Paradise Inquiry",
+    subject: "New Pitch to Paradise Contact Message",
     html
   });
 }
