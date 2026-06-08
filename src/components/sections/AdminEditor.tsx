@@ -220,7 +220,7 @@ export function AdminEditor({
                 <div className="grid gap-4 md:grid-cols-2">
                   {Object.entries(row).map(([key, value]) => {
                     if (DISPLAY_SKIP.has(key) || typeHidden.has(key)) return null;
-                  if (key === "imageUrl" && type === "section" && row.key !== "hero") return null;
+                  if (key === "imageUrl" && type === "section" && row.key !== "hero" && row.key !== "what-we-do") return null;
 
                     /* Section key — read-only badge */
                     if (key === "key") {
@@ -325,10 +325,12 @@ export function AdminEditor({
                 </div>
 
                 {/* Image section */}
-                {"imageUrl" in row && !(type === "section" && row.key !== "hero") && (
+                {"imageUrl" in row && !(type === "section" && row.key !== "hero" && row.key !== "what-we-do") && (
                   <div className="mt-5 rounded-xl border border-white/10 bg-black/20 p-4">
                     <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-white/40">
-                      {type === "section" ? "Cover Photo — appears in the hero section" : "Image"}
+                      {row.key === "hero" ? "Cover Photo — appears in the hero collage"
+                        : row.key === "what-we-do" ? "Banner Photo — appears in the What We Do banner"
+                        : "Image"}
                     </p>
                     <div className="flex flex-wrap items-start gap-4">
                       {/* Preview */}

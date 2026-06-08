@@ -237,13 +237,7 @@ export default async function Home() {
   const hero = sections.find((item) => item.key === "hero");
   const topicSections = sections.filter((item) => item.key !== "hero");
 
-  const heroCollage = [
-    HERO_COLLAGE_SRC[0],
-    HERO_COLLAGE_SRC[1],
-    (hero?.imageUrl as string | null | undefined) ?? HERO_COLLAGE_SRC[2],
-    HERO_COLLAGE_SRC[3],
-    HERO_COLLAGE_SRC[4],
-  ];
+  const heroCoverPhoto = (hero?.imageUrl as string | null | undefined) ?? null;
 
   const fallbackTopicTiles = [
     { id: 1, groupKey: "what-we-do", title: "Accommodation", body: "Team-friendly hotel stays arranged close to training and match venues.", imageUrl: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1000&q=80" },
@@ -298,21 +292,38 @@ export default async function Home() {
       {/* ── Hero ── */}
       <section id="home" className="relative overflow-hidden">
         <div className="hero-backdrop absolute inset-0 z-10" />
-        <div className="relative z-0 grid h-[62vh] grid-cols-5 gap-0.5 md:h-[72vh] [&>*]:min-h-0 [&>*]:min-w-0">
-          {heroCollage.map((src, i) => (
-            <div key={src} className="relative h-full w-full overflow-hidden">
-              <Image
-                src={src}
-                alt=""
-                fill
-                sizes="20vw"
-                className="object-cover object-center"
-                priority={i < 2}
-                unoptimized={src.includes("wikimedia")}
-              />
-            </div>
-          ))}
-        </div>
+        {heroCoverPhoto ? (
+          /* Single full-width cover photo uploaded via admin */
+          <div className="relative z-0 h-[62vh] w-full md:h-[72vh]">
+            <Image
+              src={heroCoverPhoto}
+              alt="Hero cover"
+              fill
+              sizes="100vw"
+              className="object-cover object-center"
+              priority
+              unoptimized
+            />
+          </div>
+        ) : (
+          /* Default 5-column cricket collage */
+          <div className="relative z-0 grid h-[62vh] grid-cols-5 gap-0.5 md:h-[72vh] [&>*]:min-h-0 [&>*]:min-w-0">
+            {HERO_COLLAGE_SRC.map((src, i) => (
+              <div key={src} className="relative h-full w-full overflow-hidden">
+                <Image
+                  src={src}
+                  alt=""
+                  fill
+                  sizes="20vw"
+                  className="object-cover object-center"
+                  priority={i < 2}
+                  unoptimized={src.includes("wikimedia")}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+
         <div className="section-shell relative z-20 -mt-64 pb-16 pt-10 text-center md:-mt-72 md:pb-24">
           <span className="badge-chip">{hero?.subtitle || "Sri Lanka Cricket Experience"}</span>
           <h1 className="section-title mx-auto mt-5 max-w-3xl">
@@ -377,8 +388,8 @@ export default async function Home() {
                     <>
                       <div className="relative mt-6 aspect-[16/7] w-full overflow-hidden rounded-2xl border border-white/10">
                         <Image
-                          src={WHAT_WE_DO_HERO_SRC}
-                          alt="R. Premadasa Stadium, Colombo"
+                          src={("imageUrl" in item && item.imageUrl ? String(item.imageUrl) : null) ?? WHAT_WE_DO_HERO_SRC}
+                          alt="What We Do banner"
                           fill
                           sizes="(max-width: 1200px) 100vw, 1100px"
                           className="object-cover object-center"
