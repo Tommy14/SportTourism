@@ -368,7 +368,7 @@ export default async function Home() {
               ]
           )
             .sort((a, b) => topicGroupOrder.indexOf(a.key) - topicGroupOrder.indexOf(b.key))
-            .map((item) => {
+            .map((item: { key: string; title: string; subtitle?: string | null; body: string; imageUrl?: string | null }) => {
               const tiles =
                 item.key === "what-we-do"
                   ? buildWhatWeDoTiles(tileRecords as TopicTileRecord[])
@@ -507,7 +507,7 @@ export default async function Home() {
                   </h3>
                   {/* Horizontal scroll — 3 images visible at a time */}
                   <div className="packages-scroll flex flex-1 snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden pb-2">
-                    {section.items.map((item) => (
+                    {section.items.map((item: { id: number; imageUrl: string; caption: string }) => (
                       <div
                         key={item.id}
                         className="group flex-shrink-0 snap-start flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0d1317]"
@@ -560,7 +560,7 @@ export default async function Home() {
                       { id: 1, quote: "Brilliantly organised from start to finish. The matches, coaching and sightseeing were all top-class.", name: "Coach Daniel", team: "Royal Academy CC", imageUrl: null },
                       { id: 2, quote: "Our junior squad had the experience of a lifetime. Every detail was handled professionally.", name: "Sarah Mitchell", team: "Eastbourne Cricket Club", imageUrl: null }
                     ]
-                ).map((item) => {
+                ).map((item: { id: number; quote: string; name: string; team: string; imageUrl?: string | null }) => {
                   const photo =
                     "imageUrl" in item && item.imageUrl && String(item.imageUrl).trim() !== ""
                       ? String(item.imageUrl).trim()
@@ -611,7 +611,7 @@ export default async function Home() {
                       { id: 3, question: "Which venues will we play at?", answer: "We have established relationships with grounds in Colombo, Dambulla and Galle, as well as indoor net facilities across the island." },
                       { id: 4, question: "What is included in the packages?", answer: "Accommodation, team transport, match fixtures, coaching sessions, airport transfers and a dedicated tour manager — all configurable to your needs." }
                     ]
-                ).map((item) => (
+                ).map((item: { id: number; question: string; answer: string }) => (
                   <details
                     key={item.id}
                     className="group rounded-xl border border-white/10 bg-[#0e1318] px-5 py-3 open:border-accent/25 open:bg-[#101820] transition-colors"
