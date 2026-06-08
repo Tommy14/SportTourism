@@ -12,5 +12,14 @@ CREATE TABLE IF NOT EXISTS "GallerySection" (
     CONSTRAINT "GallerySection_pkey" PRIMARY KEY ("id")
 );
 
--- AddForeignKey
-ALTER TABLE "GalleryItem" ADD CONSTRAINT IF NOT EXISTS "GalleryItem_sectionId_fkey" FOREIGN KEY ("sectionId") REFERENCES "GallerySection"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+-- AddForeignKey (safe, no-op if already exists)
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_constraint WHERE conname = 'GalleryItem_sectionId_fkey'
+    ) THEN
+        ALTER TABLE "GalleryItem" ADD CONSTRAINT "GalleryItem_sectionId_fkey"
+            FOREIGN KEY ("sectionId") REFERENCES "GallerySection"("id")
+            ON DELETE SET NULL ON UPDATE CASCADE;
+    END IF;
+END $$;
