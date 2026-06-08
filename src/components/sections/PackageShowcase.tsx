@@ -3,6 +3,7 @@
 import { PackageBookingFlow } from "@/components/packages/PackageBookingFlow";
 import { InquiryButton } from "@/components/ui/InquiryButton";
 import type { PackageItinerary } from "@/types/package-itinerary";
+import Image from "next/image";
 import { useLayoutEffect, useRef, useState } from "react";
 
 export type PackageShowcaseItem = {
@@ -11,6 +12,7 @@ export type PackageShowcaseItem = {
   duration: string;
   inclusions: string;
   pricingNote: string;
+  imageUrl: string | null;
   itineraryJson: PackageItinerary | null;
 };
 
@@ -66,6 +68,11 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
                 <span className="absolute -top-px left-1/2 -translate-x-1/2 rounded-b-lg bg-accent/90 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#0c1216]">
                   Popular
                 </span>
+              ) : null}
+              {item.imageUrl ? (
+                <div className="relative -mx-6 -mt-6 mb-4 h-36 overflow-hidden rounded-t-2xl border-b border-white/10">
+                  <Image src={item.imageUrl} alt={item.title} fill className="object-cover" unoptimized />
+                </div>
               ) : null}
               <h3
                 className={`font-semibold ${featured ? "text-xl md:text-2xl" : "text-lg md:text-xl"}`}

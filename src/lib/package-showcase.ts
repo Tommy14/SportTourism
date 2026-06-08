@@ -7,6 +7,7 @@ type RawPackage = {
   duration: string;
   inclusions: string;
   pricingNote: string;
+  imageUrl?: string | null;
   itineraryJson?: unknown;
 };
 
@@ -17,6 +18,7 @@ export function toPackageShowcaseItems(packages: RawPackage[]): PackageShowcaseI
     duration: pkg.duration,
     inclusions: pkg.inclusions,
     pricingNote: pkg.pricingNote,
+    imageUrl: pkg.imageUrl ?? null,
     itineraryJson: resolvePackageItinerary(pkg)
   }));
 }

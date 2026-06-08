@@ -9,13 +9,21 @@ export default async function DashboardPage() {
   const session = await requireSession();
   if (!session) redirect("/portal/login");
 
-  const [packages, faqs, testimonials, gallery, settings] = await Promise.all([
+  const [packages, faqs, testimonials, gallery, settings, sections, topicTiles] = await Promise.all([
     db.package.findMany({ orderBy: { sortOrder: "asc" } }),
     db.faqItem.findMany({ orderBy: { sortOrder: "asc" } }),
     db.testimonial.findMany({ orderBy: { sortOrder: "asc" } }),
     db.galleryItem.findMany({ orderBy: { sortOrder: "asc" } }),
-    db.siteSettings.findUnique({ where: { id: 1 } })
+    db.siteSettings.findUnique({ where: { id: 1 } }),
+    db.sectionContent.findMany({ orderBy: { key: "asc" } }),
+    db.topicTile.findMany({ orderBy: [{ groupKey: "asc" }, { sortOrder: "asc" }] })
   ]);
+
+  const tileGroups = {
+    "what-we-do": topicTiles.filter((t) => t.groupKey === "what-we-do"),
+    "what-we-have-done": topicTiles.filter((t) => t.groupKey === "what-we-have-done"),
+    "where-play": topicTiles.filter((t) => t.groupKey === "where-play")
+  };
 
   return (
     <main className="min-h-screen bg-ink pb-16">
@@ -29,6 +37,35 @@ export default async function DashboardPage() {
           </form>
         </div>
         <div className="space-y-6">
+          {sections.length > 0 && (
+            <AdminEditor
+              title="Page Sections"
+              type="section"
+              items={sections as never[]}
+              keyField="key"
+            />
+          )}
+          {tileGroups["what-we-do"].length > 0 && (
+            <AdminEditor
+              title="What We Do — Tiles"
+              type="topicTile"
+              items={tileGroups["what-we-do"] as never[]}
+            />
+          )}
+          {tileGroups["what-we-have-done"].length > 0 && (
+            <AdminEditor
+              title="What We Have Done — Tiles"
+              type="topicTile"
+              items={tileGroups["what-we-have-done"] as never[]}
+            />
+          )}
+          {tileGroups["where-play"].length > 0 && (
+            <AdminEditor
+              title="Where To Play — Tiles"
+              type="topicTile"
+              items={tileGroups["where-play"] as never[]}
+            />
+          )}
           <AdminEditor title="Packages" type="package" items={packages as never[]} />
           <AdminEditor title="FAQs" type="faq" items={faqs as never[]} />
           <AdminEditor title="Testimonials" type="testimonial" items={testimonials as never[]} />

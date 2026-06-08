@@ -4,7 +4,8 @@ import { useState } from "react";
 
 type Item = Record<string, string | number | null>;
 
-const PAYLOAD_SKIP = new Set(["id", "key", "createdAt", "updatedAt", "draftKey"]);
+const PAYLOAD_SKIP = new Set(["id", "key", "groupKey", "createdAt", "updatedAt", "draftKey"]);
+const DISPLAY_SKIP = new Set(["id", "groupKey", "createdAt", "updatedAt", "draftKey"]);
 
 const CREATABLE_TYPES = new Set(["package", "faq", "testimonial", "gallery"]);
 
@@ -15,12 +16,21 @@ export function AdminEditor({
   keyField = "id"
 }: {
   title: string;
-  type: "package" | "faq" | "testimonial" | "gallery" | "settings";
+  type: "package" | "faq" | "testimonial" | "gallery" | "settings" | "section" | "topicTile";
   items: Item[];
   keyField?: string;
 }) {
   const [rows, setRows] = useState(items);
-  const [status, setStatus] = useState("");
+  const [statuses, setStatuses] = useState<Record<string, string>>({});
+  const [uploadingRows, setUploadingRows] = useState<Set<number>>(new Set());
+
+  function getRowKey(row: Item): string {
+    return String((row as Item & { draftKey?: string }).draftKey ?? row[keyField]);
+  }
+
+  function setRowStatus(row: Item, msg: string) {
+    setStatuses((prev) => ({ ...prev, [getRowKey(row)]: msg }));
+  }
 
   function nextSortOrder(r: Item[]) {
     return Math.max(0, ...r.map((x) => Number(x.sortOrder) || 0)) + 1;
@@ -41,7 +51,6 @@ export function AdminEditor({
         draftKey: crypto.randomUUID()
       }
     ]);
-    setStatus("");
   }
 
   function addFaqRow() {
@@ -55,7 +64,6 @@ export function AdminEditor({
         draftKey: crypto.randomUUID()
       }
     ]);
-    setStatus("");
   }
 
   function addTestimonialRow() {
@@ -71,7 +79,6 @@ export function AdminEditor({
         draftKey: crypto.randomUUID()
       }
     ]);
-    setStatus("");
   }
 
   function addGalleryRow() {
@@ -85,7 +92,6 @@ export function AdminEditor({
         draftKey: crypto.randomUUID()
       }
     ]);
-    setStatus("");
   }
 
   function newRowHint(): string | null {
@@ -108,14 +114,14 @@ export function AdminEditor({
   }
 
   async function saveRow(row: Item, index: number) {
-    setStatus("Saving...");
+    setRowStatus(row, "Saving...");
     const payload: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(row)) {
       if (PAYLOAD_SKIP.has(key)) continue;
       if (key === "itineraryJson") {
         const parsed = parseItineraryJson(value);
         if (!parsed.ok) {
-          setStatus(parsed.error);
+          setRowStatus(row, parsed.error);
           return;
         }
         payload[key] = parsed.value;
@@ -148,19 +154,25 @@ export function AdminEditor({
         next[index] = { ...rest, id: result.id as number };
         return next;
       });
-      setStatus("Saved");
+      setRowStatus(row, "Saved");
       return;
     }
 
-    setStatus(response.ok ? "Saved" : result.error || "Failed");
+    setRowStatus(row, response.ok ? "Saved" : result.error || "Failed");
   }
 
   async function onUpload(index: number, file: File) {
+    setUploadingRows((prev) => new Set(prev).add(index));
     const form = new FormData();
     form.append("file", file);
     const response = await fetch("/api/admin/upload", { method: "POST", body: form });
+    setUploadingRows((prev) => {
+      const s = new Set(prev);
+      s.delete(index);
+      return s;
+    });
     if (!response.ok) return;
-    const data = await response.json();
+    const data = (await response.json()) as { url: string };
     const next = [...rows];
     next[index] = { ...next[index], imageUrl: data.url };
     setRows(next);
@@ -194,74 +206,93 @@ export function AdminEditor({
         ) : null}
       </div>
       <div className="space-y-4">
-        {rows.map((row, index) => (
-          <article
-            key={String((row as Item & { draftKey?: string }).draftKey ?? row[keyField])}
-            className="rounded-lg border border-white/10 p-4"
-          >
-            {Number(row.id) === 0 && hint ? <p className="mb-3 text-sm text-accent">{hint}</p> : null}
-            <div className="grid gap-2 md:grid-cols-2">
-              {Object.entries(row).map(([key, value]) => {
-                if (key === "id" || key === "createdAt" || key === "updatedAt" || key === "draftKey")
-                  return null;
-                if (key === "itineraryJson") {
-                  const display =
-                    value === null || value === undefined
-                      ? ""
-                      : typeof value === "string"
-                        ? value
-                        : JSON.stringify(value, null, 2);
+        {rows.map((row, index) => {
+          const rk = getRowKey(row);
+          return (
+            <article
+              key={rk}
+              className="rounded-lg border border-white/10 p-4"
+            >
+              {Number(row.id) === 0 && hint ? <p className="mb-3 text-sm text-accent">{hint}</p> : null}
+              <div className="grid gap-2 md:grid-cols-2">
+                {Object.entries(row).map(([key, value]) => {
+                  if (DISPLAY_SKIP.has(key)) return null;
+                  if (key === "itineraryJson") {
+                    const display =
+                      value === null || value === undefined
+                        ? ""
+                        : typeof value === "string"
+                          ? value
+                          : JSON.stringify(value, null, 2);
+                    return (
+                      <label key={key} className="text-sm md:col-span-2">
+                        <span className="mb-1 block text-white/70">itineraryJson</span>
+                        <textarea
+                          rows={12}
+                          value={display}
+                          placeholder='{"summary":"...","days":[{"day":1,"location":"...","activity":"..."}]}'
+                          onChange={(event) => {
+                            const next = [...rows];
+                            next[index] = { ...next[index], [key]: event.target.value };
+                            setRows(next);
+                          }}
+                          className="w-full rounded-md bg-ink/70 p-2 font-mono text-xs"
+                        />
+                      </label>
+                    );
+                  }
                   return (
-                    <label key={key} className="text-sm md:col-span-2">
-                      <span className="mb-1 block text-white/70">itineraryJson</span>
-                      <textarea
-                        rows={12}
-                        value={display}
-                        placeholder='{"summary":"...","days":[{"day":1,"location":"...","activity":"..."}]}'
+                    <label key={key} className="text-sm">
+                      <span className="mb-1 block text-white/70">{key}</span>
+                      <input
+                        value={value === null ? "" : String(value)}
                         onChange={(event) => {
                           const next = [...rows];
                           next[index] = { ...next[index], [key]: event.target.value };
                           setRows(next);
                         }}
-                        className="w-full rounded-md bg-ink/70 p-2 font-mono text-xs"
+                        className="w-full rounded-md bg-ink/70 p-2"
                       />
                     </label>
                   );
-                }
-                return (
-                  <label key={key} className="text-sm">
-                    <span className="mb-1 block text-white/70">{key}</span>
-                    <input
-                      value={value === null ? "" : String(value)}
-                      onChange={(event) => {
-                        const next = [...rows];
-                        next[index] = { ...next[index], [key]: event.target.value };
-                        setRows(next);
-                      }}
-                      className="w-full rounded-md bg-ink/70 p-2"
+                })}
+              </div>
+              {"imageUrl" in row && (
+                <div className="mt-3">
+                  {row.imageUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={String(row.imageUrl)}
+                      alt="preview"
+                      className="mb-2 h-24 w-40 rounded-lg border border-white/10 object-cover"
                     />
-                  </label>
-                );
-              })}
-            </div>
-            {"imageUrl" in row && (
-              <input
-                type="file"
-                accept="image/*"
-                className="mt-3"
-                onChange={(event) => {
-                  const file = event.target.files?.[0];
-                  if (file) onUpload(index, file);
-                }}
-              />
-            )}
-            <button type="button" className="pill-button mt-3" onClick={() => saveRow(row, index)}>
-              Save
-            </button>
-          </article>
-        ))}
+                  ) : null}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="text-sm"
+                    onChange={(event) => {
+                      const file = event.target.files?.[0];
+                      if (file) void onUpload(index, file);
+                    }}
+                  />
+                  {uploadingRows.has(index) ? (
+                    <p className="mt-1 text-xs text-white/50">Uploading…</p>
+                  ) : null}
+                </div>
+              )}
+              <div className="mt-3 flex items-center gap-3">
+                <button type="button" className="pill-button" onClick={() => void saveRow(row, index)}>
+                  Save
+                </button>
+                {statuses[rk] ? (
+                  <p className="text-xs text-white/60">{statuses[rk]}</p>
+                ) : null}
+              </div>
+            </article>
+          );
+        })}
       </div>
-      <p className="mt-3 text-sm text-white/70">{status}</p>
     </section>
   );
 }
