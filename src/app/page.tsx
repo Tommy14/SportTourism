@@ -237,6 +237,14 @@ export default async function Home() {
   const hero = sections.find((item) => item.key === "hero");
   const topicSections = sections.filter((item) => item.key !== "hero");
 
+  const heroCollage = [
+    HERO_COLLAGE_SRC[0],
+    HERO_COLLAGE_SRC[1],
+    (hero?.imageUrl as string | null | undefined) ?? HERO_COLLAGE_SRC[2],
+    HERO_COLLAGE_SRC[3],
+    HERO_COLLAGE_SRC[4],
+  ];
+
   const fallbackTopicTiles = [
     { id: 1, groupKey: "what-we-do", title: "Accommodation", body: "Team-friendly hotel stays arranged close to training and match venues.", imageUrl: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1000&q=80" },
     { id: 2, groupKey: "what-we-do", title: "Fixtures", body: "Competitive matches coordinated with suitable schools, clubs, and academies.", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/54/Rangiri_Dambulla_International_Stadium.jpg" },
@@ -291,7 +299,7 @@ export default async function Home() {
       <section id="home" className="relative overflow-hidden">
         <div className="hero-backdrop absolute inset-0 z-10" />
         <div className="relative z-0 grid h-[62vh] grid-cols-5 gap-0.5 md:h-[72vh] [&>*]:min-h-0 [&>*]:min-w-0">
-          {HERO_COLLAGE_SRC.map((src, i) => (
+          {heroCollage.map((src, i) => (
             <div key={src} className="relative h-full w-full overflow-hidden">
               <Image
                 src={src}

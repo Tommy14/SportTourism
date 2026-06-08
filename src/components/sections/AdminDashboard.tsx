@@ -26,7 +26,7 @@ const TABS = [
   { id: "gallery",     label: "Gallery",      icon: "📸", desc: "Photos shown in the gallery section" },
   { id: "testimonials",label: "Testimonials", icon: "💬", desc: "Customer reviews and quotes" },
   { id: "faqs",        label: "FAQs",         icon: "❓", desc: "Frequently asked questions" },
-  { id: "content",     label: "Page Content", icon: "📄", desc: "Hero and section headings & text" },
+  { id: "content",     label: "Page Content", icon: "📄", desc: "Hero cover photo, section headings & body text" },
   { id: "tiles",       label: "Topic Tiles",  icon: "🗂️", desc: "Service, track record and venue tiles" },
   { id: "settings",    label: "Settings",     icon: "⚙️", desc: "Brand name, contact details, email" },
 ] as const;

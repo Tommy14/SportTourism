@@ -9,6 +9,11 @@ const DISPLAY_SKIP  = new Set(["id", "groupKey", "createdAt", "updatedAt", "draf
 const TEXTAREA_FIELDS = new Set(["body", "quote", "answer", "inclusions", "caption"]);
 const CREATABLE_TYPES = new Set(["package", "faq", "testimonial", "gallery"]);
 
+const TYPE_HIDDEN_FIELDS: Partial<Record<string, Set<string>>> = {
+  package:  new Set(["pricingNote"]),
+  settings: new Set(["inquiryLabel"])
+};
+
 const FIELD_LABELS: Record<string, string> = {
   title:        "Title",
   subtitle:     "Subtitle",
@@ -57,6 +62,8 @@ export function AdminEditor({
   const [rows, setRows] = useState(items);
   const [statuses, setStatuses] = useState<Record<string, string>>({});
   const [uploadingRows, setUploadingRows] = useState<Set<number>>(new Set());
+
+  const typeHidden = TYPE_HIDDEN_FIELDS[type] ?? new Set<string>();
 
   function getRowKey(row: Item): string {
     return String((row as Item & { draftKey?: string }).draftKey ?? row[keyField]);
@@ -212,7 +219,8 @@ export function AdminEditor({
 
                 <div className="grid gap-4 md:grid-cols-2">
                   {Object.entries(row).map(([key, value]) => {
-                    if (DISPLAY_SKIP.has(key)) return null;
+                    if (DISPLAY_SKIP.has(key) || typeHidden.has(key)) return null;
+                  if (key === "imageUrl" && type === "section" && row.key !== "hero") return null;
 
                     /* Section key — read-only badge */
                     if (key === "key") {
@@ -317,9 +325,11 @@ export function AdminEditor({
                 </div>
 
                 {/* Image section */}
-                {"imageUrl" in row && (
+                {"imageUrl" in row && !(type === "section" && row.key !== "hero") && (
                   <div className="mt-5 rounded-xl border border-white/10 bg-black/20 p-4">
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-white/40">Image</p>
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-white/40">
+                      {type === "section" ? "Cover Photo — appears in the hero section" : "Image"}
+                    </p>
                     <div className="flex flex-wrap items-start gap-4">
                       {/* Preview */}
                       {row.imageUrl ? (
