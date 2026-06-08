@@ -378,14 +378,14 @@ export default async function Home() {
                       ? buildWherePlayTiles(tileRecords as TopicTileRecord[])
                       : tileRecords.filter((tile) => tile.groupKey === item.key).slice(0, 4);
               return (
-                <section key={item.key} id={item.key} className="snap-section reveal-on-scroll"><div className="section-shell section-block"><div className="panel-card">
+                <section key={item.key} id={item.key} className="snap-section reveal-on-scroll"><div className="section-shell section-block flex flex-1 flex-col min-h-0"><div className="panel-card flex flex-1 flex-col min-h-0">
                   <span className="badge-chip">{item.subtitle}</span>
                   <h2 className="mt-3 text-xl font-bold md:text-2xl">{item.title}</h2>
                   <p className="mt-2 text-sm text-white/70">{item.body}</p>
 
                   {item.key === "what-we-do" ? (
                     <>
-                      <div className="relative mt-4 w-full overflow-hidden rounded-2xl border border-white/10" style={{height: "clamp(8rem, 18vh, 14rem)"}}>
+                      <div className="relative mt-4 flex-1 min-h-[8rem] overflow-hidden rounded-2xl border border-white/10">
                         <Image
                           src={("imageUrl" in item && item.imageUrl ? String(item.imageUrl) : null) ?? WHAT_WE_DO_HERO_SRC}
                           alt="What We Do banner"
@@ -405,8 +405,8 @@ export default async function Home() {
                       </div>
                       <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                         {tiles.map((tile) => (
-                          <div key={tile.id} className="group overflow-hidden rounded-xl border border-white/10 bg-black/20">
-                            <div className="relative w-full overflow-hidden" style={{height: "clamp(5rem, 10vh, 7.5rem)"}}>
+                          <div key={tile.id} className="group flex flex-col overflow-hidden rounded-xl border border-white/10 bg-black/20">
+                            <div className="relative h-[clamp(5rem,10vh,8rem)] overflow-hidden">
                               <Image
                                 src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/5/54/Rangiri_Dambulla_International_Stadium.jpg"}
                                 alt={tile.title}
@@ -417,7 +417,7 @@ export default async function Home() {
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                             </div>
-                            <div className="p-3">
+                            <div className="p-3 flex-shrink-0">
                               <h3 className="text-sm font-semibold leading-tight">{tile.title}</h3>
                               <p className="mt-1 text-xs text-white/65 leading-snug">{tile.body}</p>
                             </div>
@@ -426,10 +426,10 @@ export default async function Home() {
                       </div>
                     </>
                   ) : item.key === "what-we-have-done" ? (
-                    <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="mt-3 flex-1 min-h-0 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" style={{gridAutoRows:"1fr"}}>
                       {tiles.map((tile) => (
-                        <div key={tile.id} className="group overflow-hidden rounded-xl border border-white/10 bg-black/20">
-                          <div className="relative w-full overflow-hidden" style={{height: "clamp(5rem, 10vh, 7.5rem)"}}>
+                        <div key={tile.id} className="group flex flex-col overflow-hidden rounded-xl border border-white/10 bg-black/20">
+                          <div className="relative flex-1 min-h-[5rem] overflow-hidden">
                             <Image
                               src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/2/23/R_Premadasa_Stadium.jpg"}
                               alt={tile.title}
@@ -440,7 +440,7 @@ export default async function Home() {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                           </div>
-                          <div className="p-3">
+                          <div className="p-3 flex-shrink-0">
                             <h3 className="text-sm font-semibold leading-tight">{tile.title}</h3>
                             <p className="mt-1 text-xs text-white/65 leading-snug">{tile.body}</p>
                           </div>
@@ -448,10 +448,10 @@ export default async function Home() {
                       ))}
                     </div>
                   ) : (
-                    <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    <div className="mt-3 flex-1 min-h-0 grid gap-3 sm:grid-cols-2" style={{gridAutoRows:"1fr"}}>
                       {tiles.map((tile) => (
-                        <div key={tile.id} className="group relative overflow-hidden rounded-xl border border-white/10">
-                          <div className="relative w-full overflow-hidden" style={{height: "clamp(8rem, 16vh, 12rem)"}}>
+                        <div key={tile.id} className="group relative flex flex-col overflow-hidden rounded-xl border border-white/10">
+                          <div className="relative flex-1 min-h-[8rem] overflow-hidden">
                             <Image
                               src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/f/f7/Galle_International_Stadium.jpg"}
                               alt={tile.title}
@@ -476,8 +476,8 @@ export default async function Home() {
 
       {/* ── Gallery ── */}
       <section id="gallery" className="snap-section reveal-on-scroll section-block bg-black/30">
-        <div className="section-shell">
-          <div className="mb-4 flex flex-col gap-1 md:flex-row md:items-end md:justify-between">
+        <div className="section-shell flex flex-1 flex-col min-h-0">
+          <div className="mb-4 flex-shrink-0 flex flex-col gap-1 md:flex-row md:items-end md:justify-between">
             <div>
               <span className="badge-chip">Gallery</span>
               <h2 className="mt-2 text-2xl font-bold md:text-3xl">Tour Moments &amp; Team Spirit</h2>
@@ -486,10 +486,10 @@ export default async function Home() {
               {gallery.length ? `${gallery.length} photos` : "Upload photos via the admin panel"}
             </p>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+          <div className="flex-1 min-h-0 grid gap-3 sm:grid-cols-2 md:grid-cols-3" style={{gridAutoRows:"1fr"}}>
             {(gallery.length ? gallery : new Array(6).fill(null)).map((item, idx) => (
-              <div key={idx} className="group overflow-hidden rounded-2xl border border-white/10 bg-[#0d1317]">
-                <div className="relative w-full overflow-hidden" style={{height: "clamp(7rem, 13vh, 11rem)"}}>
+              <div key={idx} className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0d1317]">
+                <div className="relative flex-1 min-h-[6rem] overflow-hidden">
                   <Image
                     src={item?.imageUrl || GALLERY_FALLBACK_SRC[idx % GALLERY_FALLBACK_SRC.length]}
                     alt={item?.caption || GALLERY_FALLBACK_CAPTIONS[idx % GALLERY_FALLBACK_CAPTIONS.length]}
@@ -500,7 +500,7 @@ export default async function Home() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
                 </div>
-                <p className="px-3 py-2 text-xs text-white/60">
+                <p className="flex-shrink-0 px-3 py-2 text-xs text-white/60">
                   {item?.caption || GALLERY_FALLBACK_CAPTIONS[idx % GALLERY_FALLBACK_CAPTIONS.length]}
                 </p>
               </div>
@@ -520,15 +520,15 @@ export default async function Home() {
             Every package is fully tailored to your squad — contact us for custom pricing and available dates.
           </p>
         </div>
-        <div className="mt-5">
+        <div className="mt-5 flex flex-1 flex-col min-h-0">
           <PackageShowcase packages={packageCards.slice(0, 3)} />
         </div>
       </section>
 
       {/* ── Testimonials + FAQ (combined section) ── */}
       <section id="testimonials" className="snap-section reveal-on-scroll section-block bg-black/25">
-        <div className="section-shell">
-          <div className="grid gap-8 lg:grid-cols-2">
+        <div className="section-shell flex flex-1 flex-col min-h-0">
+          <div className="flex-1 min-h-0 grid gap-8 lg:grid-cols-2">
 
             {/* Left: Testimonials */}
             <div>
@@ -613,7 +613,7 @@ export default async function Home() {
 
       {/* ── Contact ── */}
       <section id="contact" className="snap-section reveal-on-scroll section-block bg-black/25">
-        <div className="section-shell">
+        <div className="section-shell flex flex-1 flex-col justify-center">
           <div className="mx-auto max-w-2xl text-center">
             <span className="badge-chip">Get in Touch</span>
             <h3 className="mt-3 text-2xl font-bold md:text-3xl">Ready to Tour Sri Lanka?</h3>

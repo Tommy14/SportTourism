@@ -122,16 +122,15 @@ html {
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
-/* Balanced vertical padding for snap sections — accounts for sticky 64px header */
-.snap-section.section-block,
-.snap-section > .section-block {
+/* Padding for section-block used directly on snap-section */
+.snap-section.section-block {
   padding-top: clamp(4.5rem, 9vh, 5.5rem);
   padding-bottom: clamp(3rem, 6vh, 4.5rem);
 }
 
+/* Padding for section-block used as inner wrapper */
 .snap-section .section-block {
   padding-top: clamp(4.5rem, 9vh, 5.5rem);
   padding-bottom: clamp(3rem, 6vh, 4.5rem);
