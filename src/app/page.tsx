@@ -495,7 +495,6 @@ export default async function Home() {
         <div className="section-shell flex flex-1 flex-col min-h-0">
           <div className="mb-4 flex-shrink-0">
             <span className="badge-chip">Gallery</span>
-            <h2 className="mt-2 text-2xl font-bold md:text-3xl">Tour Moments &amp; Team Spirit</h2>
           </div>
 
           {gallerySections.length > 0 ? (
