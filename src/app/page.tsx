@@ -525,91 +525,88 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ── Testimonials ── */}
+      {/* ── Testimonials + FAQ (combined section) ── */}
       <section id="testimonials" className="snap-section reveal-on-scroll section-block bg-black/25">
         <div className="section-shell">
-          <span className="badge-chip">Testimonials</span>
-          <h2 className="mt-3 text-2xl font-bold md:text-3xl">What Teams Say About Their Tours</h2>
-          <div className="mt-4 grid gap-4 md:grid-cols-2">
-            {(testimonials.length
-              ? testimonials
-              : [
-                  { id: 1, quote: "Brilliantly organised from start to finish. The matches, coaching and sightseeing were all top-class.", name: "Coach Daniel", team: "Royal Academy CC", imageUrl: null },
-                  { id: 2, quote: "Our junior squad had the experience of a lifetime. Every detail was handled professionally.", name: "Sarah Mitchell", team: "Eastbourne Cricket Club", imageUrl: null }
-                ]
-            ).map((item) => {
-              const photo =
-                "imageUrl" in item && item.imageUrl && String(item.imageUrl).trim() !== ""
-                  ? String(item.imageUrl).trim()
-                  : null;
-              return (
-                <blockquote
-                  key={item.id}
-                  className="panel-card relative flex flex-col gap-4 overflow-hidden sm:flex-row sm:items-start"
-                >
-                  <span className="pointer-events-none absolute -right-2 -top-3 select-none font-serif text-9xl leading-none text-accent/8">
-                    &ldquo;
-                  </span>
-                  {photo ? (
-                    <div className="relative mx-auto h-14 w-14 flex-shrink-0 overflow-hidden rounded-full border border-white/15 bg-black/30 sm:mx-0">
-                      <Image
-                        src={photo}
-                        alt={item.name}
-                        fill
-                        sizes="56px"
-                        className="object-cover"
-                      />
-                    </div>
-                  ) : (
-                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-accent/25 bg-accent/8 text-xl sm:mx-0">
-                      🏏
-                    </div>
-                  )}
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm leading-relaxed text-white/80 md:text-base">
-                      &ldquo;{item.quote}&rdquo;
-                    </p>
-                    <footer className="mt-3 flex items-center gap-2">
-                      <span className="h-px w-4 shrink-0 bg-accent/50" />
-                      <span className="text-sm font-semibold text-accent">{item.name}</span>
-                      <span className="text-xs text-white/40">· {item.team}</span>
-                    </footer>
-                  </div>
-                </blockquote>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+          <div className="grid gap-8 lg:grid-cols-2">
 
-      {/* ── FAQ ── */}
-      <section id="faq" className="snap-section reveal-on-scroll section-block">
-        <div className="section-shell">
-          <div className="mb-4">
-            <span className="badge-chip">FAQ</span>
-            <h2 className="mt-2 text-2xl font-bold md:text-3xl">Cricket Tour Questions, Answered</h2>
-          </div>
-          <div className="space-y-2">
-            {(faqs.length
-              ? faqs
-              : [
-                  { id: 1, question: "What age groups do you cater for?", answer: "We organise tours for junior (under-13 through under-19), club, academy and senior representative teams." },
-                  { id: 2, question: "Can you customise the itinerary for our squad?", answer: "Yes — every package is built around your team's schedule, budget, skill level and goals." },
-                  { id: 3, question: "Which venues will we play at?", answer: "We have established relationships with grounds in Colombo, Dambulla and Galle, as well as indoor net facilities across the island." },
-                  { id: 4, question: "What is included in the packages?", answer: "Accommodation, team transport, match fixtures, coaching sessions, airport transfers and a dedicated tour manager — all configurable to your needs." }
-                ]
-            ).map((item) => (
-              <details
-                key={item.id}
-                className="group rounded-xl border border-white/10 bg-[#0e1318] px-5 py-3.5 open:border-accent/25 open:bg-[#101820] transition-colors"
-              >
-                <summary className="flex cursor-pointer list-none items-center justify-between font-semibold">
-                  {item.question}
-                  <span className="ml-4 shrink-0 text-accent transition-transform group-open:rotate-45">+</span>
-                </summary>
-                <p className="mt-3 text-sm text-white/70 leading-relaxed md:text-base">{item.answer}</p>
-              </details>
-            ))}
+            {/* Left: Testimonials */}
+            <div>
+              <span className="badge-chip">Testimonials</span>
+              <h2 className="mt-2 text-xl font-bold md:text-2xl">What Teams Say About Their Tours</h2>
+              <div className="mt-4 flex flex-col gap-3">
+                {(testimonials.length
+                  ? testimonials
+                  : [
+                      { id: 1, quote: "Brilliantly organised from start to finish. The matches, coaching and sightseeing were all top-class.", name: "Coach Daniel", team: "Royal Academy CC", imageUrl: null },
+                      { id: 2, quote: "Our junior squad had the experience of a lifetime. Every detail was handled professionally.", name: "Sarah Mitchell", team: "Eastbourne Cricket Club", imageUrl: null }
+                    ]
+                ).map((item) => {
+                  const photo =
+                    "imageUrl" in item && item.imageUrl && String(item.imageUrl).trim() !== ""
+                      ? String(item.imageUrl).trim()
+                      : null;
+                  return (
+                    <blockquote
+                      key={item.id}
+                      className="panel-card relative flex gap-3 overflow-hidden sm:items-start"
+                    >
+                      <span className="pointer-events-none absolute -right-2 -top-3 select-none font-serif text-7xl leading-none text-accent/8">
+                        &ldquo;
+                      </span>
+                      {photo ? (
+                        <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-full border border-white/15 bg-black/30">
+                          <Image src={photo} alt={item.name} fill sizes="40px" className="object-cover" />
+                        </div>
+                      ) : (
+                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-accent/25 bg-accent/8 text-base">
+                          🏏
+                        </div>
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm leading-relaxed text-white/80">
+                          &ldquo;{item.quote}&rdquo;
+                        </p>
+                        <footer className="mt-2 flex items-center gap-2">
+                          <span className="h-px w-4 shrink-0 bg-accent/50" />
+                          <span className="text-sm font-semibold text-accent">{item.name}</span>
+                          <span className="text-xs text-white/40">· {item.team}</span>
+                        </footer>
+                      </div>
+                    </blockquote>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Right: FAQ */}
+            <div id="faq">
+              <span className="badge-chip">FAQ</span>
+              <h2 className="mt-2 text-xl font-bold md:text-2xl">Cricket Tour Questions, Answered</h2>
+              <div className="mt-4 space-y-2">
+                {(faqs.length
+                  ? faqs
+                  : [
+                      { id: 1, question: "What age groups do you cater for?", answer: "We organise tours for junior (under-13 through under-19), club, academy and senior representative teams." },
+                      { id: 2, question: "Can you customise the itinerary for our squad?", answer: "Yes — every package is built around your team's schedule, budget, skill level and goals." },
+                      { id: 3, question: "Which venues will we play at?", answer: "We have established relationships with grounds in Colombo, Dambulla and Galle, as well as indoor net facilities across the island." },
+                      { id: 4, question: "What is included in the packages?", answer: "Accommodation, team transport, match fixtures, coaching sessions, airport transfers and a dedicated tour manager — all configurable to your needs." }
+                    ]
+                ).map((item) => (
+                  <details
+                    key={item.id}
+                    className="group rounded-xl border border-white/10 bg-[#0e1318] px-5 py-3 open:border-accent/25 open:bg-[#101820] transition-colors"
+                  >
+                    <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold">
+                      {item.question}
+                      <span className="ml-4 shrink-0 text-accent transition-transform group-open:rotate-45">+</span>
+                    </summary>
+                    <p className="mt-2 text-sm text-white/70 leading-relaxed">{item.answer}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -617,26 +614,32 @@ export default async function Home() {
       {/* ── Contact ── */}
       <section id="contact" className="snap-section reveal-on-scroll section-block bg-black/25">
         <div className="section-shell">
-          <div className="panel-card border-accent/20">
-            <div className="mb-4">
-              <span className="badge-chip">Get in Touch</span>
-              <h3 className="mt-3 text-2xl font-bold md:text-3xl">Ready to Tour Sri Lanka?</h3>
-              <p className="mt-2 text-sm text-white/60 md:text-base">
-                Tell us about your team, preferred dates and goals — we&apos;ll put together a custom itinerary and quote.
-              </p>
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="badge-chip">Get in Touch</span>
+            <h3 className="mt-3 text-2xl font-bold md:text-3xl">Ready to Tour Sri Lanka?</h3>
+            <p className="mt-2 text-sm text-white/60">
+              Tell us about your team, preferred dates and goals — we&apos;ll put together a custom itinerary and quote.
+            </p>
+          </div>
+          <div className="mx-auto mt-6 max-w-2xl">
+            <div className="panel-card border-accent/20">
+              <InquiryForm />
             </div>
-            <InquiryForm />
           </div>
         </div>
       </section>
 
-      <ScrollAnimator />
-      <Footer
-        brandName={settings?.brandName || "Pitch to Paradise"}
-        phone={settings?.contactPhone || "+94 77 123 4567"}
-        email={settings?.contactEmail || "hello@pitchtoparadise.com"}
-        address={settings?.footerAddress || "Colombo, Sri Lanka"}
-      />
+            <ScrollAnimator />
+
+      {/* ── Footer (last snap section) ── */}
+      <section id="footer-section" className="snap-section reveal-on-scroll" style={{justifyContent: "flex-start"}}>
+        <Footer
+          brandName={settings?.brandName || "Pitch to Paradise"}
+          phone={settings?.contactPhone || "+94 77 123 4567"}
+          email={settings?.contactEmail || "hello@pitchtoparadise.com"}
+          address={settings?.footerAddress || "Colombo, Sri Lanka"}
+        />
+      </section>
     </main>
   );
 }

@@ -120,18 +120,21 @@ html {
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-/* Compact vertical padding for snap sections — accounts for sticky 64px header */
+/* Balanced vertical padding for snap sections — accounts for sticky 64px header */
 .snap-section.section-block,
 .snap-section > .section-block {
-  padding-top: clamp(4.5rem, 9vh, 6rem);
-  padding-bottom: clamp(1rem, 4vh, 2.5rem);
+  padding-top: clamp(4.5rem, 9vh, 5.5rem);
+  padding-bottom: clamp(3rem, 6vh, 4.5rem);
 }
 
 .snap-section .section-block {
-  padding-top: clamp(4.5rem, 9vh, 6rem);
-  padding-bottom: clamp(1rem, 3vh, 2rem);
+  padding-top: clamp(4.5rem, 9vh, 5.5rem);
+  padding-bottom: clamp(3rem, 6vh, 4.5rem);
 }
 
 /* ── Section reveal animation ── */
