@@ -379,9 +379,9 @@ export default async function Home() {
                       : tileRecords.filter((tile) => tile.groupKey === item.key).slice(0, 4);
               return (
                 <section key={item.key} id={item.key} className="snap-section reveal-on-scroll"><div className="section-shell section-block flex flex-1 flex-col min-h-0"><div className="panel-card flex flex-1 flex-col min-h-0">
-                  <span className="badge-chip">{item.subtitle}</span>
-                  <h2 className="mt-3 text-xl font-bold md:text-2xl">{item.title}</h2>
-                  <p className="mt-2 text-sm text-white/70">{item.body}</p>
+                  <span className="badge-chip mx-auto w-fit">{item.subtitle}</span>
+                  <h2 className="mt-3 text-xl font-bold md:text-2xl text-center">{item.title}</h2>
+                  <p className="mt-2 text-sm text-white/70 text-center">{item.body}</p>
 
                   {item.key === "what-we-do" ? (
                     <>
