@@ -448,7 +448,7 @@ export default async function Home() {
                       ))}
                     </div>
                   ) : (
-                    <div className="mt-3 flex-1 min-h-0 grid gap-3 sm:grid-cols-2" style={{gridAutoRows:"1fr"}}>
+                    <div className="mt-3 flex-1 min-h-0 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" style={{gridAutoRows:"1fr"}}>
                       {tiles.map((tile) => (
                         <div key={tile.id} className="group relative flex flex-col overflow-hidden rounded-xl border border-white/10">
                           <div className="relative flex-1 min-h-[8rem] overflow-hidden">
