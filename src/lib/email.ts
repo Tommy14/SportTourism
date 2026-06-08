@@ -1,17 +1,11 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import { env } from "./env";
 import { escapeHtml } from "./escape-html";
 import type { CustomItineraryDay } from "@/types/package-itinerary";
 
-const transporter = nodemailer.createTransport({
-  host: env.SMTP_HOST,
-  port: env.SMTP_PORT,
-  secure: env.SMTP_PORT === 465,
-  auth: {
-    user: env.SMTP_USER,
-    pass: env.SMTP_PASS
-  }
-});
+function getResend() {
+  return new Resend(env.RESEND_API_KEY);
+}
 
 export async function sendInquiryEmail(content: {
   name: string;
@@ -20,19 +14,27 @@ export async function sendInquiryEmail(content: {
   message: string;
 }) {
   const html = `
-    <h2>New Pitch to Paradise Contact Message</h2>
+    <h2>New Contact Message — Pitch to Paradise</h2>
     <p><b>Name:</b> ${escapeHtml(content.name)}</p>
     <p><b>Email:</b> ${escapeHtml(content.email)}</p>
     <p><b>Phone:</b> ${escapeHtml(content.phone)}</p>
-    <p><b>Message:</b><br/>${escapeHtml(content.message)}</p>
+    <p><b>Message:</b><br>${escapeHtml(content.message).replace(/\n/g, "<br>")}</p>
   `;
 
-  await transporter.sendMail({
+  const { error } = await getResend().emails.send({
     from: env.INQUIRY_FROM_EMAIL,
     to: env.INQUIRY_TO_EMAIL,
-    subject: "New Pitch to Paradise Contact Message",
+    replyTo: content.email,
+    subject: `New contact message from ${content.name}`,
     html
   });
+
+  if (error) {
+    console.error("[email] Resend error:", error);
+    throw new Error(error.message);
+  }
+
+  console.log("[email] Contact email sent OK via Resend");
 }
 
 export async function sendPackageInquiryEmail(content: {
@@ -99,10 +101,18 @@ export async function sendPackageInquiryEmail(content: {
     <pre style="white-space:pre-wrap;font-family:monospace;">${escapeHtml(content.message)}</pre>
   `;
 
-  await transporter.sendMail({
+  const { error } = await getResend().emails.send({
     from: env.INQUIRY_FROM_EMAIL,
     to: env.INQUIRY_TO_EMAIL,
+    replyTo: content.email,
     subject: `New package inquiry — ${content.preferredPackage}`,
     html
   });
+
+  if (error) {
+    console.error("[email] Resend error:", error);
+    throw new Error(error.message);
+  }
+
+  console.log("[email] Package inquiry email sent OK via Resend");
 }
