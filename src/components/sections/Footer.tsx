@@ -29,7 +29,7 @@ export function Footer({
         <div className="grid gap-8 text-sm text-white/70 md:grid-cols-4">
           <div>
             <div className="mb-3 flex items-center gap-2">
-              <img src="/logo.svg" alt="Pitch to Paradise" className="h-7 w-7 rounded" />
+              <img src="/logo.png" alt="Pitch to Paradise" className="h-7 w-7 rounded" />
               <p className="font-semibold text-accent">{brandName}</p>
             </div>
             <p className="leading-relaxed">

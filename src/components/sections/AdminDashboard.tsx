@@ -59,7 +59,7 @@ export function AdminDashboard({
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4 md:px-6">
           {/* Brand */}
           <div className="flex items-center gap-2.5">
-            <img src="/logo.svg" alt="Pitch to Paradise" className="h-7 w-7 rounded-md" />
+            <img src="/logo.png" alt="Pitch to Paradise" className="h-7 w-7 rounded-md" />
             <span className="hidden text-xs font-extrabold uppercase tracking-wider text-white sm:block">{brandName}</span>
             <span className="hidden text-white/20 sm:block">|</span>
             <span className="text-xs text-white/40 hidden sm:block">Admin Portal</span>

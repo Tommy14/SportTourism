@@ -17,7 +17,7 @@ export function HeaderNav({ brand }: { brand: string }) {
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#080b0d]/90 backdrop-blur-md">
       <div className="section-shell flex h-16 items-center justify-between gap-4">
         <a href="#home" className="flex items-center gap-2.5 shrink-0">
-          <img src="/logo.svg" alt="Pitch to Paradise" className="h-8 w-8 rounded-md" />
+          <img src="/logo.png" alt="Pitch to Paradise" className="h-8 w-8 rounded-md" />
           <span className="text-xs font-extrabold uppercase tracking-wider text-white">{brand}</span>
         </a>
 

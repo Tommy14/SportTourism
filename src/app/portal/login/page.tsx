@@ -44,7 +44,7 @@ export default function PortalLoginPage() {
 
         {/* Logo */}
         <div className="relative flex items-center gap-3">
-          <img src="/logo.svg" alt="Pitch to Paradise" className="h-10 w-10 rounded-lg" />
+          <img src="/logo.png" alt="Pitch to Paradise" className="h-10 w-10 rounded-lg" />
           <span className="text-sm font-extrabold uppercase tracking-widest text-white">Pitch to Paradise</span>
         </div>
 
@@ -77,7 +77,7 @@ export default function PortalLoginPage() {
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
           <div className="mb-8 flex items-center gap-3 lg:hidden">
-            <img src="/logo.svg" alt="Pitch to Paradise" className="h-9 w-9 rounded-lg" />
+            <img src="/logo.png" alt="Pitch to Paradise" className="h-9 w-9 rounded-lg" />
             <span className="text-sm font-extrabold uppercase tracking-widest">Pitch to Paradise</span>
           </div>
 
