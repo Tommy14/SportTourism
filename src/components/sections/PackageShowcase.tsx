@@ -111,9 +111,9 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
       </div>
 
       {/* ── Desktop: horizontal carousel ── */}
-      <div className="relative hidden flex-1 min-h-0 md:flex flex-col">
-        <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-ink to-transparent" />
-        <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-ink to-transparent" />
+      <div className="relative hidden flex-1 min-h-0 md:flex flex-col bg-[#0b0f12]">
+        <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-[#0b0f12] to-transparent" />
+        <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[#0b0f12] to-transparent" />
         <div
           ref={scrollRef}
           className="packages-scroll flex flex-1 min-h-0 snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth px-4 pb-4 pt-2 items-stretch"
