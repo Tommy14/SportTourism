@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { requireSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { AdminEditor } from "@/components/sections/AdminEditor";
+import { AdminDashboard } from "@/components/sections/AdminDashboard";
 
 export const dynamic = "force-dynamic";
 
@@ -20,59 +20,22 @@ export default async function DashboardPage() {
   ]);
 
   const tileGroups = {
-    "what-we-do": topicTiles.filter((t) => t.groupKey === "what-we-do"),
+    "what-we-do":        topicTiles.filter((t) => t.groupKey === "what-we-do"),
     "what-we-have-done": topicTiles.filter((t) => t.groupKey === "what-we-have-done"),
-    "where-play": topicTiles.filter((t) => t.groupKey === "where-play")
+    "where-play":        topicTiles.filter((t) => t.groupKey === "where-play")
   };
 
   return (
-    <main className="min-h-screen bg-ink pb-16">
-      <div className="section-shell py-8">
-        <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Portal Dashboard</h1>
-          <form action="/api/admin/logout" method="post">
-            <button className="ghost-button" type="submit">
-              Logout
-            </button>
-          </form>
-        </div>
-        <div className="space-y-6">
-          {sections.length > 0 && (
-            <AdminEditor
-              title="Page Sections"
-              type="section"
-              items={sections as never[]}
-              keyField="key"
-            />
-          )}
-          {tileGroups["what-we-do"].length > 0 && (
-            <AdminEditor
-              title="What We Do — Tiles"
-              type="topicTile"
-              items={tileGroups["what-we-do"] as never[]}
-            />
-          )}
-          {tileGroups["what-we-have-done"].length > 0 && (
-            <AdminEditor
-              title="What We Have Done — Tiles"
-              type="topicTile"
-              items={tileGroups["what-we-have-done"] as never[]}
-            />
-          )}
-          {tileGroups["where-play"].length > 0 && (
-            <AdminEditor
-              title="Where To Play — Tiles"
-              type="topicTile"
-              items={tileGroups["where-play"] as never[]}
-            />
-          )}
-          <AdminEditor title="Packages" type="package" items={packages as never[]} />
-          <AdminEditor title="FAQs" type="faq" items={faqs as never[]} />
-          <AdminEditor title="Testimonials" type="testimonial" items={testimonials as never[]} />
-          <AdminEditor title="Gallery" type="gallery" items={gallery as never[]} />
-          {settings && <AdminEditor title="Site Settings" type="settings" items={[settings] as never[]} />}
-        </div>
-      </div>
-    </main>
+    <AdminDashboard
+      username={session.username}
+      brandName={settings?.brandName ?? "Pitch to Paradise"}
+      packages={packages as never[]}
+      faqs={faqs as never[]}
+      testimonials={testimonials as never[]}
+      gallery={gallery as never[]}
+      settings={settings as never}
+      sections={sections as never[]}
+      tileGroups={tileGroups as never}
+    />
   );
 }

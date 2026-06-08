@@ -318,7 +318,7 @@ export default async function Home() {
             <a href="#packages" className="pill-button text-sm">
               View Tour Packages
             </a>
-            <InquiryButton label="Get a Quote" />
+            <InquiryButton label="Contact Us" />
           </div>
         </div>
       </section>

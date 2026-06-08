@@ -1,7 +1,6 @@
 "use client";
 
 import { PackageBookingFlow } from "@/components/packages/PackageBookingFlow";
-import { InquiryButton } from "@/components/ui/InquiryButton";
 import type { PackageItinerary } from "@/types/package-itinerary";
 import Image from "next/image";
 import { useLayoutEffect, useRef, useState } from "react";
@@ -128,7 +127,6 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
                 >
                   View Itinerary
                 </button>
-                <InquiryButton className="mt-2 w-full" label="Enquire Now" />
               </div>
             </article>
           );
