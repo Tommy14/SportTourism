@@ -291,11 +291,11 @@ export default async function Home() {
       <HeaderNav brand={settings?.brandName || "Pitch to Paradise"} />
 
       {/* ── Hero ── */}
-      <section id="home" className="snap-section reveal-on-scroll relative overflow-hidden">
+      <section id="home" className="snap-section reveal-on-scroll relative flex flex-col overflow-hidden">
+        {/* Background image fills full section */}
         <div className="hero-backdrop absolute inset-0 z-10" />
         {heroCoverPhoto ? (
-          /* Single full-width cover photo uploaded via admin */
-          <div className="relative z-0 h-[62vh] w-full md:h-[72vh]">
+          <div className="absolute inset-0 z-0">
             <Image
               src={heroCoverPhoto}
               alt="Hero cover"
@@ -307,8 +307,7 @@ export default async function Home() {
             />
           </div>
         ) : (
-          /* Default 5-column cricket collage */
-          <div className="relative z-0 grid h-[62vh] grid-cols-5 gap-0.5 md:h-[72vh] [&>*]:min-h-0 [&>*]:min-w-0">
+          <div className="absolute inset-0 z-0 grid grid-cols-5 gap-0.5 [&>*]:min-h-0 [&>*]:min-w-0">
             {HERO_COLLAGE_SRC.map((src, i) => (
               <div key={src} className="relative h-full w-full overflow-hidden">
                 <Image
@@ -325,36 +324,38 @@ export default async function Home() {
           </div>
         )}
 
-        <div className="section-shell relative z-20 -mt-64 pb-16 pt-10 text-center md:-mt-72 md:pb-24">
+        {/* Centered text content */}
+        <div className="section-shell relative z-20 flex flex-1 flex-col items-center justify-center pb-4 pt-20 text-center">
           <span className="badge-chip">{hero?.subtitle || "Sri Lanka Cricket Experience"}</span>
-          <h1 className="section-title mx-auto mt-5 max-w-3xl">
+          <h1 className="section-title mx-auto mt-4 max-w-3xl">
             {hero?.title || "Cricket Tours In Sri Lanka"}
           </h1>
-          <p className="section-subtitle mx-auto">
+          <p className="section-subtitle mx-auto mt-3">
             {hero?.body ||
               "We organise complete tours for teams with matches, camps, net practices and curated sightseeing across the island."}
           </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
             <a href="#packages" className="pill-button text-sm">
               View Tour Packages
             </a>
             <InquiryButton label="Contact Us" />
           </div>
         </div>
-      {/* ── Stats strip (inside hero section) ── */}
-      <div className="border-t border-white/10 bg-[#07090b]">
-        <div className="section-shell grid grid-cols-2 md:grid-cols-4">
-          {HERO_STATS.map((item, i) => (
-            <div
-              key={item.label}
-              className={`flex flex-col items-center py-6 text-center ${i < 3 ? "border-r border-white/8" : ""}`}
-            >
-              <span className="text-2xl font-extrabold text-accent md:text-3xl">{item.stat}</span>
-              <span className="mt-1 text-[11px] text-white/50 md:text-xs">{item.label}</span>
-            </div>
-          ))}
+
+        {/* Stats strip pinned to bottom */}
+        <div className="relative z-20 border-t border-white/10 bg-[#07090b]/90 backdrop-blur-sm">
+          <div className="section-shell grid grid-cols-2 md:grid-cols-4">
+            {HERO_STATS.map((item, i) => (
+              <div
+                key={item.label}
+                className={`flex flex-col items-center py-4 text-center ${i < 3 ? "border-r border-white/8" : ""}`}
+              >
+                <span className="text-xl font-extrabold text-accent md:text-2xl">{item.stat}</span>
+                <span className="mt-0.5 text-[10px] text-white/50 md:text-xs">{item.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
       </section>
 
       {/* ── Topic sections (What We Do / Have Done / Where Play) ── */}
@@ -379,12 +380,12 @@ export default async function Home() {
               return (
                 <section key={item.key} id={item.key} className="snap-section reveal-on-scroll"><div className="section-shell section-block"><div className="panel-card">
                   <span className="badge-chip">{item.subtitle}</span>
-                  <h2 className="mt-4 text-2xl font-bold md:text-3xl">{item.title}</h2>
-                  <p className="mt-3 text-sm text-white/70 md:text-base">{item.body}</p>
+                  <h2 className="mt-3 text-xl font-bold md:text-2xl">{item.title}</h2>
+                  <p className="mt-2 text-sm text-white/70">{item.body}</p>
 
                   {item.key === "what-we-do" ? (
                     <>
-                      <div className="relative mt-6 aspect-[16/7] w-full overflow-hidden rounded-2xl border border-white/10">
+                      <div className="relative mt-4 w-full overflow-hidden rounded-2xl border border-white/10" style={{height: "clamp(8rem, 18vh, 14rem)"}}>
                         <Image
                           src={("imageUrl" in item && item.imageUrl ? String(item.imageUrl) : null) ?? WHAT_WE_DO_HERO_SRC}
                           alt="What We Do banner"
@@ -402,10 +403,10 @@ export default async function Home() {
                           </p>
                         </div>
                       </div>
-                      <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                      <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                         {tiles.map((tile) => (
                           <div key={tile.id} className="group overflow-hidden rounded-xl border border-white/10 bg-black/20">
-                            <div className="relative h-36 w-full overflow-hidden">
+                            <div className="relative w-full overflow-hidden" style={{height: "clamp(5rem, 10vh, 7.5rem)"}}>
                               <Image
                                 src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/5/54/Rangiri_Dambulla_International_Stadium.jpg"}
                                 alt={tile.title}
@@ -416,19 +417,19 @@ export default async function Home() {
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                             </div>
-                            <div className="p-4">
-                              <h3 className="text-sm font-semibold">{tile.title}</h3>
-                              <p className="mt-1.5 text-xs text-white/65 leading-relaxed">{tile.body}</p>
+                            <div className="p-3">
+                              <h3 className="text-sm font-semibold leading-tight">{tile.title}</h3>
+                              <p className="mt-1 text-xs text-white/65 leading-snug">{tile.body}</p>
                             </div>
                           </div>
                         ))}
                       </div>
                     </>
                   ) : item.key === "what-we-have-done" ? (
-                    <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                       {tiles.map((tile) => (
                         <div key={tile.id} className="group overflow-hidden rounded-xl border border-white/10 bg-black/20">
-                          <div className="relative h-36 w-full overflow-hidden">
+                          <div className="relative w-full overflow-hidden" style={{height: "clamp(5rem, 10vh, 7.5rem)"}}>
                             <Image
                               src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/2/23/R_Premadasa_Stadium.jpg"}
                               alt={tile.title}
@@ -439,18 +440,18 @@ export default async function Home() {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                           </div>
-                          <div className="p-4">
-                            <h3 className="text-sm font-semibold leading-snug">{tile.title}</h3>
-                            <p className="mt-1.5 text-xs text-white/65 leading-relaxed">{tile.body}</p>
+                          <div className="p-3">
+                            <h3 className="text-sm font-semibold leading-tight">{tile.title}</h3>
+                            <p className="mt-1 text-xs text-white/65 leading-snug">{tile.body}</p>
                           </div>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                    <div className="mt-3 grid gap-3 sm:grid-cols-2">
                       {tiles.map((tile) => (
                         <div key={tile.id} className="group relative overflow-hidden rounded-xl border border-white/10">
-                          <div className="relative h-52 w-full overflow-hidden">
+                          <div className="relative w-full overflow-hidden" style={{height: "clamp(8rem, 16vh, 12rem)"}}>
                             <Image
                               src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/f/f7/Galle_International_Stadium.jpg"}
                               alt={tile.title}
@@ -476,19 +477,19 @@ export default async function Home() {
       {/* ── Gallery ── */}
       <section id="gallery" className="snap-section reveal-on-scroll section-block bg-black/30">
         <div className="section-shell">
-          <div className="mb-8 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div className="mb-4 flex flex-col gap-1 md:flex-row md:items-end md:justify-between">
             <div>
               <span className="badge-chip">Gallery</span>
-              <h2 className="mt-3 text-3xl font-bold md:text-4xl">Tour Moments &amp; Team Spirit</h2>
+              <h2 className="mt-2 text-2xl font-bold md:text-3xl">Tour Moments &amp; Team Spirit</h2>
             </div>
             <p className="text-sm text-white/50 md:text-right">
               {gallery.length ? `${gallery.length} photos` : "Upload photos via the admin panel"}
             </p>
           </div>
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
             {(gallery.length ? gallery : new Array(6).fill(null)).map((item, idx) => (
               <div key={idx} className="group overflow-hidden rounded-2xl border border-white/10 bg-[#0d1317]">
-                <div className="relative h-56 w-full overflow-hidden">
+                <div className="relative w-full overflow-hidden" style={{height: "clamp(7rem, 13vh, 11rem)"}}>
                   <Image
                     src={item?.imageUrl || GALLERY_FALLBACK_SRC[idx % GALLERY_FALLBACK_SRC.length]}
                     alt={item?.caption || GALLERY_FALLBACK_CAPTIONS[idx % GALLERY_FALLBACK_CAPTIONS.length]}
@@ -499,7 +500,7 @@ export default async function Home() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
                 </div>
-                <p className="p-3 text-sm text-white/60">
+                <p className="px-3 py-2 text-xs text-white/60">
                   {item?.caption || GALLERY_FALLBACK_CAPTIONS[idx % GALLERY_FALLBACK_CAPTIONS.length]}
                 </p>
               </div>
@@ -512,14 +513,14 @@ export default async function Home() {
       <section id="packages" className="snap-section reveal-on-scroll section-shell section-block">
         <div className="text-center">
           <span className="badge-chip">Tour Packages</span>
-          <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-bold md:text-5xl">
+          <h2 className="mx-auto mt-3 max-w-2xl text-2xl font-bold md:text-4xl">
             Choose Your Sri Lanka Cricket Tour
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-sm text-white/55">
             Every package is fully tailored to your squad — contact us for custom pricing and available dates.
           </p>
         </div>
-        <div className="mt-10">
+        <div className="mt-5">
           <PackageShowcase packages={packageCards.slice(0, 3)} />
         </div>
       </section>
@@ -529,7 +530,7 @@ export default async function Home() {
         <div className="section-shell">
           <span className="badge-chip">Testimonials</span>
           <h2 className="mt-3 text-2xl font-bold md:text-3xl">What Teams Say About Their Tours</h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
             {(testimonials.length
               ? testimonials
               : [
@@ -568,7 +569,7 @@ export default async function Home() {
                     <p className="text-sm leading-relaxed text-white/80 md:text-base">
                       &ldquo;{item.quote}&rdquo;
                     </p>
-                    <footer className="mt-4 flex items-center gap-2">
+                    <footer className="mt-3 flex items-center gap-2">
                       <span className="h-px w-4 shrink-0 bg-accent/50" />
                       <span className="text-sm font-semibold text-accent">{item.name}</span>
                       <span className="text-xs text-white/40">· {item.team}</span>
@@ -584,11 +585,11 @@ export default async function Home() {
       {/* ── FAQ ── */}
       <section id="faq" className="snap-section reveal-on-scroll section-block">
         <div className="section-shell">
-          <div className="mb-6">
+          <div className="mb-4">
             <span className="badge-chip">FAQ</span>
-            <h2 className="mt-3 text-3xl font-bold md:text-4xl">Cricket Tour Questions, Answered</h2>
+            <h2 className="mt-2 text-2xl font-bold md:text-3xl">Cricket Tour Questions, Answered</h2>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {(faqs.length
               ? faqs
               : [
@@ -600,7 +601,7 @@ export default async function Home() {
             ).map((item) => (
               <details
                 key={item.id}
-                className="group rounded-xl border border-white/10 bg-[#0e1318] p-5 open:border-accent/25 open:bg-[#101820] transition-colors"
+                className="group rounded-xl border border-white/10 bg-[#0e1318] px-5 py-3.5 open:border-accent/25 open:bg-[#101820] transition-colors"
               >
                 <summary className="flex cursor-pointer list-none items-center justify-between font-semibold">
                   {item.question}
@@ -617,7 +618,7 @@ export default async function Home() {
       <section id="contact" className="snap-section reveal-on-scroll section-block bg-black/25">
         <div className="section-shell">
           <div className="panel-card border-accent/20">
-            <div className="mb-6">
+            <div className="mb-4">
               <span className="badge-chip">Get in Touch</span>
               <h3 className="mt-3 text-2xl font-bold md:text-3xl">Ready to Tour Sri Lanka?</h3>
               <p className="mt-2 text-sm text-white/60 md:text-base">

@@ -117,7 +117,21 @@ html {
 
 .snap-section {
   scroll-snap-align: start;
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Compact vertical padding for snap sections — accounts for sticky 64px header */
+.snap-section.section-block,
+.snap-section > .section-block {
+  padding-top: clamp(4.5rem, 9vh, 6rem);
+  padding-bottom: clamp(1rem, 4vh, 2.5rem);
+}
+
+.snap-section .section-block {
+  padding-top: clamp(4.5rem, 9vh, 6rem);
+  padding-bottom: clamp(1rem, 3vh, 2rem);
 }
 
 /* ── Section reveal animation ── */

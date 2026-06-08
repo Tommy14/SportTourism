@@ -58,7 +58,7 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
               ].join(" ")}
             >
               {/* Image */}
-              <div className="relative h-48 w-full flex-shrink-0 overflow-hidden">
+              <div className="relative w-full flex-shrink-0 overflow-hidden" style={{height:"clamp(8rem,18vh,12rem)"}}>
                 {item.imageUrl ? (
                   <Image src={item.imageUrl} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" unoptimized />
                 ) : (
@@ -139,7 +139,7 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
                 ].join(" ")}
               >
                 {/* Image */}
-                <div className="relative h-44 w-full flex-shrink-0 overflow-hidden">
+                <div className="relative w-full flex-shrink-0 overflow-hidden" style={{height:"clamp(7rem,15vh,11rem)"}}>
                   {item.imageUrl ? (
                     <Image src={item.imageUrl} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" unoptimized />
                   ) : (
@@ -165,7 +165,7 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
                 </div>
 
                 {/* Body */}
-                <div className="flex flex-1 flex-col p-6">
+                <div className="flex flex-1 flex-col p-4 md:p-5">
                   <h3 className={`font-bold leading-snug ${featured ? "text-xl md:text-2xl" : "text-lg md:text-xl"}`}>
                     {item.title}
                   </h3>
