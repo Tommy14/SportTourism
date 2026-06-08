@@ -4,16 +4,24 @@ import { useState } from "react";
 
 export function InquiryForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
   async function handleSubmit(formData: FormData) {
     setStatus("sending");
+    setErrorMsg("");
     const payload = Object.fromEntries(formData.entries());
     const response = await fetch("/api/inquiries", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
-    setStatus(response.ok ? "success" : "error");
+    if (response.ok) {
+      setStatus("success");
+    } else {
+      const data = await response.json().catch(() => ({})) as { error?: string };
+      setErrorMsg(data.error ?? "Something went wrong. Please try again.");
+      setStatus("error");
+    }
   }
 
   return (
@@ -35,7 +43,9 @@ export function InquiryForm() {
         {status === "sending" ? "Sending..." : "Send message"}
       </button>
       {status === "success" && <p className="mt-3 text-accent">Message sent successfully.</p>}
-      {status === "error" && <p className="mt-3 text-red-400">Could not send your message. Please try again.</p>}
+      {status === "error" && (
+        <p className="mt-3 text-sm text-red-400">{errorMsg || "Could not send your message. Please try again."}</p>
+      )}
     </form>
   );
 }
