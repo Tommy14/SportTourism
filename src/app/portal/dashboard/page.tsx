@@ -9,11 +9,11 @@ export default async function DashboardPage() {
   const session = await requireSession();
   if (!session) redirect("/portal/login");
 
-  const [packages, faqs, testimonials, gallery, settings, sections, topicTiles] = await Promise.all([
+  const [packages, faqs, testimonials, gallerySections, settings, sections, topicTiles] = await Promise.all([
     db.package.findMany({ orderBy: { sortOrder: "asc" } }),
     db.faqItem.findMany({ orderBy: { sortOrder: "asc" } }),
     db.testimonial.findMany({ orderBy: { sortOrder: "asc" } }),
-    db.galleryItem.findMany({ orderBy: { sortOrder: "asc" } }),
+    db.gallerySection.findMany({ orderBy: { sortOrder: "asc" }, include: { items: { orderBy: { sortOrder: "asc" } } } }),
     db.siteSettings.findUnique({ where: { id: 1 } }),
     db.sectionContent.findMany({ orderBy: { key: "asc" } }),
     db.topicTile.findMany({ orderBy: [{ groupKey: "asc" }, { sortOrder: "asc" }] })
@@ -32,7 +32,7 @@ export default async function DashboardPage() {
       packages={packages as never[]}
       faqs={faqs as never[]}
       testimonials={testimonials as never[]}
-      gallery={gallery as never[]}
+      gallerySections={gallerySections as never[]}
       settings={settings as never}
       sections={sections as never[]}
       tileGroups={tileGroups as never}

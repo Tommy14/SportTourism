@@ -234,7 +234,7 @@ function buildWherePlayTiles(records: TopicTileRecord[]): TopicTileRecord[] {
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const { settings, sections, topicTiles, packages, faqs, testimonials, gallery } = await getSiteContent();
+  const { settings, sections, topicTiles, packages, faqs, testimonials, gallerySections } = await getSiteContent();
   const hero = sections.find((item) => item.key === "hero");
   const topicSections = sections.filter((item) => item.key !== "hero");
 
@@ -493,35 +493,54 @@ export default async function Home() {
       {/* ── Gallery ── */}
       <section id="gallery" className="snap-section reveal-on-scroll section-block bg-black/30">
         <div className="section-shell flex flex-1 flex-col min-h-0">
-          <div className="mb-4 flex-shrink-0 flex flex-col gap-1 md:flex-row md:items-end md:justify-between">
-            <div>
-              <span className="badge-chip">Gallery</span>
-              <h2 className="mt-2 text-2xl font-bold md:text-3xl">Tour Moments &amp; Team Spirit</h2>
-            </div>
-            <p className="text-sm text-white/50 md:text-right">
-              {gallery.length ? `${gallery.length} photos` : "Upload photos via the admin panel"}
-            </p>
+          <div className="mb-4 flex-shrink-0">
+            <span className="badge-chip">Gallery</span>
+            <h2 className="mt-2 text-2xl font-bold md:text-3xl">Tour Moments &amp; Team Spirit</h2>
           </div>
-          <div className="flex-1 min-h-0 grid gap-3 sm:grid-cols-2 md:grid-cols-3" style={{gridAutoRows:"1fr"}}>
-            {(gallery.length ? gallery : new Array(6).fill(null)).map((item, idx) => (
-              <div key={idx} className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0d1317]">
-                <div className="relative flex-1 min-h-[6rem] overflow-hidden">
-                  <Image
-                    src={item?.imageUrl || GALLERY_FALLBACK_SRC[idx % GALLERY_FALLBACK_SRC.length]}
-                    alt={item?.caption || GALLERY_FALLBACK_CAPTIONS[idx % GALLERY_FALLBACK_CAPTIONS.length]}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover transition duration-500 group-hover:scale-105"
-                    unoptimized
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
+
+          {gallerySections.length > 0 ? (
+            <div className="flex flex-1 flex-col min-h-0 gap-6">
+              {gallerySections.map((section) => (
+                <div key={section.id} className="flex flex-col min-h-0 flex-1">
+                  <h3 className="mb-3 text-sm font-semibold uppercase tracking-widest text-accent/80 flex-shrink-0">
+                    {section.title}
+                  </h3>
+                  {/* Horizontal scroll — 3 images visible at a time */}
+                  <div className="packages-scroll flex flex-1 snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden pb-2">
+                    {section.items.map((item) => (
+                      <div
+                        key={item.id}
+                        className="group flex-shrink-0 snap-start flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0d1317]"
+                        style={{width: "calc(33.333% - 0.667rem)"}}
+                      >
+                        <div className="relative flex-1 min-h-[8rem] overflow-hidden">
+                          <Image
+                            src={item.imageUrl}
+                            alt={item.caption}
+                            fill
+                            sizes="33vw"
+                            className="object-cover transition duration-500 group-hover:scale-105"
+                            unoptimized
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                        </div>
+                        {item.caption && (
+                          <p className="flex-shrink-0 px-3 py-2 text-xs text-white/60">{item.caption}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <p className="flex-shrink-0 px-3 py-2 text-xs text-white/60">
-                  {item?.caption || GALLERY_FALLBACK_CAPTIONS[idx % GALLERY_FALLBACK_CAPTIONS.length]}
-                </p>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-1 items-center justify-center">
+              <div className="text-center">
+                <p className="text-lg font-semibold text-white/30">No gallery sections yet</p>
+                <p className="mt-1 text-sm text-white/20">Add photos via the admin panel</p>
               </div>
-            ))}
-          </div>
+            </div>
+          )}
         </div>
       </section>
 

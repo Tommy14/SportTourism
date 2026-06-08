@@ -40,13 +40,24 @@ model Package {
   updatedAt     DateTime @updatedAt
 }
 
+model GallerySection {
+  id        Int           @id @default(autoincrement())
+  title     String
+  sortOrder Int           @default(0)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  items     GalleryItem[]
+}
+
 model GalleryItem {
-  id        Int      @id @default(autoincrement())
+  id        Int             @id @default(autoincrement())
+  sectionId Int?
+  section   GallerySection? @relation(fields: [sectionId], references: [id], onDelete: SetNull)
   imageUrl  String
   caption   String
-  sortOrder Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  sortOrder Int             @default(0)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
 }
 
 model Testimonial {

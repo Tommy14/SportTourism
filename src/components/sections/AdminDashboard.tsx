@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AdminEditor } from "./AdminEditor";
+import { GalleryManager } from "./GalleryManager";
 
 type Item = Record<string, string | number | null>;
 
@@ -11,7 +12,7 @@ interface AdminDashboardProps {
   packages: Item[];
   faqs: Item[];
   testimonials: Item[];
-  gallery: Item[];
+  gallerySections: { id: number; title: string; sortOrder: number; items: { id: number; imageUrl: string; caption: string; sortOrder: number }[] }[];
   settings: Item | null;
   sections: Item[];
   tileGroups: {
@@ -35,13 +36,13 @@ type TabId = (typeof TABS)[number]["id"];
 
 export function AdminDashboard({
   username, brandName,
-  packages, faqs, testimonials, gallery, settings, sections, tileGroups
+  packages, faqs, testimonials, gallerySections, settings, sections, tileGroups
 }: AdminDashboardProps) {
   const [activeTab, setActiveTab] = useState<TabId>("packages");
 
   const counts: Record<TabId, number> = {
     packages:     packages.length,
-    gallery:      gallery.length,
+    gallery:      gallerySections.reduce((sum, s) => sum + s.items.length, 0),
     testimonials: testimonials.length,
     faqs:         faqs.length,
     content:      sections.length,
@@ -148,11 +149,7 @@ export function AdminDashboard({
         )}
 
         {activeTab === "gallery" && (
-          <AdminEditor
-            title="Gallery Photos"
-            type="gallery"
-            items={gallery as never[]}
-          />
+          <GalleryManager initialSections={gallerySections} />
         )}
 
         {activeTab === "testimonials" && (
