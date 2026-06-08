@@ -474,6 +474,22 @@ export default async function Home() {
               );
             })}
 
+      {/* ── Tour Packages ── */}
+      <section id="packages" className="snap-section reveal-on-scroll section-shell section-block">
+        <div className="text-center">
+          <span className="badge-chip">Tour Packages</span>
+          <h2 className="mx-auto mt-3 max-w-2xl text-2xl font-bold md:text-4xl">
+            Choose Your Sri Lanka Cricket Tour
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-sm text-white/55">
+            Every package is fully tailored to your squad — contact us for custom pricing and available dates.
+          </p>
+        </div>
+        <div className="mt-5 flex flex-1 flex-col min-h-0">
+          <PackageShowcase packages={packageCards.slice(0, 3)} />
+        </div>
+      </section>
+
       {/* ── Gallery ── */}
       <section id="gallery" className="snap-section reveal-on-scroll section-block bg-black/30">
         <div className="section-shell flex flex-1 flex-col min-h-0">
@@ -506,22 +522,6 @@ export default async function Home() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ── Tour Packages ── */}
-      <section id="packages" className="snap-section reveal-on-scroll section-shell section-block">
-        <div className="text-center">
-          <span className="badge-chip">Tour Packages</span>
-          <h2 className="mx-auto mt-3 max-w-2xl text-2xl font-bold md:text-4xl">
-            Choose Your Sri Lanka Cricket Tour
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-sm text-white/55">
-            Every package is fully tailored to your squad — contact us for custom pricing and available dates.
-          </p>
-        </div>
-        <div className="mt-5 flex flex-1 flex-col min-h-0">
-          <PackageShowcase packages={packageCards.slice(0, 3)} />
         </div>
       </section>
 
