@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -136,12 +137,12 @@ export default function PortalLoginPage() {
             </button>
           </form>
 
-          <a
+          <Link
             href="/"
             className="mt-8 flex items-center justify-center gap-1.5 text-xs text-white/30 transition hover:text-white/60"
           >
             <span>←</span> Back to website
-          </a>
+          </Link>
         </div>
       </div>
     </main>
