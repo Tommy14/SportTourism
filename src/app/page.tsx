@@ -302,7 +302,7 @@ export default async function Home() {
               sizes="100vw"
               className="object-cover object-center"
               priority
-              unoptimized
+              quality={85}
             />
           </div>
         ) : (
@@ -317,7 +317,7 @@ export default async function Home() {
                   sizes="20vw"
                   className="object-cover object-center"
                   priority={i < 2}
-                  unoptimized={src.includes("wikimedia")}
+                  quality={80}
                 />
               </div>
             ))}
@@ -412,8 +412,9 @@ export default async function Home() {
                                 src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/5/54/Rangiri_Dambulla_International_Stadium.jpg"}
                                 alt={tile.title}
                                 fill
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                 className="object-cover transition duration-500 group-hover:scale-105"
-                                unoptimized
+                                quality={75}
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                             </div>
@@ -434,8 +435,9 @@ export default async function Home() {
                               src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/2/23/R_Premadasa_Stadium.jpg"}
                               alt={tile.title}
                               fill
+                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                               className="object-cover transition duration-500 group-hover:scale-105"
-                              unoptimized
+                              quality={75}
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                           </div>
@@ -455,8 +457,9 @@ export default async function Home() {
                               src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/f/f7/Galle_International_Stadium.jpg"}
                               alt={tile.title}
                               fill
+                              sizes="(max-width: 768px) 100vw, 50vw"
                               className="object-cover transition duration-500 group-hover:scale-105"
-                              unoptimized
+                              quality={75}
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                           </div>
@@ -494,8 +497,9 @@ export default async function Home() {
                     src={item?.imageUrl || GALLERY_FALLBACK_SRC[idx % GALLERY_FALLBACK_SRC.length]}
                     alt={item?.caption || GALLERY_FALLBACK_CAPTIONS[idx % GALLERY_FALLBACK_CAPTIONS.length]}
                     fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover transition duration-500 group-hover:scale-105"
-                    unoptimized
+                    quality={75}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
                 </div>
@@ -557,7 +561,6 @@ export default async function Home() {
                         fill
                         sizes="56px"
                         className="object-cover"
-                        unoptimized
                       />
                     </div>
                   ) : (
