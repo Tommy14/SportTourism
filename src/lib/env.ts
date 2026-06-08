@@ -15,4 +15,12 @@ const schema = z.object({
   SUPABASE_BUCKET: z.string().min(1)
 });
 
-export const env = schema.parse(process.env);
+const parsed = schema.safeParse(process.env);
+if (!parsed.success) {
+  const missing = parsed.error.errors
+    .map((e) => `${String(e.path[0])}: ${e.message}`)
+    .join(" | ");
+  throw new Error(`Server misconfiguration — missing/invalid env vars: ${missing}`);
+}
+
+export const env = parsed.data;

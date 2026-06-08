@@ -10,45 +10,76 @@ export function Footer({
   address: string;
 }) {
   return (
-    <footer className="border-t border-white/10 bg-[#090d10] py-12">
+    <footer className="border-t border-white/10 bg-[#060a0c] py-14">
       <div className="section-shell">
-        <div className="mb-8 border-b border-white/10 pb-8">
-          <h3 className="max-w-xl text-3xl font-bold leading-tight">Cricket Coaching, Training, And Matches - Together</h3>
+        {/* Top banner */}
+        <div className="mb-10 flex flex-col items-start justify-between gap-6 border-b border-white/10 pb-10 md:flex-row md:items-end">
+          <div>
+            <span className="badge-chip mb-4">Ready to Play in Sri Lanka?</span>
+            <h3 className="max-w-xl text-3xl font-bold leading-tight md:text-4xl">
+              Your Cricket Adventure Starts Here
+            </h3>
+          </div>
+          <a href="#contact" className="pill-button shrink-0 text-sm">
+            Plan Your Tour
+          </a>
         </div>
-        <div className="grid gap-8 text-sm text-white/80 md:grid-cols-4">
+
+        {/* Columns */}
+        <div className="grid gap-8 text-sm text-white/70 md:grid-cols-4">
           <div>
-            <p className="mb-2 text-accent">{brandName}</p>
-            <p>Cricket tours, training camps, matches and sightseeing in Sri Lanka.</p>
+            <div className="mb-3 flex items-center gap-2">
+              <span className="flex h-6 w-6 items-center justify-center rounded bg-gradient-to-br from-accent to-accentSoft text-ink">
+                <svg viewBox="0 0 16 16" className="h-3 w-3" fill="currentColor">
+                  <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" fill="none" />
+                  <path d="M4 8 Q8 4 12 8 Q8 12 4 8Z" fill="currentColor" opacity="0.7" />
+                </svg>
+              </span>
+              <p className="font-semibold text-accent">{brandName}</p>
+            </div>
+            <p className="leading-relaxed">
+              Cricket tours, training camps, international fixtures and sightseeing in Sri Lanka — fully arranged for your team.
+            </p>
           </div>
+
           <div>
-            <p className="mb-2 font-semibold text-white">Contact</p>
-            <p>{phone}</p>
-            <p>{email}</p>
-            <p>{address}</p>
+            <p className="mb-3 font-semibold text-white">Contact</p>
+            <div className="flex flex-col gap-1.5">
+              <a href={`tel:${phone}`} className="transition hover:text-accent">{phone}</a>
+              <a href={`mailto:${email}`} className="transition hover:text-accent">{email}</a>
+              <p>{address}</p>
+            </div>
           </div>
+
           <div>
-            <p className="mb-2 font-semibold text-white">Quick Links</p>
-            <p>Home</p>
-            <p>Packages</p>
-            <p>Gallery</p>
-            <p>Contact</p>
+            <p className="mb-3 font-semibold text-white">Quick Links</p>
+            <div className="flex flex-col gap-1.5">
+              <a href="#home" className="transition hover:text-accent">Home</a>
+              <a href="#what-we-do" className="transition hover:text-accent">Services</a>
+              <a href="#packages" className="transition hover:text-accent">Tour Packages</a>
+              <a href="#gallery" className="transition hover:text-accent">Gallery</a>
+              <a href="#faq" className="transition hover:text-accent">FAQ</a>
+              <a href="#contact" className="transition hover:text-accent">Contact</a>
+            </div>
           </div>
+
           <div>
-            <p className="mb-2 font-semibold text-white">Newsletter</p>
-            <input placeholder="Your email here" className="input-dark mb-2" />
-            <button className="pill-button w-full">Submit Now</button>
+            <p className="mb-3 font-semibold text-white">Stay Updated</p>
+            <p className="mb-3 text-xs text-white/50">Get tour news and Sri Lanka cricket updates.</p>
+            <input placeholder="Your email address" className="input-dark mb-2" />
+            <button className="pill-button w-full text-sm">Subscribe</button>
           </div>
         </div>
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4 text-xs text-white/55">
-          <p>Copyright © 2026 {brandName}. All Rights Reserved.</p>
-          <div className="flex items-center gap-3">
-            <a href="/portal/login" className="hover:text-white">
-              Admin
-            </a>
-            <span>|</span>
-            <p>Privacy Policy</p>
-            <span>|</span>
-            <p>Terms & Conditions</p>
+
+        {/* Bottom bar */}
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-5 text-xs text-white/40">
+          <p>© {new Date().getFullYear()} {brandName}. All Rights Reserved.</p>
+          <div className="flex items-center gap-4">
+            <a href="/portal/login" className="transition hover:text-white">Admin</a>
+            <span className="text-white/20">|</span>
+            <span>Privacy Policy</span>
+            <span className="text-white/20">|</span>
+            <span>Terms &amp; Conditions</span>
           </div>
         </div>
       </div>
