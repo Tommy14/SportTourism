@@ -93,9 +93,9 @@ export function GalleryManager({ initialSections }: GalleryManagerProps) {
       const imageUrl = await uploadFile(file);
       const res = await apiFetch({
         type: "gallery", create: true,
-        payload: { sectionId, imageUrl, caption: file.name.replace(/\.[^.]+$/, "") }
+        payload: { sectionId, imageUrl, caption: "" }
       });
-      const newImg: GalleryImage = { id: res.id!, imageUrl, caption: file.name.replace(/\.[^.]+$/, ""), sortOrder: section.items.length + 1 };
+      const newImg: GalleryImage = { id: res.id!, imageUrl, caption: "", sortOrder: section.items.length + 1 };
       setSections((prev) => prev.map((s) => s.id === sectionId ? { ...s, items: [...s.items, newImg] } : s));
     } catch (e) { setStatus((e as Error).message); }
     finally {

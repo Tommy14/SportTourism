@@ -523,9 +523,6 @@ export default async function Home() {
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                         </div>
-                        {item.caption && (
-                          <p className="flex-shrink-0 px-3 py-2 text-xs text-white/60">{item.caption}</p>
-                        )}
                       </div>
                     ))}
                   </div>
