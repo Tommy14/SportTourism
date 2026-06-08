@@ -8,12 +8,12 @@ const schema = z.object({
   SMTP_PORT: z.coerce.number().default(587),
   SMTP_USER: z.string().default(""),
   SMTP_PASS: z.string().default(""),
-  RESEND_API_KEY: z.string().min(1),
-  INQUIRY_TO_EMAIL: z.string().email(),
-  INQUIRY_FROM_EMAIL: z.string().email(),
-  SUPABASE_URL: z.string().url(),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
-  SUPABASE_BUCKET: z.string().min(1)
+  RESEND_API_KEY: z.string().default(""),
+  INQUIRY_TO_EMAIL: z.string().default(""),
+  INQUIRY_FROM_EMAIL: z.string().default(""),
+  SUPABASE_URL: z.string().default("https://placeholder.supabase.co"),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().default(""),
+  SUPABASE_BUCKET: z.string().default("website-media")
 });
 
 const parsed = schema.safeParse(process.env);
