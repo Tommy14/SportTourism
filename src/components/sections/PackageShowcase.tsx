@@ -53,8 +53,8 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
               className={[
                 "flex flex-col overflow-hidden rounded-2xl border shadow-none",
                 featured
-                  ? "border-transparent bg-[var(--bg)]"
-                  : "border-transparent bg-[var(--bg)]"
+                  ? "border-accent/30 bg-[var(--panel)]"
+                  : "border-white/10 bg-[var(--panel)]"
               ].join(" ")}
             >
               {/* Image */}
@@ -131,10 +131,10 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
                 key={item.id}
                 style={featured ? undefined : { animationDelay: `${idx * 90}ms` }}
                 className={[
-                  "flex snap-center snap-always flex-col overflow-hidden rounded-2xl border-transparent transition-[transform] duration-300 will-change-transform self-stretch",
+                  "flex snap-center snap-always flex-col overflow-hidden rounded-2xl border transition-[transform] duration-300 will-change-transform self-stretch",
                   featured
-                    ? "animate-package-feature relative z-[1] w-[min(24rem,31%)] scale-105 bg-[var(--bg)]"
-                    : "animate-package-in w-[min(20rem,29%)] bg-[var(--bg)] hover:-translate-y-0.5",
+                    ? "animate-package-feature relative z-[1] w-[min(24rem,31%)] scale-105 border-accent/35 bg-[var(--panel)]"
+                    : "animate-package-in w-[min(20rem,29%)] border-white/10 bg-[var(--panel)] hover:-translate-y-0.5 hover:border-white/20",
                   ""
                 ].join(" ")}
               >
