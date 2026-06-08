@@ -6,6 +6,7 @@ import { InquiryButton } from "@/components/ui/InquiryButton";
 import { getSiteContent } from "@/lib/content";
 import { toPackageShowcaseItems } from "@/lib/package-showcase";
 import Image from "next/image";
+import { ScrollAnimator } from "@/components/layout/ScrollAnimator";
 
 /** All-cricket hero collage — match action, three Sri Lankan international venues, coaching session. */
 const HERO_COLLAGE_SRC = [
@@ -290,7 +291,7 @@ export default async function Home() {
       <HeaderNav brand={settings?.brandName || "Pitch to Paradise"} />
 
       {/* ── Hero ── */}
-      <section id="home" className="relative overflow-hidden">
+      <section id="home" className="snap-section reveal-on-scroll relative overflow-hidden">
         <div className="hero-backdrop absolute inset-0 z-10" />
         {heroCoverPhoto ? (
           /* Single full-width cover photo uploaded via admin */
@@ -340,10 +341,8 @@ export default async function Home() {
             <InquiryButton label="Contact Us" />
           </div>
         </div>
-      </section>
-
-      {/* ── Stats strip ── */}
-      <div className="border-y border-white/10 bg-[#07090b]">
+      {/* ── Stats strip (inside hero section) ── */}
+      <div className="border-t border-white/10 bg-[#07090b]">
         <div className="section-shell grid grid-cols-2 md:grid-cols-4">
           {HERO_STATS.map((item, i) => (
             <div
@@ -356,11 +355,10 @@ export default async function Home() {
           ))}
         </div>
       </div>
+      </section>
 
       {/* ── Topic sections (What We Do / Have Done / Where Play) ── */}
-      <section className="section-shell section-block">
-        <div className="space-y-10">
-          {(topicSections.length
+      {(topicSections.length
             ? topicSections
             : [
                 { key: "what-we-do", title: "What We Do", subtitle: "Tour + Cricket Experience", body: "From logistics to on-field planning, we arrange grounds, practice sessions, coaches, travel, and accommodation." },
@@ -379,7 +377,7 @@ export default async function Home() {
                       ? buildWherePlayTiles(tileRecords as TopicTileRecord[])
                       : tileRecords.filter((tile) => tile.groupKey === item.key).slice(0, 4);
               return (
-                <article key={item.key} id={item.key} className="panel-card scroll-mt-28">
+                <section key={item.key} id={item.key} className="snap-section reveal-on-scroll"><div className="section-shell section-block"><div className="panel-card">
                   <span className="badge-chip">{item.subtitle}</span>
                   <h2 className="mt-4 text-2xl font-bold md:text-3xl">{item.title}</h2>
                   <p className="mt-3 text-sm text-white/70 md:text-base">{item.body}</p>
@@ -471,14 +469,12 @@ export default async function Home() {
                       ))}
                     </div>
                   )}
-                </article>
+                </div></div></section>
               );
             })}
-        </div>
-      </section>
 
       {/* ── Gallery ── */}
-      <section id="gallery" className="section-block scroll-mt-28 bg-black/30">
+      <section id="gallery" className="snap-section reveal-on-scroll section-block bg-black/30">
         <div className="section-shell">
           <div className="mb-8 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
             <div>
@@ -513,7 +509,7 @@ export default async function Home() {
       </section>
 
       {/* ── Tour Packages ── */}
-      <section id="packages" className="section-shell section-block scroll-mt-28">
+      <section id="packages" className="snap-section reveal-on-scroll section-shell section-block">
         <div className="text-center">
           <span className="badge-chip">Tour Packages</span>
           <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-bold md:text-5xl">
@@ -529,7 +525,7 @@ export default async function Home() {
       </section>
 
       {/* ── Testimonials ── */}
-      <section id="testimonials" className="section-block scroll-mt-28 bg-black/25">
+      <section id="testimonials" className="snap-section reveal-on-scroll section-block bg-black/25">
         <div className="section-shell">
           <span className="badge-chip">Testimonials</span>
           <h2 className="mt-3 text-2xl font-bold md:text-3xl">What Teams Say About Their Tours</h2>
@@ -586,7 +582,7 @@ export default async function Home() {
       </section>
 
       {/* ── FAQ ── */}
-      <section id="faq" className="section-block scroll-mt-28">
+      <section id="faq" className="snap-section reveal-on-scroll section-block">
         <div className="section-shell">
           <div className="mb-6">
             <span className="badge-chip">FAQ</span>
@@ -618,7 +614,7 @@ export default async function Home() {
       </section>
 
       {/* ── Contact ── */}
-      <section id="contact" className="section-block scroll-mt-28 bg-black/25">
+      <section id="contact" className="snap-section reveal-on-scroll section-block bg-black/25">
         <div className="section-shell">
           <div className="panel-card border-accent/20">
             <div className="mb-6">
@@ -633,6 +629,7 @@ export default async function Home() {
         </div>
       </section>
 
+      <ScrollAnimator />
       <Footer
         brandName={settings?.brandName || "Pitch to Paradise"}
         phone={settings?.contactPhone || "+94 77 123 4567"}
