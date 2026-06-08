@@ -29,12 +29,7 @@ export function Footer({
         <div className="grid gap-8 text-sm text-white/70 md:grid-cols-4">
           <div>
             <div className="mb-3 flex items-center gap-2">
-              <span className="flex h-6 w-6 items-center justify-center rounded bg-gradient-to-br from-accent to-accentSoft text-ink">
-                <svg viewBox="0 0 16 16" className="h-3 w-3" fill="currentColor">
-                  <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2" fill="none" />
-                  <path d="M4 8 Q8 4 12 8 Q8 12 4 8Z" fill="currentColor" opacity="0.7" />
-                </svg>
-              </span>
+              <img src="/logo.svg" alt="Pitch to Paradise" className="h-7 w-7 rounded" />
               <p className="font-semibold text-accent">{brandName}</p>
             </div>
             <p className="leading-relaxed">

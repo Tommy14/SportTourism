@@ -44,12 +44,7 @@ export default function PortalLoginPage() {
 
         {/* Logo */}
         <div className="relative flex items-center gap-3">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accentSoft">
-            <svg viewBox="0 0 20 20" className="h-5 w-5 text-ink" fill="currentColor">
-              <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.5" fill="none" />
-              <path d="M4 10 Q10 4 16 10 Q10 16 4 10Z" fill="currentColor" opacity="0.8" />
-            </svg>
-          </span>
+          <img src="/logo.svg" alt="Pitch to Paradise" className="h-10 w-10 rounded-lg" />
           <span className="text-sm font-extrabold uppercase tracking-widest text-white">Pitch to Paradise</span>
         </div>
 
@@ -82,12 +77,7 @@ export default function PortalLoginPage() {
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
           <div className="mb-8 flex items-center gap-3 lg:hidden">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-accentSoft">
-              <svg viewBox="0 0 20 20" className="h-4 w-4 text-ink" fill="currentColor">
-                <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.5" fill="none" />
-                <path d="M4 10 Q10 4 16 10 Q10 16 4 10Z" fill="currentColor" opacity="0.8" />
-              </svg>
-            </span>
+            <img src="/logo.svg" alt="Pitch to Paradise" className="h-9 w-9 rounded-lg" />
             <span className="text-sm font-extrabold uppercase tracking-widest">Pitch to Paradise</span>
           </div>
 

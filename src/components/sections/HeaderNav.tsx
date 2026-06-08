@@ -17,12 +17,7 @@ export function HeaderNav({ brand }: { brand: string }) {
     <header className="sticky top-0 z-50 border-b border-white/10 bg-[#080b0d]/90 backdrop-blur-md">
       <div className="section-shell flex h-16 items-center justify-between gap-4">
         <a href="#home" className="flex items-center gap-2.5 shrink-0">
-          <span className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-accent to-accentSoft text-ink">
-            <svg viewBox="0 0 20 20" className="h-4 w-4" fill="currentColor">
-              <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.5" fill="none" />
-              <path d="M5 10 Q10 5 15 10 Q10 15 5 10Z" fill="currentColor" opacity="0.7" />
-            </svg>
-          </span>
+          <img src="/logo.svg" alt="Pitch to Paradise" className="h-8 w-8 rounded-md" />
           <span className="text-xs font-extrabold uppercase tracking-wider text-white">{brand}</span>
         </a>
 

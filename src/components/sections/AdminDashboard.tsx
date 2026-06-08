@@ -59,12 +59,7 @@ export function AdminDashboard({
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-4 md:px-6">
           {/* Brand */}
           <div className="flex items-center gap-2.5">
-            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-accent to-accentSoft">
-              <svg viewBox="0 0 20 20" className="h-4 w-4 text-ink" fill="currentColor">
-                <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.5" fill="none" />
-                <path d="M4 10 Q10 4 16 10 Q10 16 4 10Z" fill="currentColor" opacity="0.8" />
-              </svg>
-            </span>
+            <img src="/logo.svg" alt="Pitch to Paradise" className="h-7 w-7 rounded-md" />
             <span className="hidden text-xs font-extrabold uppercase tracking-wider text-white sm:block">{brandName}</span>
             <span className="hidden text-white/20 sm:block">|</span>
             <span className="text-xs text-white/40 hidden sm:block">Admin Portal</span>
