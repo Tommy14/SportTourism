@@ -629,14 +629,14 @@ export default async function Home() {
       {/* ── Contact ── */}
       <section id="contact" className="snap-section reveal-on-scroll section-block bg-black/25">
         <div className="section-shell flex flex-1 flex-col justify-center">
-          <div className="mx-auto max-w-2xl text-center">
+          <div className="mx-auto max-w-4xl text-center">
             <span className="badge-chip">Get in Touch</span>
             <h3 className="mt-3 text-2xl font-bold md:text-3xl">Ready to Tour Sri Lanka?</h3>
             <p className="mt-2 text-sm text-white/60">
               Tell us about your team, preferred dates and goals — we&apos;ll put together a custom itinerary and quote.
             </p>
           </div>
-          <div className="mx-auto mt-6 max-w-2xl">
+          <div className="mx-auto mt-6 max-w-4xl">
             <div className="panel-card border-accent/20">
               <InquiryForm />
             </div>
