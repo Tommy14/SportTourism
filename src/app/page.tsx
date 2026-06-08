@@ -302,7 +302,7 @@ export default async function Home() {
               sizes="100vw"
               className="object-cover object-center"
               priority
-              quality={85}
+              unoptimized
             />
           </div>
         ) : (
@@ -317,7 +317,7 @@ export default async function Home() {
                   sizes="20vw"
                   className="object-cover object-center"
                   priority={i < 2}
-                  quality={80}
+                  unoptimized
                 />
               </div>
             ))}
@@ -414,7 +414,7 @@ export default async function Home() {
                                 fill
                                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                 className="object-cover transition duration-500 group-hover:scale-105"
-                                quality={75}
+                                unoptimized
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                             </div>
@@ -437,7 +437,7 @@ export default async function Home() {
                               fill
                               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                               className="object-cover transition duration-500 group-hover:scale-105"
-                              quality={75}
+                              unoptimized
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                           </div>
@@ -459,7 +459,7 @@ export default async function Home() {
                               fill
                               sizes="(max-width: 768px) 100vw, 50vw"
                               className="object-cover transition duration-500 group-hover:scale-105"
-                              quality={75}
+                              unoptimized
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                           </div>
@@ -499,7 +499,7 @@ export default async function Home() {
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover transition duration-500 group-hover:scale-105"
-                    quality={75}
+                    unoptimized
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
                 </div>

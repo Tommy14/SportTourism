@@ -60,7 +60,7 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
               {/* Image */}
               <div className="relative h-48 w-full flex-shrink-0 overflow-hidden">
                 {item.imageUrl ? (
-                  <Image src={item.imageUrl} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" quality={75} />
+                  <Image src={item.imageUrl} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" unoptimized />
                 ) : (
                   <div className={`flex h-full w-full items-center justify-center ${featured ? "bg-gradient-to-br from-accent/20 to-accentSoft/10" : "bg-gradient-to-br from-white/5 to-white/[0.02]"}`}>
                     <svg viewBox="0 0 64 64" className="h-16 w-16 opacity-15" fill="none">
@@ -141,7 +141,7 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
                 {/* Image */}
                 <div className="relative h-44 w-full flex-shrink-0 overflow-hidden">
                   {item.imageUrl ? (
-                    <Image src={item.imageUrl} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" quality={75} />
+                    <Image src={item.imageUrl} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" unoptimized />
                   ) : (
                     <div className={`flex h-full w-full items-center justify-center ${featured ? "bg-gradient-to-br from-accent/20 to-accentSoft/10" : "bg-gradient-to-br from-white/5 to-white/[0.02]"}`}>
                       <svg viewBox="0 0 64 64" className="h-16 w-16 opacity-15" fill="none">
