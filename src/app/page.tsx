@@ -408,9 +408,9 @@ export default async function Home() {
                           </p>
                         </div>
                       </div>
-                      <div className="snap-fit-grid grid-cols-2 lg:grid-cols-4">
+                      <div className="snap-fit-grid snap-fit-grid--tiles grid-cols-2 lg:grid-cols-4">
                         {tiles.map((tile) => (
-                          <div key={tile.id} className="snap-fit-tile overflow-hidden rounded-xl border border-white/10 bg-black/20">
+                          <div key={tile.id} className="snap-fit-tile rounded-xl border border-white/10 bg-black/20">
                             <div className="snap-fit-tile-media">
                               <Image
                                 src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/5/54/Rangiri_Dambulla_International_Stadium.jpg"}
@@ -432,9 +432,9 @@ export default async function Home() {
                     </div>
                   ) : item.key === "what-we-have-done" ? (
                     <div className="snap-topic-body snap-topic-body--tiles">
-                      <div className="snap-fit-grid grid-cols-2 lg:grid-cols-4">
+                      <div className="snap-fit-grid snap-fit-grid--tiles grid-cols-2 lg:grid-cols-4">
                         {tiles.map((tile) => (
-                          <div key={tile.id} className="snap-fit-tile overflow-hidden rounded-xl border border-white/10 bg-black/20">
+                          <div key={tile.id} className="snap-fit-tile rounded-xl border border-white/10 bg-black/20">
                             <div className="snap-fit-tile-media">
                               <Image
                                 src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/2/23/R_Premadasa_Stadium.jpg"}
