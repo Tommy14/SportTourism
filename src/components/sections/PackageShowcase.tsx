@@ -100,8 +100,6 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
 
       {/* ── Desktop: horizontal carousel ── */}
       <div className="relative hidden h-full min-h-0 flex-1 md:flex md:flex-col">
-        <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-ink to-transparent" />
-        <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-ink to-transparent" />
         <div className="packages-scroll h-full min-h-0 flex-1 overflow-x-auto overflow-y-hidden scroll-smooth">
           <div className="mx-auto flex h-full min-h-0 w-max max-w-full items-stretch gap-3 px-2 lg:gap-4 lg:px-4">
           {cards.map((item, idx) => {
