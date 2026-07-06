@@ -3,7 +3,7 @@
 import { PackageBookingFlow } from "@/components/packages/PackageBookingFlow";
 import type { PackageItinerary } from "@/types/package-itinerary";
 import Image from "next/image";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 export type PackageShowcaseItem = {
   id: number;
@@ -22,18 +22,7 @@ type PackageShowcaseProps = {
 export function PackageShowcase({ packages }: PackageShowcaseProps) {
   const cards = packages;
   const featuredIndex = cards.length > 0 ? Math.floor((cards.length - 1) / 2) : 0;
-  const scrollRef = useRef<HTMLDivElement>(null);
   const [openPackage, setOpenPackage] = useState<PackageShowcaseItem | null>(null);
-
-  useLayoutEffect(() => {
-    const root = scrollRef.current;
-    if (!root) return;
-    const featuredEl = root.children[featuredIndex] as HTMLElement | undefined;
-    if (!featuredEl) return;
-    const target =
-      featuredEl.offsetLeft - (root.clientWidth - featuredEl.getBoundingClientRect().width) / 2;
-    root.scrollTo({ left: Math.max(0, target), behavior: "instant" });
-  }, [cards.length, featuredIndex]);
 
   return (
     <div className="flex h-full min-h-0 flex-col">
@@ -113,10 +102,8 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
       <div className="relative hidden h-full min-h-0 flex-1 md:flex md:flex-col">
         <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-ink to-transparent" />
         <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-ink to-transparent" />
-        <div
-          ref={scrollRef}
-          className="packages-scroll flex h-full min-h-0 flex-1 snap-x snap-mandatory items-stretch gap-3 overflow-x-auto overflow-y-hidden scroll-smooth px-2 lg:gap-4 lg:px-4"
-        >
+        <div className="packages-scroll h-full min-h-0 flex-1 overflow-x-auto overflow-y-hidden scroll-smooth">
+          <div className="mx-auto flex h-full min-h-0 w-max max-w-full items-stretch gap-3 px-2 lg:gap-4 lg:px-4">
           {cards.map((item, idx) => {
             const featured = idx === featuredIndex;
             const highlights = item.inclusions
@@ -130,10 +117,10 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
                 key={item.id}
                 style={featured ? undefined : { animationDelay: `${idx * 90}ms` }}
                 className={[
-                  "flex h-full max-h-full min-h-0 snap-center snap-always flex-col overflow-hidden rounded-2xl border shadow-lg transition-[transform,box-shadow] duration-300",
+                  "flex h-full max-h-full min-h-0 flex-col overflow-hidden rounded-2xl border shadow-lg transition-[transform,box-shadow] duration-300",
                   featured
-                    ? "animate-package-feature relative z-[1] w-[min(20rem,30%)] border-accent/50 bg-panel shadow-accent/15"
-                    : "animate-package-in w-[min(17rem,27%)] border-white/10 bg-[#0e1318] hover:-translate-y-0.5 hover:border-white/20",
+                    ? "animate-package-feature relative z-[1] w-[20rem] max-w-[30vw] border-accent/50 bg-panel shadow-accent/15"
+                    : "animate-package-in w-[17rem] max-w-[27vw] border-white/10 bg-[#0e1318] hover:-translate-y-0.5 hover:border-white/20",
                   "hover:shadow-xl"
                 ].join(" ")}
               >
@@ -188,6 +175,7 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
               </article>
             );
           })}
+          </div>
         </div>
       </div>
 
