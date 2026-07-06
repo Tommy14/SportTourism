@@ -25,7 +25,7 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
   const [openPackage, setOpenPackage] = useState<PackageShowcaseItem | null>(null);
 
   return (
-    <div className="flex h-full min-h-0 flex-col">
+    <div className="flex min-h-0 flex-col md:flex-1 md:justify-center">
       {/* ── Mobile: vertical stack ── */}
       <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-hidden md:hidden">
         {cards.map((item, idx) => {
@@ -99,9 +99,9 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
       </div>
 
       {/* ── Desktop: horizontal carousel ── */}
-      <div className="relative hidden h-full min-h-0 flex-1 md:flex md:flex-col">
-        <div className="packages-scroll h-full min-h-0 flex-1 overflow-x-auto overflow-y-hidden scroll-smooth">
-          <div className="mx-auto flex h-full min-h-0 w-max max-w-full items-stretch gap-3 px-2 lg:gap-4 lg:px-4">
+      <div className="relative hidden min-h-0 flex-1 md:flex md:flex-col md:justify-center">
+        <div className="packages-scroll overflow-x-auto overflow-y-hidden scroll-smooth">
+          <div className="mx-auto flex w-max max-w-full items-stretch gap-3 px-2 lg:gap-4 lg:px-4">
           {cards.map((item, idx) => {
             const featured = idx === featuredIndex;
             const highlights = item.inclusions
@@ -115,15 +115,15 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
                 key={item.id}
                 style={featured ? undefined : { animationDelay: `${idx * 90}ms` }}
                 className={[
-                  "flex h-full max-h-full min-h-0 flex-col overflow-hidden rounded-2xl border shadow-lg transition-[transform,box-shadow] duration-300",
+                  "flex flex-col overflow-hidden rounded-2xl border shadow-lg transition-[transform,box-shadow] duration-300",
                   featured
-                    ? "animate-package-feature relative z-[1] w-[20rem] max-w-[30vw] border-accent/50 bg-panel shadow-accent/15"
-                    : "animate-package-in w-[17rem] max-w-[27vw] border-white/10 bg-[#0e1318] hover:-translate-y-0.5 hover:border-white/20",
+                    ? "animate-package-feature relative z-[1] w-[19rem] max-w-[28vw] border-accent/50 bg-panel shadow-accent/15"
+                    : "animate-package-in w-[16rem] max-w-[24vw] border-white/10 bg-[#0e1318] hover:-translate-y-0.5 hover:border-white/20",
                   "hover:shadow-xl"
                 ].join(" ")}
               >
                 {/* Image */}
-                <div className="relative h-[30%] min-h-[5rem] max-h-[9rem] w-full flex-shrink-0 overflow-hidden lg:max-h-[10rem]">
+                <div className="relative h-24 w-full flex-shrink-0 overflow-hidden lg:h-28">
                   {item.imageUrl ? (
                     <Image src={item.imageUrl} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" unoptimized />
                   ) : (
@@ -149,22 +149,22 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
                 </div>
 
                 {/* Body */}
-                <div className="flex min-h-0 flex-1 flex-col p-4 lg:p-5">
-                  <h3 className={`shrink-0 font-bold leading-snug ${featured ? "text-lg lg:text-xl" : "text-base lg:text-lg"}`}>
+                <div className="flex flex-col p-3 lg:p-4">
+                  <h3 className={`shrink-0 font-bold leading-snug ${featured ? "text-base lg:text-lg" : "text-sm lg:text-base"}`}>
                     {item.title}
                   </h3>
-                  <ul className="mt-2 flex min-h-0 flex-1 flex-col justify-center gap-1.5 overflow-hidden">
+                  <ul className="mt-1.5 flex flex-col gap-1 overflow-hidden">
                     {highlights.map((highlight, i) => (
-                      <li key={i} className="flex items-start gap-1.5 text-xs text-white/75 lg:text-sm">
-                        <span className="mt-[2px] shrink-0 text-[9px] text-accent">✦</span>
+                      <li key={i} className="flex items-start gap-1.5 text-[11px] text-white/75 lg:text-xs">
+                        <span className="mt-[2px] shrink-0 text-[8px] text-accent">✦</span>
                         <span className="line-clamp-2">{highlight}</span>
                       </li>
                     ))}
                   </ul>
-                  <p className="mt-2 shrink-0 text-[10px] text-white/35 lg:text-xs">Pricing available on enquiry — fully custom quotes</p>
+                  <p className="mt-1.5 shrink-0 text-[10px] text-white/35">Pricing available on enquiry — fully custom quotes</p>
                   <button
                     type="button"
-                    className="ghost-button mt-2 shrink-0 w-full py-2 text-xs lg:text-sm"
+                    className="ghost-button mt-1.5 shrink-0 w-full py-1.5 text-xs"
                     onClick={() => setOpenPackage(item)}
                   >
                     View Itinerary
