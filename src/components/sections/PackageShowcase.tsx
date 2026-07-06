@@ -138,7 +138,7 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
                 ].join(" ")}
               >
                 {/* Image */}
-                <div className="relative h-[28%] min-h-[4.5rem] max-h-[7rem] w-full flex-shrink-0 overflow-hidden lg:max-h-[8rem]">
+                <div className="relative h-[30%] min-h-[5rem] max-h-[9rem] w-full flex-shrink-0 overflow-hidden lg:max-h-[10rem]">
                   {item.imageUrl ? (
                     <Image src={item.imageUrl} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" unoptimized />
                   ) : (
@@ -164,22 +164,22 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
                 </div>
 
                 {/* Body */}
-                <div className="flex min-h-0 flex-1 flex-col p-3 lg:p-4">
-                  <h3 className={`shrink-0 font-bold leading-snug ${featured ? "text-base lg:text-lg" : "text-sm lg:text-base"}`}>
+                <div className="flex min-h-0 flex-1 flex-col p-4 lg:p-5">
+                  <h3 className={`shrink-0 font-bold leading-snug ${featured ? "text-lg lg:text-xl" : "text-base lg:text-lg"}`}>
                     {item.title}
                   </h3>
-                  <ul className="mt-1.5 flex min-h-0 flex-1 flex-col justify-center gap-1 overflow-hidden">
+                  <ul className="mt-2 flex min-h-0 flex-1 flex-col justify-center gap-1.5 overflow-hidden">
                     {highlights.map((highlight, i) => (
-                      <li key={i} className="flex items-start gap-1.5 text-[11px] text-white/75 lg:text-xs">
-                        <span className="mt-[2px] shrink-0 text-[8px] text-accent">✦</span>
-                        <span className="line-clamp-1">{highlight}</span>
+                      <li key={i} className="flex items-start gap-1.5 text-xs text-white/75 lg:text-sm">
+                        <span className="mt-[2px] shrink-0 text-[9px] text-accent">✦</span>
+                        <span className="line-clamp-2">{highlight}</span>
                       </li>
                     ))}
                   </ul>
-                  <p className="mt-1.5 shrink-0 text-[9px] text-white/35 lg:text-[10px]">Pricing available on enquiry — fully custom quotes</p>
+                  <p className="mt-2 shrink-0 text-[10px] text-white/35 lg:text-xs">Pricing available on enquiry — fully custom quotes</p>
                   <button
                     type="button"
-                    className="ghost-button mt-1.5 shrink-0 w-full py-1.5 text-[11px] lg:text-xs"
+                    className="ghost-button mt-2 shrink-0 w-full py-2 text-xs lg:text-sm"
                     onClick={() => setOpenPackage(item)}
                   >
                     View Itinerary

@@ -382,16 +382,16 @@ export default async function Home() {
           return (
             <section key={item.key} id={item.key} className="snap-section">
               <div className="snap-section-inner section-shell">
-                <article className="snap-fit-panel panel-card p-3 md:p-4">
+                <article className="snap-fit-panel snap-fit-panel--fill panel-card p-3 md:p-4 lg:p-5">
                   <div className="snap-fit-header">
                     <span className="badge-chip">{item.subtitle}</span>
-                    <h2 className="mt-1.5 text-lg font-bold md:mt-2 md:text-xl lg:text-2xl">{item.title}</h2>
-                    <p className="mt-1 line-clamp-2 text-[11px] text-white/70 md:text-xs lg:text-sm">{item.body}</p>
+                    <h2 className="mt-2 text-xl font-bold md:text-2xl lg:text-3xl">{item.title}</h2>
+                    <p className="mt-1.5 text-xs text-white/70 md:text-sm">{item.body}</p>
                   </div>
 
                   {item.key === "what-we-do" ? (
-                    <div className="snap-fit-body mt-2 gap-2 md:gap-3">
-                      <div className="relative min-h-0 flex-[1.15] overflow-hidden rounded-lg border border-white/10 md:rounded-xl">
+                    <div className="snap-fit-body mt-3 gap-2 md:mt-4 md:gap-3">
+                      <div className="relative min-h-0 flex-[1.2] overflow-hidden rounded-xl border border-white/10 lg:rounded-2xl">
                         <Image
                           src={("imageUrl" in item && item.imageUrl ? String(item.imageUrl) : null) ?? WHAT_WE_DO_HERO_SRC}
                           alt="What We Do banner"
@@ -401,15 +401,15 @@ export default async function Home() {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
                         <div className="absolute inset-0 flex flex-col items-center justify-end p-3 pb-4 text-center md:p-4">
-                          <p className="text-sm font-bold tracking-tight md:text-lg lg:text-xl">
+                          <p className="text-base font-bold tracking-tight md:text-xl lg:text-2xl">
                             Your Tour, Handled End to End
                           </p>
-                          <p className="mt-0.5 line-clamp-2 text-[10px] text-white/70 md:text-xs">
+                          <p className="mt-1 text-xs text-white/70 md:text-sm">
                             Grounds, coaches, fixtures, hotels and transport — all arranged for your squad.
                           </p>
                         </div>
                       </div>
-                      <div className="snap-fit-grid grid-cols-2 lg:grid-cols-4 md:gap-2 lg:gap-3">
+                      <div className="snap-fit-grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3">
                         {tiles.map((tile) => (
                           <div key={tile.id} className="snap-fit-tile overflow-hidden rounded-lg border border-white/10 bg-black/20 md:rounded-xl">
                             <div className="snap-fit-tile-media">
@@ -423,17 +423,17 @@ export default async function Home() {
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                             </div>
-                            <div className="shrink-0 p-1.5 md:p-2">
-                              <h3 className="text-[10px] font-semibold leading-tight md:text-xs">{tile.title}</h3>
-                              <p className="mt-0.5 line-clamp-2 text-[9px] text-white/65 leading-snug md:text-[10px]">{tile.body}</p>
+                            <div className="shrink-0 p-2 md:p-3">
+                              <h3 className="text-xs font-semibold leading-tight md:text-sm">{tile.title}</h3>
+                              <p className="mt-1 line-clamp-2 text-[10px] text-white/65 leading-snug md:text-xs">{tile.body}</p>
                             </div>
                           </div>
                         ))}
                       </div>
                     </div>
                   ) : item.key === "what-we-have-done" ? (
-                    <div className="snap-fit-body mt-2">
-                      <div className="snap-fit-grid grid-cols-2 lg:grid-cols-4 md:gap-2 lg:gap-3">
+                    <div className="snap-fit-body mt-3 md:mt-4">
+                      <div className="snap-fit-grid grid-cols-2 gap-2 lg:grid-cols-4 md:gap-3">
                         {tiles.map((tile) => (
                           <div key={tile.id} className="snap-fit-tile overflow-hidden rounded-lg border border-white/10 bg-black/20 md:rounded-xl">
                             <div className="snap-fit-tile-media">
@@ -447,17 +447,17 @@ export default async function Home() {
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                             </div>
-                            <div className="shrink-0 p-1.5 md:p-2">
-                              <h3 className="text-[10px] font-semibold leading-tight md:text-xs">{tile.title}</h3>
-                              <p className="mt-0.5 line-clamp-2 text-[9px] text-white/65 leading-snug md:text-[10px]">{tile.body}</p>
+                            <div className="shrink-0 p-2 md:p-3">
+                              <h3 className="text-xs font-semibold leading-tight md:text-sm">{tile.title}</h3>
+                              <p className="mt-1 line-clamp-2 text-[10px] text-white/65 leading-snug md:text-xs">{tile.body}</p>
                             </div>
                           </div>
                         ))}
                       </div>
                     </div>
                   ) : (
-                    <div className="snap-fit-body mt-2">
-                      <div className="snap-fit-grid grid-cols-2 md:gap-2 lg:gap-3">
+                    <div className="snap-fit-body mt-3 md:mt-4">
+                      <div className="snap-fit-grid grid-cols-2 gap-2 md:gap-3">
                         {tiles.map((tile) => (
                           <div key={tile.id} className="snap-fit-tile group relative overflow-hidden rounded-lg border border-white/10 md:rounded-xl">
                             <div className="snap-fit-tile-media">
@@ -472,8 +472,8 @@ export default async function Home() {
                               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                             </div>
                             <div className="absolute bottom-0 left-0 right-0 shrink-0 p-2 md:p-3">
-                              <h3 className="text-[10px] font-semibold md:text-xs">{tile.title}</h3>
-                              <p className="mt-0.5 line-clamp-2 text-[9px] text-white/70 md:text-[10px]">{tile.body}</p>
+                              <h3 className="text-xs font-semibold md:text-sm">{tile.title}</h3>
+                              <p className="mt-0.5 line-clamp-2 text-[10px] text-white/70 md:text-xs">{tile.body}</p>
                             </div>
                           </div>
                         ))}
@@ -489,6 +489,7 @@ export default async function Home() {
       {/* ── Gallery ── */}
       <section id="gallery" className="snap-section bg-black/30">
         <div className="snap-section-inner snap-section-inner--scroll section-shell">
+          <div className="snap-scroll-content">
           <div className="snap-fit-header mb-3 md:mb-4">
             <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
               <div>
@@ -520,23 +521,24 @@ export default async function Home() {
               </div>
             ))}
           </div>
+          </div>
         </div>
       </section>
 
       {/* ── Tour Packages ── */}
       <section id="packages" className="snap-section">
         <div className="snap-section-inner section-shell">
-          <div className="snap-fit-panel">
+          <div className="snap-fit-panel snap-fit-panel--fill">
             <div className="snap-fit-header text-center">
               <span className="badge-chip">Tour Packages</span>
-              <h2 className="mx-auto mt-1.5 max-w-2xl text-xl font-bold md:mt-2 md:text-2xl lg:text-3xl">
+              <h2 className="mx-auto mt-2 max-w-2xl text-2xl font-bold md:text-3xl lg:text-4xl">
                 Choose Your Sri Lanka Cricket Tour
               </h2>
-              <p className="mx-auto mt-1 max-w-xl text-[11px] text-white/55 md:text-xs lg:text-sm">
+              <p className="mx-auto mt-2 max-w-xl text-xs text-white/55 md:text-sm">
                 Every package is fully tailored to your squad — contact us for custom pricing and available dates.
               </p>
             </div>
-            <div className="snap-fit-body mt-2 min-h-0 md:mt-3">
+            <div className="snap-fit-body mt-3 min-h-0 md:mt-4">
               <PackageShowcase packages={packageCards.slice(0, 3)} />
             </div>
           </div>
@@ -546,9 +548,10 @@ export default async function Home() {
       {/* ── Testimonials ── */}
       <section id="testimonials" className="snap-section bg-black/25">
         <div className="snap-section-inner snap-section-inner--scroll section-shell">
-          <div className="snap-fit-header">
+          <div className="snap-scroll-content">
+          <div className="snap-fit-header text-center md:text-left">
             <span className="badge-chip">Testimonials</span>
-            <h2 className="mt-2 text-xl font-bold md:text-2xl">What Teams Say About Their Tours</h2>
+            <h2 className="mt-2 text-xl font-bold md:text-2xl lg:text-3xl">What Teams Say About Their Tours</h2>
           </div>
           <div className="mt-4 grid gap-3 md:grid-cols-2 md:gap-4">
             {(testimonials.length
@@ -599,13 +602,15 @@ export default async function Home() {
               );
             })}
           </div>
+          </div>
         </div>
       </section>
 
       {/* ── FAQ ── */}
       <section id="faq" className="snap-section">
         <div className="snap-section-inner snap-section-inner--scroll section-shell">
-          <div className="snap-fit-header mb-4">
+          <div className="snap-scroll-content">
+          <div className="snap-fit-header mb-4 text-center md:text-left">
             <span className="badge-chip">FAQ</span>
             <h2 className="mt-2 text-xl font-bold md:text-2xl lg:text-3xl">Cricket Tour Questions, Answered</h2>
           </div>
@@ -631,21 +636,24 @@ export default async function Home() {
               </details>
             ))}
           </div>
+          </div>
         </div>
       </section>
 
       {/* ── Contact ── */}
       <section id="contact" className="snap-section bg-black/25">
         <div className="snap-section-inner snap-section-inner--scroll section-shell">
-          <div className="panel-card border-accent/20 p-4 md:p-5">
-            <div className="mb-6">
+          <div className="snap-scroll-content">
+          <div className="panel-card border-accent/20 p-4 md:p-6">
+            <div className="mb-4 md:mb-6">
               <span className="badge-chip">Get in Touch</span>
-              <h3 className="mt-3 text-2xl font-bold md:text-3xl">Ready to Tour Sri Lanka?</h3>
+              <h3 className="mt-2 text-xl font-bold md:mt-3 md:text-2xl lg:text-3xl">Ready to Tour Sri Lanka?</h3>
               <p className="mt-2 text-sm text-white/60 md:text-base">
                 Tell us about your team, preferred dates and goals — we&apos;ll put together a custom itinerary and quote.
               </p>
             </div>
             <InquiryForm />
+          </div>
           </div>
         </div>
       </section>
