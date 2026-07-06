@@ -234,7 +234,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const { settings, sections, topicTiles, packages, faqs, testimonials, gallerySections } = await getSiteContent();
-  const gallery = gallerySections.flatMap((s) => s.items);
+  const galleryPhotoCount = gallerySections.reduce((sum, section) => sum + section.items.length, 0);
   const hero = sections.find((item) => item.key === "hero");
   const topicSections = sections.filter((item) => item.key !== "hero");
 
@@ -489,37 +489,76 @@ export default async function Home() {
       <section id="gallery" className="snap-section bg-black/30">
         <div className="snap-section-inner snap-section-inner--scroll section-shell">
           <div className="snap-scroll-content">
-          <div className="snap-fit-header mb-3 md:mb-4">
-            <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-              <div>
-                <span className="badge-chip">Gallery</span>
-                <h2 className="mt-2 text-xl font-bold md:text-2xl lg:text-3xl">Tour Moments &amp; Team Spirit</h2>
-              </div>
-              <p className="text-xs text-white/50 md:text-sm">
-                {gallery.length ? `${gallery.length} photos` : "Upload photos via the admin panel"}
-              </p>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-2 md:grid-cols-3 md:gap-3">
-            {(gallery.length ? gallery : new Array(6).fill(null)).map((item, idx) => (
-              <div key={idx} className="group overflow-hidden rounded-lg border border-white/10 bg-[#0d1317] md:rounded-xl">
-                <div className="relative aspect-[4/3] w-full overflow-hidden">
-                  <Image
-                    src={item?.imageUrl || GALLERY_FALLBACK_SRC[idx % GALLERY_FALLBACK_SRC.length]}
-                    alt={item?.caption || GALLERY_FALLBACK_CAPTIONS[idx % GALLERY_FALLBACK_CAPTIONS.length]}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover transition duration-500 group-hover:scale-105"
-                    unoptimized
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
+            <div className="snap-fit-header mb-4 md:mb-6">
+              <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+                <div>
+                  <span className="badge-chip">Gallery</span>
+                  <h2 className="mt-2 text-xl font-bold md:text-2xl lg:text-3xl">
+                    {gallerySections.length === 1
+                      ? gallerySections[0].title
+                      : "Tour Moments & Team Spirit"}
+                  </h2>
                 </div>
-                <p className="p-2 text-[10px] text-white/60 md:p-3 md:text-xs">
-                  {item?.caption || GALLERY_FALLBACK_CAPTIONS[idx % GALLERY_FALLBACK_CAPTIONS.length]}
+                <p className="text-xs text-white/50 md:text-sm">
+                  {galleryPhotoCount
+                    ? `${galleryPhotoCount} photo${galleryPhotoCount === 1 ? "" : "s"}`
+                    : "Upload photos via the admin panel"}
                 </p>
               </div>
-            ))}
-          </div>
+            </div>
+
+            <div className="space-y-8 md:space-y-10">
+              {(gallerySections.length
+                ? gallerySections
+                : [{ id: 0, title: "Tour Moments & Team Spirit", sortOrder: 1, items: [] }]
+              ).map((section) => {
+                const isFallback = gallerySections.length === 0;
+                const items = section.items.length
+                  ? section.items
+                  : isFallback
+                    ? new Array(6).fill(null)
+                    : [];
+
+                return (
+                  <div key={section.id}>
+                    {gallerySections.length > 1 ? (
+                      <div className="mb-3 flex flex-col gap-1 md:mb-4 md:flex-row md:items-end md:justify-between">
+                        <h3 className="text-lg font-semibold md:text-xl">{section.title}</h3>
+                        {section.items.length > 0 ? (
+                          <p className="text-xs text-white/45 md:text-sm">
+                            {section.items.length} photo{section.items.length === 1 ? "" : "s"}
+                          </p>
+                        ) : null}
+                      </div>
+                    ) : null}
+                    {items.length === 0 ? (
+                      <p className="text-sm text-white/40">No photos in this section yet.</p>
+                    ) : (
+                    <div className="grid grid-cols-2 gap-2 md:grid-cols-3 md:gap-3">
+                      {items.map((item, idx) => (
+                        <div key={item?.id ?? `${section.id}-${idx}`} className="group overflow-hidden rounded-lg border border-white/10 bg-[#0d1317] md:rounded-xl">
+                          <div className="relative aspect-[4/3] w-full overflow-hidden">
+                            <Image
+                              src={item?.imageUrl || GALLERY_FALLBACK_SRC[idx % GALLERY_FALLBACK_SRC.length]}
+                              alt={item?.caption || GALLERY_FALLBACK_CAPTIONS[idx % GALLERY_FALLBACK_CAPTIONS.length]}
+                              fill
+                              sizes="(max-width: 768px) 50vw, 33vw"
+                              className="object-cover transition duration-500 group-hover:scale-105"
+                              unoptimized
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
+                          </div>
+                          <p className="p-2 text-[10px] text-white/60 md:p-3 md:text-xs">
+                            {item?.caption || GALLERY_FALLBACK_CAPTIONS[idx % GALLERY_FALLBACK_CAPTIONS.length]}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
