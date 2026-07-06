@@ -5,8 +5,7 @@ One-page tourism + cricket package website with hidden admin portal, inquiry ema
 ## Stack
 
 - Next.js (App Router)
-- Prisma + PostgreSQL
-- Supabase Storage (image uploads)
+- Prisma + PostgreSQL (content + image blobs)
 - SMTP via Nodemailer
 
 ## Setup
@@ -33,6 +32,7 @@ One-page tourism + cricket package website with hidden admin portal, inquiry ema
 
 - Provision a PostgreSQL database and set `DATABASE_URL`.
 - Set all env vars from `.env.example`.
-- Ensure Supabase bucket is public (or serve signed URLs).
+- Run `npm run prisma:migrate` to apply the `MediaFile` table migration.
+- To move existing Supabase-hosted images into Postgres: `npm run migrate:images -- --dry-run` then `npm run migrate:images`.
 - Build command: `npm run build`
 - Start command: `npm run start`

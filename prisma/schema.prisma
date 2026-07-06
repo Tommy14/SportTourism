@@ -109,3 +109,14 @@ model AdminUser {
   passwordHash String
   updatedAt    DateTime @updatedAt
 }
+
+model MediaFile {
+  id        String   @id @default(cuid())
+  filename  String
+  url       String
+  mimeType  String
+  size      Int
+  data      Bytes?
+  alt       String?
+  createdAt DateTime @default(now())
+}

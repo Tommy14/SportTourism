@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AdminEditor } from "./AdminEditor";
 import { GalleryManager } from "./GalleryManager";
+import { MediaLibrary, type MediaFileItem } from "./MediaLibrary";
 
 type Item = Record<string, string | number | null>;
 
@@ -20,11 +21,13 @@ interface AdminDashboardProps {
     "what-we-have-done": Item[];
     "where-play": Item[];
   };
+  mediaFiles: MediaFileItem[];
 }
 
 const TABS = [
   { id: "packages",    label: "Packages",     icon: "🏏", desc: "Tour packages displayed on the website" },
   { id: "gallery",     label: "Gallery",      icon: "📸", desc: "Photos shown in the gallery section" },
+  { id: "media",       label: "Media",        icon: "🖼️", desc: "Uploaded images stored in the database" },
   { id: "testimonials",label: "Testimonials", icon: "💬", desc: "Customer reviews and quotes" },
   { id: "faqs",        label: "FAQs",         icon: "❓", desc: "Frequently asked questions" },
   { id: "content",     label: "Page Content", icon: "📄", desc: "Hero cover photo, section headings & body text" },
@@ -36,13 +39,14 @@ type TabId = (typeof TABS)[number]["id"];
 
 export function AdminDashboard({
   username, brandName,
-  packages, faqs, testimonials, gallerySections, settings, sections, tileGroups
+  packages, faqs, testimonials, gallerySections, settings, sections, tileGroups, mediaFiles
 }: AdminDashboardProps) {
   const [activeTab, setActiveTab] = useState<TabId>("packages");
 
   const counts: Record<TabId, number> = {
     packages:     packages.length,
     gallery:      gallerySections.reduce((sum, s) => sum + s.items.length, 0),
+    media:        mediaFiles.length,
     testimonials: testimonials.length,
     faqs:         faqs.length,
     content:      sections.length,
@@ -150,6 +154,10 @@ export function AdminDashboard({
 
         {activeTab === "gallery" && (
           <GalleryManager initialSections={gallerySections} />
+        )}
+
+        {activeTab === "media" && (
+          <MediaLibrary initialFiles={mediaFiles} />
         )}
 
         {activeTab === "testimonials" && (

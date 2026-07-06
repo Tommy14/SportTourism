@@ -10,10 +10,7 @@ const schema = z.object({
   SMTP_PASS: z.string().default(""),
   RESEND_API_KEY: z.string().default(""),
   INQUIRY_TO_EMAIL: z.string().default(""),
-  INQUIRY_FROM_EMAIL: z.string().default(""),
-  SUPABASE_URL: z.string().default("https://placeholder.supabase.co"),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().default(""),
-  SUPABASE_BUCKET: z.string().default("website-media")
+  INQUIRY_FROM_EMAIL: z.string().default("")
 });
 
 const parsed = schema.safeParse(process.env);

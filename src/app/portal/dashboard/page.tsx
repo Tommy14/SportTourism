@@ -9,14 +9,18 @@ export default async function DashboardPage() {
   const session = await requireSession();
   if (!session) redirect("/portal/login");
 
-  const [packages, faqs, testimonials, gallerySections, settings, sections, topicTiles] = await Promise.all([
+  const [packages, faqs, testimonials, gallerySections, settings, sections, topicTiles, mediaFiles] = await Promise.all([
     db.package.findMany({ orderBy: { sortOrder: "asc" } }),
     db.faqItem.findMany({ orderBy: { sortOrder: "asc" } }),
     db.testimonial.findMany({ orderBy: { sortOrder: "asc" } }),
     db.gallerySection.findMany({ orderBy: { sortOrder: "asc" }, include: { items: { orderBy: { sortOrder: "asc" } } } }),
     db.siteSettings.findUnique({ where: { id: 1 } }),
     db.sectionContent.findMany({ orderBy: { key: "asc" } }),
-    db.topicTile.findMany({ orderBy: [{ groupKey: "asc" }, { sortOrder: "asc" }] })
+    db.topicTile.findMany({ orderBy: [{ groupKey: "asc" }, { sortOrder: "asc" }] }),
+    db.mediaFile.findMany({
+      orderBy: { createdAt: "desc" },
+      select: { id: true, filename: true, url: true, mimeType: true, size: true, alt: true, createdAt: true }
+    })
   ]);
 
   const tileGroups = {
@@ -36,6 +40,7 @@ export default async function DashboardPage() {
       settings={settings as never}
       sections={sections as never[]}
       tileGroups={tileGroups as never}
+      mediaFiles={mediaFiles.map((f) => ({ ...f, createdAt: f.createdAt.toISOString() }))}
     />
   );
 }

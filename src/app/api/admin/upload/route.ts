@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { requireSession } from "@/lib/auth";
-import { uploadImage } from "@/lib/supabase";
+import { db } from "@/lib/db";
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 export async function POST(request: Request) {
   const session = await requireSession();
@@ -18,12 +20,38 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
   }
 
+  if (!file.type.startsWith("image/")) {
+    return NextResponse.json({ error: "Invalid file type" }, { status: 400 });
+  }
+
+  if (file.size > MAX_FILE_SIZE) {
+    return NextResponse.json({ error: "File too large (max 10MB)" }, { status: 400 });
+  }
+
   try {
-    const url = await uploadImage(file, "site");
-    return NextResponse.json({ url });
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    const media = await db.mediaFile.create({
+      data: {
+        filename: file.name,
+        url: "pending",
+        mimeType: file.type,
+        size: buffer.length,
+        data: buffer
+      }
+    });
+
+    const url = `/api/media/${media.id}`;
+    await db.mediaFile.update({
+      where: { id: media.id },
+      data: { url }
+    });
+
+    return NextResponse.json({ url, id: media.id });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Upload failed";
-    console.error("[upload] Supabase upload error:", message);
+    console.error("[upload] Media upload error:", message);
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

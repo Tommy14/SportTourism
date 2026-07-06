@@ -36,9 +36,9 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
   }, [cards.length, featuredIndex]);
 
   return (
-    <div className="flex flex-1 flex-col min-h-0">
+    <div>
       {/* ── Mobile: vertical stack ── */}
-      <div className="flex flex-1 flex-col gap-4 md:hidden overflow-y-auto">
+      <div className="flex flex-col gap-5 md:hidden">
         {cards.map((item, idx) => {
           const featured = idx === featuredIndex;
           const highlights = item.inclusions
@@ -51,14 +51,14 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
             <article
               key={item.id}
               className={[
-                "flex flex-col overflow-hidden rounded-2xl border shadow-none",
+                "flex flex-col overflow-hidden rounded-2xl border shadow-lg",
                 featured
-                  ? "border-accent/30 bg-[var(--panel)]"
-                  : "border-white/10 bg-[var(--panel)]"
+                  ? "border-accent/50 bg-panel shadow-accent/10"
+                  : "border-white/10 bg-[#0e1318]"
               ].join(" ")}
             >
               {/* Image */}
-              <div className="relative w-full flex-shrink-0 overflow-hidden" style={{height:"clamp(8rem,18vh,12rem)"}}>
+              <div className="relative h-48 w-full flex-shrink-0 overflow-hidden">
                 {item.imageUrl ? (
                   <Image src={item.imageUrl} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" unoptimized />
                 ) : (
@@ -111,12 +111,12 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
       </div>
 
       {/* ── Desktop: horizontal carousel ── */}
-      <div className="relative hidden flex-1 min-h-0 md:flex flex-col bg-[#0b0f12]">
-        <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-[#0b0f12] to-transparent" />
-        <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-[#0b0f12] to-transparent" />
+      <div className="relative hidden md:block">
+        <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-ink to-transparent" />
+        <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-ink to-transparent" />
         <div
           ref={scrollRef}
-          className="packages-scroll flex flex-1 min-h-0 snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth px-4 pb-4 pt-2 items-stretch"
+          className="packages-scroll flex snap-x snap-mandatory gap-6 overflow-x-auto overflow-y-visible scroll-smooth px-4 pb-5 pt-4"
         >
           {cards.map((item, idx) => {
             const featured = idx === featuredIndex;
@@ -131,15 +131,15 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
                 key={item.id}
                 style={featured ? undefined : { animationDelay: `${idx * 90}ms` }}
                 className={[
-                  "flex snap-center snap-always flex-col overflow-hidden rounded-2xl border transition-[transform] duration-300 will-change-transform self-stretch",
+                  "flex snap-center snap-always flex-col overflow-hidden rounded-2xl border shadow-lg transition-[transform,box-shadow] duration-300 will-change-transform",
                   featured
-                    ? "animate-package-feature relative z-[1] w-[min(24rem,31%)] scale-105 border-accent/35 bg-[var(--panel)]"
-                    : "animate-package-in w-[min(20rem,29%)] border-white/10 bg-[var(--panel)] hover:-translate-y-0.5 hover:border-white/20",
-                  ""
+                    ? "animate-package-feature relative z-[1] w-[min(24rem,31%)] scale-105 border-accent/50 bg-panel shadow-accent/15 hover:scale-110"
+                    : "animate-package-in w-[min(20rem,29%)] border-white/10 bg-[#0e1318] hover:-translate-y-0.5 hover:border-white/20",
+                  "hover:shadow-xl"
                 ].join(" ")}
               >
                 {/* Image */}
-                <div className="relative w-full flex-shrink-0 overflow-hidden" style={{height:"clamp(7rem,15vh,11rem)"}}>
+                <div className="relative h-44 w-full flex-shrink-0 overflow-hidden">
                   {item.imageUrl ? (
                     <Image src={item.imageUrl} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" unoptimized />
                   ) : (
@@ -165,7 +165,7 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
                 </div>
 
                 {/* Body */}
-                <div className="flex flex-1 flex-col p-4 md:p-5">
+                <div className="flex flex-1 flex-col p-6">
                   <h3 className={`font-bold leading-snug ${featured ? "text-xl md:text-2xl" : "text-lg md:text-xl"}`}>
                     {item.title}
                   </h3>
