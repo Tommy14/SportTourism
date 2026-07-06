@@ -16,6 +16,8 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: 4rem;
 }
 
 body {
@@ -94,6 +96,7 @@ body {
 .packages-scroll {
   scrollbar-width: thin;
   scrollbar-color: rgba(100, 211, 138, 0.35) transparent;
+  overscroll-behavior-x: contain;
 }
 
 .packages-scroll::-webkit-scrollbar {
@@ -111,29 +114,63 @@ body {
 }
 
 /* ── Full-page scroll snap ── */
-html {
-  scroll-snap-type: y mandatory;
-}
-
 .snap-section {
   scroll-snap-align: start;
+  scroll-snap-stop: always;
   height: 100vh;
+  height: 100dvh;
   overflow-y: auto;
   overflow-x: hidden;
+  overscroll-behavior-y: contain;
   display: flex;
   flex-direction: column;
+  padding-top: calc(4rem + env(safe-area-inset-top, 0px));
+  padding-bottom: clamp(1.5rem, 3vh, 2.5rem);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 211, 138, 0.35) transparent;
 }
 
-/* Padding for section-block used directly on snap-section */
-.snap-section.section-block {
-  padding-top: clamp(4.5rem, 9vh, 5.5rem);
-  padding-bottom: clamp(3rem, 6vh, 4.5rem);
+.snap-section::-webkit-scrollbar {
+  width: 6px;
 }
 
-/* Padding for section-block used as inner wrapper */
-.snap-section .section-block {
-  padding-top: clamp(4.5rem, 9vh, 5.5rem);
-  padding-bottom: clamp(3rem, 6vh, 4.5rem);
+.snap-section::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 999px;
+}
+
+.snap-section::-webkit-scrollbar-thumb {
+  background: rgba(100, 211, 138, 0.35);
+  border-radius: 999px;
+}
+
+.snap-section-inner {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+.snap-section-hero {
+  padding: 0;
+}
+
+.snap-section-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 211, 138, 0.35) transparent;
+}
+
+.snap-section-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.snap-section-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 999px;
+}
+
+.snap-section-scroll::-webkit-scrollbar-thumb {
+  background: rgba(100, 211, 138, 0.35);
+  border-radius: 999px;
 }
 
 /* ── Section reveal animation ── */

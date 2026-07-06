@@ -10,8 +10,8 @@ export function Footer({
   address: string;
 }) {
   return (
-    <footer className="min-h-screen border-t border-white/10 bg-[#060a0c] flex flex-col justify-center py-12">
-      <div className="section-shell">
+    <footer className="snap-section border-t border-white/10 bg-[#060a0c]">
+      <div className="snap-section-inner section-shell flex min-h-full flex-col justify-center py-6 md:py-8">
         {/* Top banner */}
         <div className="mb-10 flex flex-col items-start justify-between gap-6 border-b border-white/10 pb-10 md:flex-row md:items-end">
           <div>

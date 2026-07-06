@@ -14,7 +14,7 @@ export function HeaderNav({ brand }: { brand: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#080b0d]/90 backdrop-blur-md">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#080b0d]/90 backdrop-blur-md">
       <div className="section-shell flex h-16 items-center justify-between gap-4">
         <a href="#home" className="flex items-center gap-2.5 shrink-0">
           <img src="/logo.png" alt="Pitch to Paradise" className="h-8 w-8 rounded-md" />

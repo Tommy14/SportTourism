@@ -290,97 +290,97 @@ export default async function Home() {
     <main>
       <HeaderNav brand={settings?.brandName || "Pitch to Paradise"} />
 
-      {/* ── Hero ── */}
-      <section id="home" className="relative overflow-hidden">
-        <div className="hero-backdrop absolute inset-0 z-10" />
-        {heroCoverPhoto ? (
-          /* Single full-width cover photo uploaded via admin */
-          <div className="relative z-0 h-[62vh] w-full md:h-[72vh]">
-            <Image
-              src={heroCoverPhoto}
-              alt="Hero cover"
-              fill
-              sizes="100vw"
-              className="object-cover object-center"
-              priority
-              unoptimized
-            />
-          </div>
-        ) : (
-          /* Default 5-column cricket collage */
-          <div className="relative z-0 grid h-[62vh] grid-cols-5 gap-0.5 md:h-[72vh] [&>*]:min-h-0 [&>*]:min-w-0">
-            {HERO_COLLAGE_SRC.map((src, i) => (
-              <div key={src} className="relative h-full w-full overflow-hidden">
+      {/* ── Hero + stats ── */}
+      <section id="home" className="snap-section snap-section-hero relative">
+        <div className="flex min-h-0 flex-1 flex-col">
+          <div className="relative min-h-0 flex-1 overflow-hidden">
+            {heroCoverPhoto ? (
+              <div className="absolute inset-0">
                 <Image
-                  src={src}
-                  alt=""
+                  src={heroCoverPhoto}
+                  alt="Hero cover"
                   fill
-                  sizes="20vw"
+                  sizes="100vw"
                   className="object-cover object-center"
-                  priority={i < 2}
+                  priority
                   unoptimized
                 />
               </div>
-            ))}
+            ) : (
+              <div className="absolute inset-0 grid grid-cols-5 gap-0.5 [&>*]:min-h-0 [&>*]:min-w-0">
+                {HERO_COLLAGE_SRC.map((src, i) => (
+                  <div key={src} className="relative h-full w-full overflow-hidden">
+                    <Image
+                      src={src}
+                      alt=""
+                      fill
+                      sizes="20vw"
+                      className="object-cover object-center"
+                      priority={i < 2}
+                      unoptimized
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="hero-backdrop pointer-events-none absolute inset-0 z-10" />
+            <div className="section-shell relative z-20 flex h-full flex-col items-center justify-center px-4 pb-8 pt-20 text-center md:pt-24">
+              <span className="badge-chip">{hero?.subtitle || "Sri Lanka Cricket Experience"}</span>
+              <h1 className="section-title mx-auto mt-5 max-w-3xl">
+                {hero?.title || "Cricket Tours In Sri Lanka"}
+              </h1>
+              <p className="section-subtitle mx-auto">
+                {hero?.body ||
+                  "We organise complete tours for teams with matches, camps, net practices and curated sightseeing across the island."}
+              </p>
+              <div className="mt-8 flex flex-wrap justify-center gap-3">
+                <a href="#packages" className="pill-button text-sm">
+                  View Tour Packages
+                </a>
+                <InquiryButton label="Contact Us" />
+              </div>
+            </div>
           </div>
-        )}
 
-        <div className="section-shell relative z-20 -mt-64 pb-16 pt-10 text-center md:-mt-72 md:pb-24">
-          <span className="badge-chip">{hero?.subtitle || "Sri Lanka Cricket Experience"}</span>
-          <h1 className="section-title mx-auto mt-5 max-w-3xl">
-            {hero?.title || "Cricket Tours In Sri Lanka"}
-          </h1>
-          <p className="section-subtitle mx-auto">
-            {hero?.body ||
-              "We organise complete tours for teams with matches, camps, net practices and curated sightseeing across the island."}
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <a href="#packages" className="pill-button text-sm">
-              View Tour Packages
-            </a>
-            <InquiryButton label="Contact Us" />
+          <div className="shrink-0 border-t border-white/10 bg-[#07090b]">
+            <div className="section-shell grid grid-cols-2 md:grid-cols-4">
+              {HERO_STATS.map((item, i) => (
+                <div
+                  key={item.label}
+                  className={`flex flex-col items-center py-5 text-center md:py-6 ${i % 2 === 0 ? "border-r border-white/8" : ""} ${i < 3 ? "md:border-r md:border-white/8" : "md:border-r-0"}`}
+                >
+                  <span className="text-2xl font-extrabold text-accent md:text-3xl">{item.stat}</span>
+                  <span className="mt-1 text-[11px] text-white/50 md:text-xs">{item.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── Stats strip ── */}
-      <div className="border-y border-white/10 bg-[#07090b]">
-        <div className="section-shell grid grid-cols-2 md:grid-cols-4">
-          {HERO_STATS.map((item, i) => (
-            <div
-              key={item.label}
-              className={`flex flex-col items-center py-6 text-center ${i < 3 ? "border-r border-white/8" : ""}`}
-            >
-              <span className="text-2xl font-extrabold text-accent md:text-3xl">{item.stat}</span>
-              <span className="mt-1 text-[11px] text-white/50 md:text-xs">{item.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* ── Topic sections (What We Do / Have Done / Where Play) ── */}
-      <section className="section-shell section-block">
-        <div className="space-y-10">
-          {(topicSections.length
-            ? topicSections
-            : [
-                { key: "what-we-do", title: "What We Do", subtitle: "Tour + Cricket Experience", body: "From logistics to on-field planning, we arrange grounds, practice sessions, coaches, travel, and accommodation." },
-                { key: "what-we-have-done", title: "What We Have Done", subtitle: "Our Track Record", body: "Hosted school, club and academy teams from multiple countries with end-to-end support." },
-                { key: "where-play", title: "Where Would You Be Playing", subtitle: "Stadiums And Grounds", body: "CMB, Dambulla and Galle — plus indoor nets and all-weather practice wickets." }
-              ]
-          )
-            .sort((a, b) => topicGroupOrder.indexOf(a.key) - topicGroupOrder.indexOf(b.key))
-            .map((item) => {
-              const tiles =
-                item.key === "what-we-do"
-                  ? buildWhatWeDoTiles(tileRecords as TopicTileRecord[])
-                  : item.key === "what-we-have-done"
-                    ? buildWhatWeHaveDoneTiles(tileRecords as TopicTileRecord[])
-                    : item.key === "where-play"
-                      ? buildWherePlayTiles(tileRecords as TopicTileRecord[])
-                      : tileRecords.filter((tile) => tile.groupKey === item.key).slice(0, 4);
-              return (
-                <article key={item.key} id={item.key} className="panel-card scroll-mt-28">
+      {(topicSections.length
+        ? topicSections
+        : [
+            { key: "what-we-do", title: "What We Do", subtitle: "Tour + Cricket Experience", body: "From logistics to on-field planning, we arrange grounds, practice sessions, coaches, travel, and accommodation." },
+            { key: "what-we-have-done", title: "What We Have Done", subtitle: "Our Track Record", body: "Hosted school, club and academy teams from multiple countries with end-to-end support." },
+            { key: "where-play", title: "Where Would You Be Playing", subtitle: "Stadiums And Grounds", body: "CMB, Dambulla and Galle — plus indoor nets and all-weather practice wickets." }
+          ]
+      )
+        .sort((a, b) => topicGroupOrder.indexOf(a.key) - topicGroupOrder.indexOf(b.key))
+        .map((item) => {
+          const tiles =
+            item.key === "what-we-do"
+              ? buildWhatWeDoTiles(tileRecords as TopicTileRecord[])
+              : item.key === "what-we-have-done"
+                ? buildWhatWeHaveDoneTiles(tileRecords as TopicTileRecord[])
+                : item.key === "where-play"
+                  ? buildWherePlayTiles(tileRecords as TopicTileRecord[])
+                  : tileRecords.filter((tile) => tile.groupKey === item.key).slice(0, 4);
+          return (
+            <section key={item.key} id={item.key} className="snap-section">
+              <div className="snap-section-inner section-shell flex min-h-full flex-col justify-center py-6 md:py-8">
+                <article className="panel-card">
                   <span className="badge-chip">{item.subtitle}</span>
                   <h2 className="mt-4 text-2xl font-bold md:text-3xl">{item.title}</h2>
                   <p className="mt-3 text-sm text-white/70 md:text-base">{item.body}</p>
@@ -473,14 +473,14 @@ export default async function Home() {
                     </div>
                   )}
                 </article>
-              );
-            })}
-        </div>
-      </section>
+              </div>
+            </section>
+          );
+        })}
 
       {/* ── Gallery ── */}
-      <section id="gallery" className="section-block scroll-mt-28 bg-black/30">
-        <div className="section-shell">
+      <section id="gallery" className="snap-section bg-black/30">
+        <div className="snap-section-inner section-shell flex min-h-full flex-col justify-center py-6 md:py-8">
           <div className="mb-8 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
             <div>
               <span className="badge-chip">Gallery</span>
@@ -514,24 +514,26 @@ export default async function Home() {
       </section>
 
       {/* ── Tour Packages ── */}
-      <section id="packages" className="section-shell section-block scroll-mt-28">
-        <div className="text-center">
-          <span className="badge-chip">Tour Packages</span>
-          <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-bold md:text-5xl">
-            Choose Your Sri Lanka Cricket Tour
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-sm text-white/55">
-            Every package is fully tailored to your squad — contact us for custom pricing and available dates.
-          </p>
-        </div>
-        <div className="mt-10">
-          <PackageShowcase packages={packageCards.slice(0, 3)} />
+      <section id="packages" className="snap-section">
+        <div className="snap-section-inner section-shell flex min-h-full flex-col justify-center py-6 md:py-8">
+          <div className="text-center">
+            <span className="badge-chip">Tour Packages</span>
+            <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-bold md:text-5xl">
+              Choose Your Sri Lanka Cricket Tour
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-sm text-white/55">
+              Every package is fully tailored to your squad — contact us for custom pricing and available dates.
+            </p>
+          </div>
+          <div className="mt-10">
+            <PackageShowcase packages={packageCards.slice(0, 3)} />
+          </div>
         </div>
       </section>
 
       {/* ── Testimonials ── */}
-      <section id="testimonials" className="section-block scroll-mt-28 bg-black/25">
-        <div className="section-shell">
+      <section id="testimonials" className="snap-section bg-black/25">
+        <div className="snap-section-inner section-shell flex min-h-full flex-col justify-center py-6 md:py-8">
           <span className="badge-chip">Testimonials</span>
           <h2 className="mt-3 text-2xl font-bold md:text-3xl">What Teams Say About Their Tours</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
@@ -587,8 +589,8 @@ export default async function Home() {
       </section>
 
       {/* ── FAQ ── */}
-      <section id="faq" className="section-block scroll-mt-28">
-        <div className="section-shell">
+      <section id="faq" className="snap-section">
+        <div className="snap-section-inner section-shell flex min-h-full flex-col justify-center py-6 md:py-8">
           <div className="mb-6">
             <span className="badge-chip">FAQ</span>
             <h2 className="mt-3 text-3xl font-bold md:text-4xl">Cricket Tour Questions, Answered</h2>
@@ -619,8 +621,8 @@ export default async function Home() {
       </section>
 
       {/* ── Contact ── */}
-      <section id="contact" className="section-block scroll-mt-28 bg-black/25">
-        <div className="section-shell">
+      <section id="contact" className="snap-section bg-black/25">
+        <div className="snap-section-inner section-shell flex min-h-full flex-col justify-center py-6 md:py-8">
           <div className="panel-card border-accent/20">
             <div className="mb-6">
               <span className="badge-chip">Get in Touch</span>
