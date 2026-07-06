@@ -116,7 +116,7 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
         <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-ink to-transparent" />
         <div
           ref={scrollRef}
-          className="packages-scroll flex snap-x snap-mandatory gap-6 overflow-x-auto overflow-y-visible scroll-smooth px-4 pb-5 pt-4"
+          className="packages-scroll flex max-h-[62vh] snap-x snap-mandatory items-stretch gap-4 overflow-x-auto overflow-y-hidden scroll-smooth px-2 pb-2 pt-2 lg:gap-5 lg:px-4"
         >
           {cards.map((item, idx) => {
             const featured = idx === featuredIndex;
@@ -124,27 +124,27 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
               .split(",")
               .map((s) => s.trim())
               .filter(Boolean)
-              .slice(0, 5);
+              .slice(0, 4);
 
             return (
               <article
                 key={item.id}
                 style={featured ? undefined : { animationDelay: `${idx * 90}ms` }}
                 className={[
-                  "flex snap-center snap-always flex-col overflow-hidden rounded-2xl border shadow-lg transition-[transform,box-shadow] duration-300 will-change-transform",
+                  "flex max-h-[62vh] snap-center snap-always flex-col overflow-hidden rounded-2xl border shadow-lg transition-[transform,box-shadow] duration-300",
                   featured
-                    ? "animate-package-feature relative z-[1] w-[min(24rem,31%)] scale-105 border-accent/50 bg-panel shadow-accent/15 hover:scale-110"
-                    : "animate-package-in w-[min(20rem,29%)] border-white/10 bg-[#0e1318] hover:-translate-y-0.5 hover:border-white/20",
+                    ? "animate-package-feature relative z-[1] w-[min(22rem,30%)] border-accent/50 bg-panel shadow-accent/15"
+                    : "animate-package-in w-[min(19rem,28%)] border-white/10 bg-[#0e1318] hover:-translate-y-0.5 hover:border-white/20",
                   "hover:shadow-xl"
                 ].join(" ")}
               >
                 {/* Image */}
-                <div className="relative h-44 w-full flex-shrink-0 overflow-hidden">
+                <div className="relative h-[14vh] min-h-[5.5rem] max-h-[8.5rem] w-full flex-shrink-0 overflow-hidden lg:h-[16vh] lg:max-h-[9.5rem]">
                   {item.imageUrl ? (
                     <Image src={item.imageUrl} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" unoptimized />
                   ) : (
                     <div className={`flex h-full w-full items-center justify-center ${featured ? "bg-gradient-to-br from-accent/20 to-accentSoft/10" : "bg-gradient-to-br from-white/5 to-white/[0.02]"}`}>
-                      <svg viewBox="0 0 64 64" className="h-16 w-16 opacity-15" fill="none">
+                      <svg viewBox="0 0 64 64" className="h-12 w-12 opacity-15" fill="none">
                         <circle cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="2" className="text-accent" />
                         <path d="M20 32 Q32 20 44 32 Q32 44 20 32Z" stroke="currentColor" strokeWidth="2" fill="none" className="text-accent" />
                         <line x1="32" y1="4" x2="32" y2="60" stroke="currentColor" strokeWidth="1.5" className="text-accent/60" />
@@ -153,34 +153,34 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-[#080B0D] via-[#080B0D]/20 to-transparent" />
                   {featured && (
-                    <span className="absolute left-1/2 top-3 -translate-x-1/2 rounded-full bg-accent px-4 py-0.5 text-[10px] font-bold uppercase tracking-widest text-ink shadow-lg">
+                    <span className="absolute left-1/2 top-2 -translate-x-1/2 rounded-full bg-accent px-3 py-0.5 text-[9px] font-bold uppercase tracking-widest text-ink shadow-lg">
                       Most Popular
                     </span>
                   )}
-                  <div className="absolute bottom-3 left-4">
-                    <span className="rounded-full border border-accent/35 bg-black/70 px-3 py-1 text-xs font-semibold text-accent backdrop-blur-sm">
+                  <div className="absolute bottom-2 left-3">
+                    <span className="rounded-full border border-accent/35 bg-black/70 px-2.5 py-0.5 text-[10px] font-semibold text-accent backdrop-blur-sm">
                       {item.duration}
                     </span>
                   </div>
                 </div>
 
                 {/* Body */}
-                <div className="flex flex-1 flex-col p-6">
-                  <h3 className={`font-bold leading-snug ${featured ? "text-xl md:text-2xl" : "text-lg md:text-xl"}`}>
+                <div className="flex min-h-0 flex-1 flex-col p-4 lg:p-5">
+                  <h3 className={`font-bold leading-snug ${featured ? "text-lg lg:text-xl" : "text-base lg:text-lg"}`}>
                     {item.title}
                   </h3>
-                  <ul className="mt-4 flex flex-1 flex-col gap-2.5">
+                  <ul className="mt-2 flex flex-1 flex-col gap-1.5 overflow-hidden">
                     {highlights.map((highlight, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-white/75">
-                        <span className="mt-[3px] shrink-0 text-[10px] text-accent">✦</span>
-                        <span>{highlight}</span>
+                      <li key={i} className="flex items-start gap-1.5 text-xs text-white/75 lg:text-sm">
+                        <span className="mt-[2px] shrink-0 text-[9px] text-accent">✦</span>
+                        <span className="line-clamp-2">{highlight}</span>
                       </li>
                     ))}
                   </ul>
-                  <p className="mt-5 text-xs text-white/35">Pricing available on enquiry — fully custom quotes</p>
+                  <p className="mt-2 text-[10px] text-white/35 lg:text-xs">Pricing available on enquiry — fully custom quotes</p>
                   <button
                     type="button"
-                    className="ghost-button mt-3 w-full text-sm"
+                    className="ghost-button mt-2 w-full py-2 text-xs lg:text-sm"
                     onClick={() => setOpenPackage(item)}
                   >
                     View Itinerary

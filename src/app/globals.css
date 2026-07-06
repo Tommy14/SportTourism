@@ -16,12 +16,15 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity;
   scroll-padding-top: 4rem;
+  overflow-y: scroll;
 }
 
 body {
   margin: 0;
+  min-height: 100%;
+  overflow-x: hidden;
   background: radial-gradient(circle at top, #162028 0%, var(--bg) 36%);
   color: var(--text);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
@@ -116,61 +119,27 @@ body {
 /* ── Full-page scroll snap ── */
 .snap-section {
   scroll-snap-align: start;
-  scroll-snap-stop: always;
-  height: 100vh;
-  height: 100dvh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  overscroll-behavior-y: contain;
+  scroll-snap-stop: normal;
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   padding-top: calc(4rem + env(safe-area-inset-top, 0px));
-  padding-bottom: clamp(1.5rem, 3vh, 2.5rem);
-  scrollbar-width: thin;
-  scrollbar-color: rgba(100, 211, 138, 0.35) transparent;
-}
-
-.snap-section::-webkit-scrollbar {
-  width: 6px;
-}
-
-.snap-section::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 999px;
-}
-
-.snap-section::-webkit-scrollbar-thumb {
-  background: rgba(100, 211, 138, 0.35);
-  border-radius: 999px;
+  padding-bottom: clamp(1rem, 2.5vh, 1.75rem);
 }
 
 .snap-section-inner {
   flex: 1;
-  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 100%;
+  min-height: calc(100dvh - 5.5rem - env(safe-area-inset-top, 0px));
 }
 
 .snap-section-hero {
   padding: 0;
-}
-
-.snap-section-scroll {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(100, 211, 138, 0.35) transparent;
-}
-
-.snap-section-scroll::-webkit-scrollbar {
-  width: 6px;
-}
-
-.snap-section-scroll::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 999px;
-}
-
-.snap-section-scroll::-webkit-scrollbar-thumb {
-  background: rgba(100, 211, 138, 0.35);
-  border-radius: 999px;
+  min-height: 100dvh;
 }
 
 /* ── Section reveal animation ── */
