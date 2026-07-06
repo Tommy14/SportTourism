@@ -1,5 +1,4 @@
 import { InquiryForm } from "@/components/forms/InquiryForm";
-import { SectionScroller } from "@/components/layout/SectionScroller";
 import { Footer } from "@/components/sections/Footer";
 import { HeaderNav } from "@/components/sections/HeaderNav";
 import { PackageShowcase } from "@/components/sections/PackageShowcase";
@@ -289,7 +288,6 @@ export default async function Home() {
 
   return (
     <main>
-      <SectionScroller />
       <HeaderNav brand={settings?.brandName || "Pitch to Paradise"} />
 
       {/* ── Hero + stats ── */}
