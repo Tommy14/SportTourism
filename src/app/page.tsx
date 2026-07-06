@@ -382,15 +382,15 @@ export default async function Home() {
           return (
             <section key={item.key} id={item.key} className="snap-section">
               <div className="snap-section-inner snap-section-inner--stretch section-shell">
-                <article className="snap-fit-panel snap-fit-panel--fill panel-card p-4 md:p-5 lg:p-6">
-                  <div className="snap-fit-header">
+                <article className="snap-topic-panel panel-card">
+                  <div className="snap-topic-header">
                     <span className="badge-chip">{item.subtitle}</span>
-                    <h2 className="mt-3 text-2xl font-bold md:text-3xl">{item.title}</h2>
-                    <p className="mt-2 text-sm text-white/70 md:text-base">{item.body}</p>
+                    <h2>{item.title}</h2>
+                    <p>{item.body}</p>
                   </div>
 
                   {item.key === "what-we-do" ? (
-                    <div className="snap-fit-body mt-4 min-h-0 md:mt-5">
+                    <div className="snap-topic-body snap-topic-body--split">
                       <div className="snap-fit-hero lg:rounded-2xl">
                         <Image
                           src={("imageUrl" in item && item.imageUrl ? String(item.imageUrl) : null) ?? WHAT_WE_DO_HERO_SRC}
@@ -401,16 +401,16 @@ export default async function Home() {
                           unoptimized
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
-                        <div className="absolute inset-0 flex flex-col items-center justify-end p-6 pb-8 text-center md:pb-10">
-                          <p className="text-xl font-bold tracking-tight md:text-3xl lg:text-4xl">
+                        <div className="absolute inset-0 flex flex-col items-center justify-end p-4 pb-5 text-center md:p-5 md:pb-6">
+                          <p className="text-lg font-bold tracking-tight md:text-2xl lg:text-3xl">
                             Your Tour, Handled End to End
                           </p>
-                          <p className="mt-2 max-w-2xl text-sm text-white/70 md:text-base">
+                          <p className="mt-1 max-w-2xl text-xs text-white/70 md:mt-1.5 md:text-sm">
                             Grounds, coaches, fixtures, hotels and transport — all arranged for your squad.
                           </p>
                         </div>
                       </div>
-                      <div className="snap-fit-grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
+                      <div className="snap-fit-grid grid-cols-2 lg:grid-cols-4">
                         {tiles.map((tile) => (
                           <div key={tile.id} className="snap-fit-tile overflow-hidden rounded-xl border border-white/10 bg-black/20">
                             <div className="snap-fit-tile-media">
@@ -433,8 +433,8 @@ export default async function Home() {
                       </div>
                     </div>
                   ) : item.key === "what-we-have-done" ? (
-                    <div className="snap-fit-body snap-fit-body--grid-only mt-4 min-h-0 md:mt-5">
-                      <div className="snap-fit-grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="snap-topic-body snap-topic-body--tiles">
+                      <div className="snap-fit-grid grid-cols-2 lg:grid-cols-4">
                         {tiles.map((tile) => (
                           <div key={tile.id} className="snap-fit-tile overflow-hidden rounded-xl border border-white/10 bg-black/20">
                             <div className="snap-fit-tile-media">
@@ -457,7 +457,7 @@ export default async function Home() {
                       </div>
                     </div>
                   ) : (
-                    <div className="snap-fit-body snap-fit-body--grid-only mt-4 min-h-0 md:mt-5">
+                    <div className="snap-topic-body snap-topic-body--tiles">
                       <div className="snap-fit-grid grid-cols-2">
                         {tiles.map((tile) => (
                           <div key={tile.id} className="snap-fit-tile group relative overflow-hidden rounded-xl border border-white/10">
