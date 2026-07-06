@@ -381,17 +381,17 @@ export default async function Home() {
                   : tileRecords.filter((tile) => tile.groupKey === item.key).slice(0, 4);
           return (
             <section key={item.key} id={item.key} className="snap-section">
-              <div className="snap-section-inner section-shell">
-                <article className="snap-fit-panel snap-fit-panel--fill panel-card p-3 md:p-4 lg:p-5">
+              <div className="snap-section-inner snap-section-inner--stretch section-shell">
+                <article className="snap-fit-panel snap-fit-panel--fill panel-card p-4 md:p-5 lg:p-6">
                   <div className="snap-fit-header">
                     <span className="badge-chip">{item.subtitle}</span>
-                    <h2 className="mt-2 text-xl font-bold md:text-2xl lg:text-3xl">{item.title}</h2>
-                    <p className="mt-1.5 text-xs text-white/70 md:text-sm">{item.body}</p>
+                    <h2 className="mt-3 text-2xl font-bold md:text-3xl">{item.title}</h2>
+                    <p className="mt-2 text-sm text-white/70 md:text-base">{item.body}</p>
                   </div>
 
                   {item.key === "what-we-do" ? (
-                    <div className="snap-fit-body mt-3 gap-2 md:mt-4 md:gap-3">
-                      <div className="relative min-h-0 flex-[1.2] overflow-hidden rounded-xl border border-white/10 lg:rounded-2xl">
+                    <div className="snap-fit-body mt-4 md:mt-5">
+                      <div className="snap-fit-hero lg:rounded-2xl">
                         <Image
                           src={("imageUrl" in item && item.imageUrl ? String(item.imageUrl) : null) ?? WHAT_WE_DO_HERO_SRC}
                           alt="What We Do banner"
@@ -400,18 +400,18 @@ export default async function Home() {
                           className="object-cover object-center"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
-                        <div className="absolute inset-0 flex flex-col items-center justify-end p-3 pb-4 text-center md:p-4">
-                          <p className="text-base font-bold tracking-tight md:text-xl lg:text-2xl">
+                        <div className="absolute inset-0 flex flex-col items-center justify-end p-6 pb-8 text-center md:pb-10">
+                          <p className="text-xl font-bold tracking-tight md:text-3xl lg:text-4xl">
                             Your Tour, Handled End to End
                           </p>
-                          <p className="mt-1 text-xs text-white/70 md:text-sm">
+                          <p className="mt-2 max-w-2xl text-sm text-white/70 md:text-base">
                             Grounds, coaches, fixtures, hotels and transport — all arranged for your squad.
                           </p>
                         </div>
                       </div>
-                      <div className="snap-fit-grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3">
+                      <div className="snap-fit-grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
                         {tiles.map((tile) => (
-                          <div key={tile.id} className="snap-fit-tile overflow-hidden rounded-lg border border-white/10 bg-black/20 md:rounded-xl">
+                          <div key={tile.id} className="snap-fit-tile overflow-hidden rounded-xl border border-white/10 bg-black/20">
                             <div className="snap-fit-tile-media">
                               <Image
                                 src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/5/54/Rangiri_Dambulla_International_Stadium.jpg"}
@@ -423,19 +423,19 @@ export default async function Home() {
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                             </div>
-                            <div className="shrink-0 p-2 md:p-3">
-                              <h3 className="text-xs font-semibold leading-tight md:text-sm">{tile.title}</h3>
-                              <p className="mt-1 line-clamp-2 text-[10px] text-white/65 leading-snug md:text-xs">{tile.body}</p>
+                            <div className="snap-fit-tile-caption">
+                              <h3>{tile.title}</h3>
+                              <p>{tile.body}</p>
                             </div>
                           </div>
                         ))}
                       </div>
                     </div>
                   ) : item.key === "what-we-have-done" ? (
-                    <div className="snap-fit-body mt-3 md:mt-4">
-                      <div className="snap-fit-grid grid-cols-2 gap-2 lg:grid-cols-4 md:gap-3">
+                    <div className="snap-fit-body mt-4 md:mt-5">
+                      <div className="snap-fit-grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
                         {tiles.map((tile) => (
-                          <div key={tile.id} className="snap-fit-tile overflow-hidden rounded-lg border border-white/10 bg-black/20 md:rounded-xl">
+                          <div key={tile.id} className="snap-fit-tile overflow-hidden rounded-xl border border-white/10 bg-black/20">
                             <div className="snap-fit-tile-media">
                               <Image
                                 src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/2/23/R_Premadasa_Stadium.jpg"}
@@ -447,19 +447,19 @@ export default async function Home() {
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                             </div>
-                            <div className="shrink-0 p-2 md:p-3">
-                              <h3 className="text-xs font-semibold leading-tight md:text-sm">{tile.title}</h3>
-                              <p className="mt-1 line-clamp-2 text-[10px] text-white/65 leading-snug md:text-xs">{tile.body}</p>
+                            <div className="snap-fit-tile-caption">
+                              <h3>{tile.title}</h3>
+                              <p>{tile.body}</p>
                             </div>
                           </div>
                         ))}
                       </div>
                     </div>
                   ) : (
-                    <div className="snap-fit-body mt-3 md:mt-4">
-                      <div className="snap-fit-grid grid-cols-2 gap-2 md:gap-3">
+                    <div className="snap-fit-body mt-4 md:mt-5">
+                      <div className="snap-fit-grid grid-cols-2">
                         {tiles.map((tile) => (
-                          <div key={tile.id} className="snap-fit-tile group relative overflow-hidden rounded-lg border border-white/10 md:rounded-xl">
+                          <div key={tile.id} className="snap-fit-tile group relative overflow-hidden rounded-xl border border-white/10">
                             <div className="snap-fit-tile-media">
                               <Image
                                 src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/f/f7/Galle_International_Stadium.jpg"}
@@ -471,9 +471,9 @@ export default async function Home() {
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                             </div>
-                            <div className="absolute bottom-0 left-0 right-0 shrink-0 p-2 md:p-3">
-                              <h3 className="text-xs font-semibold md:text-sm">{tile.title}</h3>
-                              <p className="mt-0.5 line-clamp-2 text-[10px] text-white/70 md:text-xs">{tile.body}</p>
+                            <div className="absolute bottom-0 left-0 right-0 p-4">
+                              <h3 className="text-sm font-semibold md:text-base">{tile.title}</h3>
+                              <p className="mt-1 text-xs text-white/70 leading-relaxed md:text-sm">{tile.body}</p>
                             </div>
                           </div>
                         ))}
@@ -527,7 +527,7 @@ export default async function Home() {
 
       {/* ── Tour Packages ── */}
       <section id="packages" className="snap-section">
-        <div className="snap-section-inner section-shell">
+        <div className="snap-section-inner snap-section-inner--stretch section-shell">
           <div className="snap-fit-panel snap-fit-panel--fill">
             <div className="snap-fit-header text-center">
               <span className="badge-chip">Tour Packages</span>

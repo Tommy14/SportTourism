@@ -129,7 +129,7 @@ body {
   display: flex;
   flex-direction: column;
   padding-top: calc(4rem + env(safe-area-inset-top, 0px));
-  padding-bottom: clamp(0.5rem, 1.5vh, 1rem);
+  padding-bottom: clamp(0.75rem, 2vh, 1.25rem);
 }
 
 .snap-section-inner {
@@ -141,6 +141,10 @@ body {
   justify-content: safe center;
   align-items: stretch;
   overflow: hidden;
+}
+
+.snap-section-inner--stretch {
+  justify-content: stretch;
 }
 
 .snap-section-inner--scroll {
@@ -185,13 +189,10 @@ body {
 
 .snap-fit-panel--fill {
   flex: 1 1 0;
+  min-height: 0;
   height: 100%;
   max-height: 100%;
   margin-block: 0;
-}
-
-.snap-fit-header {
-  flex-shrink: 0;
 }
 
 .snap-fit-body {
@@ -200,15 +201,40 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 0.5rem;
+  justify-content: stretch;
+  gap: 0.75rem;
+}
+
+.snap-fit-hero {
+  position: relative;
+  min-height: 0;
+  flex: 3 1 0;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .snap-fit-grid {
-  flex: 1;
+  flex: 2 1 0;
   min-height: 0;
   display: grid;
-  gap: 0.5rem;
+  gap: 0.75rem;
+}
+
+.snap-fit-tile-caption {
+  flex-shrink: 0;
+  padding: 0.75rem 1rem;
+}
+
+.snap-fit-tile-caption p {
+  margin-top: 0.375rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.snap-fit-header {
+  flex-shrink: 0;
 }
 
 .snap-fit-tile {
