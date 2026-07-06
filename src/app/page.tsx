@@ -390,7 +390,7 @@ export default async function Home() {
                   </div>
 
                   {item.key === "what-we-do" ? (
-                    <div className="snap-fit-body mt-4 md:mt-5">
+                    <div className="snap-fit-body mt-4 min-h-0 md:mt-5">
                       <div className="snap-fit-hero lg:rounded-2xl">
                         <Image
                           src={("imageUrl" in item && item.imageUrl ? String(item.imageUrl) : null) ?? WHAT_WE_DO_HERO_SRC}
@@ -398,6 +398,7 @@ export default async function Home() {
                           fill
                           sizes="(max-width: 1200px) 100vw, 1100px"
                           className="object-cover object-center"
+                          unoptimized
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
                         <div className="absolute inset-0 flex flex-col items-center justify-end p-6 pb-8 text-center md:pb-10">
@@ -432,7 +433,7 @@ export default async function Home() {
                       </div>
                     </div>
                   ) : item.key === "what-we-have-done" ? (
-                    <div className="snap-fit-body mt-4 md:mt-5">
+                    <div className="snap-fit-body snap-fit-body--grid-only mt-4 min-h-0 md:mt-5">
                       <div className="snap-fit-grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4">
                         {tiles.map((tile) => (
                           <div key={tile.id} className="snap-fit-tile overflow-hidden rounded-xl border border-white/10 bg-black/20">
@@ -456,7 +457,7 @@ export default async function Home() {
                       </div>
                     </div>
                   ) : (
-                    <div className="snap-fit-body mt-4 md:mt-5">
+                    <div className="snap-fit-body snap-fit-body--grid-only mt-4 min-h-0 md:mt-5">
                       <div className="snap-fit-grid grid-cols-2">
                         {tiles.map((tile) => (
                           <div key={tile.id} className="snap-fit-tile group relative overflow-hidden rounded-xl border border-white/10">
@@ -538,7 +539,7 @@ export default async function Home() {
                 Every package is fully tailored to your squad — contact us for custom pricing and available dates.
               </p>
             </div>
-            <div className="snap-fit-body mt-3 min-h-0 md:mt-4">
+            <div className="snap-fit-body snap-fit-body--single mt-3 min-h-0 md:mt-4">
               <PackageShowcase packages={packageCards.slice(0, 3)} />
             </div>
           </div>
