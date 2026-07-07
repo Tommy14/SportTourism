@@ -51,12 +51,21 @@ export const REFERENCE_HOTELS: ReferenceHotel[] = [
   { city: "Kalutara", stars: 3, name: "Tangerine Beach Hotel", area: "Kalutara" }
 ];
 
-export function getReferenceHotels(cities: string[], stars: HotelStars): ReferenceHotel[] {
+export function getReferenceHotels(cities: string[], stars: HotelStars | HotelStars[]): ReferenceHotel[] {
   const citySet = new Set(cities);
-  return REFERENCE_HOTELS.filter((h) => citySet.has(h.city) && h.stars === stars);
+  const starSet = new Set(Array.isArray(stars) ? stars : [stars]);
+  return REFERENCE_HOTELS.filter((h) => citySet.has(h.city) && starSet.has(h.stars));
 }
 
-export function pickHotelForCity(city: string, stars: HotelStars): ReferenceHotel | null {
-  const matches = REFERENCE_HOTELS.filter((h) => h.city === city && h.stars === stars);
-  return matches[0] ?? null;
+export function pickHotelForCity(city: string, stars: HotelStars | HotelStars[]): ReferenceHotel | null {
+  const starList = Array.isArray(stars) ? stars : [stars];
+  if (!starList.length) return null;
+
+  const preferredStars = [...starList].sort((a, b) => b - a);
+  for (const star of preferredStars) {
+    const match = REFERENCE_HOTELS.find((h) => h.city === city && h.stars === star);
+    if (match) return match;
+  }
+
+  return null;
 }

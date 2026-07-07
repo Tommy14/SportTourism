@@ -15,10 +15,9 @@ export type GenerateItineraryInput = {
   packageInclusions: string;
   baseItinerary: PackageItinerary;
   cities: string[];
-  hotelStars: HotelStars;
-  opponentLevel: string;
+  hotelStars: HotelStars[];
+  opponentLevels: string[];
   travelStart: string;
-  travelEnd?: string;
 };
 
 const SYSTEM_PROMPT = `You ADAPT a fixed cricket tour itinerary — you do NOT invent a new tour.
@@ -34,7 +33,7 @@ STRICT RULES:
 4. Preserve dayType: training days stay training, leisure stays leisure, arrival/departure unchanged in purpose.
 5. ALL cricket must be in the user's selected cities ONLY.
 6. hotelName MUST be copied EXACTLY from allowedHotelNames, or "Hotel TBD".
-7. hotelStars MUST equal user hotelStars.
+7. hotelStars on each day MUST be one of the user's selected hotelStars options.
 8. Do NOT invent extra matches or change match numbering.
 9. Return ONLY JSON: { "days": [ ... ] } — no markdown.`;
 
@@ -69,6 +68,8 @@ export async function generateItineraryWithLlm(
     ...referenceHotels.map((h) => h.name),
     "Hotel TBD"
   ]);
+  const opponentLevelText = input.opponentLevels.join(", ");
+  const primaryHotelStars = Math.max(...input.hotelStars) as HotelStars;
 
   const userPrompt = JSON.stringify(
     {
@@ -82,9 +83,9 @@ export async function generateItineraryWithLlm(
       userPreferences: {
         cities: input.cities,
         hotelStars: input.hotelStars,
-        opponentLevel: input.opponentLevel,
-        travelStart: input.travelStart,
-        travelEnd: input.travelEnd ?? null
+        opponentLevels: input.opponentLevels,
+        opponentLevelText,
+        travelStart: input.travelStart
       },
       CANONICAL_PACKAGE_ITINERARY: {
         summary: input.baseItinerary.summary,
@@ -147,7 +148,9 @@ export async function generateItineraryWithLlm(
 
     return days.map((d) => ({
       ...d,
-      hotelStars: input.hotelStars
+      hotelStars: input.hotelStars.includes(d.hotelStars as HotelStars)
+        ? d.hotelStars
+        : primaryHotelStars
     }));
   } catch (error) {
     console.error("LLM itinerary generation failed:", error);

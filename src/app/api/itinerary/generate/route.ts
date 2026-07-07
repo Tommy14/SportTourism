@@ -6,10 +6,9 @@ import { getCanonicalPackageById } from "@/lib/package-itinerary";
 const requestSchema = z.object({
   packageId: z.number().int().positive(),
   cities: z.array(z.string()).min(1),
-  hotelStars: z.union([z.literal(3), z.literal(4), z.literal(5)]),
-  opponentLevel: z.string().min(1),
-  travelStart: z.string().min(1),
-  travelEnd: z.string().optional()
+  hotelStars: z.array(z.union([z.literal(3), z.literal(4), z.literal(5)])).min(1),
+  opponentLevels: z.array(z.string()).min(1),
+  travelStart: z.string().min(1)
 });
 
 export async function POST(request: Request) {
@@ -32,9 +31,8 @@ export async function POST(request: Request) {
       baseItinerary: resolved.itinerary,
       cities: data.cities,
       hotelStars: data.hotelStars,
-      opponentLevel: data.opponentLevel,
-      travelStart: data.travelStart,
-      travelEnd: data.travelEnd
+      opponentLevels: data.opponentLevels,
+      travelStart: data.travelStart
     });
 
     if (!result.days.length) {

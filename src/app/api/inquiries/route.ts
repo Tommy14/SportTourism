@@ -26,11 +26,10 @@ const packageInquirySchema = z.object({
   teamName:              z.string().optional(),
   preferredPackage:      z.string().min(1),
   packageId:             z.number(),
-  opponentLevel:         z.string().min(1),
+  opponentLevels:        z.array(z.string()).min(1),
   cities:                z.array(z.string()).min(1),
-  hotelStars:            z.union([z.literal(3), z.literal(4), z.literal(5)]),
+  hotelStars:            z.array(z.union([z.literal(3), z.literal(4), z.literal(5)])).min(1),
   travelStart:           z.string().min(1),
-  travelEnd:             z.string().optional(),
   generatedItinerary:    z.array(itineraryDaySchema).min(1),
   referenceHotelsShown:  z.array(z.object({ city: z.string(), name: z.string(), stars: z.number() })),
   generationSource:      z.enum(["llm", "template"]).optional()
@@ -39,10 +38,10 @@ const packageInquirySchema = z.object({
 function buildPackageMessage(data: z.infer<typeof packageInquirySchema>): string {
   const lines = [
     `Package inquiry: ${data.preferredPackage} (id ${data.packageId})`,
-    `Opponent level: ${data.opponentLevel}`,
+    `Opponent levels: ${data.opponentLevels.join(", ")}`,
     `Cities: ${data.cities.join(", ")}`,
-    `Hotel standard: ${data.hotelStars} stars`,
-    `Travel: ${data.travelStart}${data.travelEnd ? ` → ${data.travelEnd}` : ""}`,
+    `Hotel standards: ${data.hotelStars.join(", ")} stars`,
+    `Planning to visit: ${data.travelStart}`,
     data.generationSource ? `Itinerary source: ${data.generationSource}` : "",
     "",
     "Generated itinerary:",
@@ -99,9 +98,9 @@ export async function POST(request: Request) {
       await sendPackageInquiryEmail({
         name: data.name, email: data.email, phone: data.phone,
         teamName: data.teamName, preferredPackage: data.preferredPackage,
-        opponentLevel: data.opponentLevel, cities: data.cities,
+        opponentLevels: data.opponentLevels, cities: data.cities,
         hotelStars: data.hotelStars, travelStart: data.travelStart,
-        travelEnd: data.travelEnd, generatedItinerary: data.generatedItinerary,
+        generatedItinerary: data.generatedItinerary,
         referenceHotelsShown: data.referenceHotelsShown,
         generationSource: data.generationSource, message
       });

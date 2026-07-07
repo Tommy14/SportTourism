@@ -4,7 +4,6 @@ import { useState } from "react";
 import type { CustomItineraryDay } from "@/types/package-itinerary";
 import type { PackageShowcaseItem } from "@/components/sections/PackageShowcase";
 import type { TourPreferences } from "@/components/packages/PreferencesStep";
-import { formatTravelDates } from "@/lib/build-template-itinerary";
 import type { ItineraryGenerationSource } from "@/lib/generate-itinerary";
 
 type ReviewSubmitStepProps = {
@@ -45,11 +44,10 @@ export function ReviewSubmitStep({
         teamName: teamName || undefined,
         preferredPackage: pkg.title,
         packageId: pkg.id,
-        opponentLevel: preferences.opponentLevel,
+        opponentLevels: preferences.opponentLevels,
         cities: preferences.cities,
         hotelStars: preferences.hotelStars,
         travelStart: preferences.travelStart,
-        travelEnd: preferences.travelEnd || undefined,
         generatedItinerary: itinerary,
         referenceHotelsShown,
         generationSource: generationSource ?? undefined
@@ -73,17 +71,16 @@ export function ReviewSubmitStep({
 
       <div className="rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-white/75">
         <p>
-          <span className="text-white/50">Opponent:</span> {preferences.opponentLevel}
+          <span className="text-white/50">Opponent:</span> {preferences.opponentLevels.join(", ")}
         </p>
         <p>
           <span className="text-white/50">Cities:</span> {preferences.cities.join(", ")}
         </p>
         <p>
-          <span className="text-white/50">Hotel:</span> {preferences.hotelStars} stars
+          <span className="text-white/50">Hotel:</span> {preferences.hotelStars.join(", ")} stars
         </p>
         <p>
-          <span className="text-white/50">Dates:</span>{" "}
-          {formatTravelDates(preferences.travelStart, preferences.travelEnd)}
+          <span className="text-white/50">Planning to visit:</span> {preferences.travelStart}
         </p>
       </div>
 

@@ -20,7 +20,7 @@ export async function generateItinerary(
   const templateDays = buildTemplateItinerary(input.baseItinerary, {
     cities: input.cities,
     hotelStars: input.hotelStars,
-    opponentLevel: input.opponentLevel
+    opponentLevels: input.opponentLevels
   });
 
   return { days: templateDays, source: "template" };

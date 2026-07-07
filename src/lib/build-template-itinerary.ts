@@ -74,12 +74,15 @@ export function buildTemplateItinerary(
   base: PackageItinerary,
   options: {
     cities: string[];
-    hotelStars: HotelStars;
-    opponentLevel: string;
+    hotelStars: HotelStars[];
+    opponentLevels: string[];
   }
 ): CustomItineraryDay[] {
   const cities = options.cities;
   if (!cities.length) return [];
+
+  const opponentLevel = options.opponentLevels.join(", ");
+  const primaryHotelStars = Math.max(...options.hotelStars) as HotelStars;
 
   const matchSpec = buildPackageMatchSpec(base);
   const citySchedule = assignCitiesToDays(base.days.length, cities);
@@ -101,12 +104,12 @@ export function buildTemplateItinerary(
 
     let activity: string;
     if (daySpec.matches.length > 0) {
-      activity = buildMatchActivityText(daySpec.matches, city, options.opponentLevel);
+      activity = buildMatchActivityText(daySpec.matches, city, opponentLevel);
       if (/transfer/i.test(daySpec.canonicalActivity) && nextCity && nextCity !== city) {
         activity += `, transfer to ${nextCity}`;
       }
     } else {
-      activity = buildNonMatchActivity(daySpec, city, options.opponentLevel, toCity);
+      activity = buildNonMatchActivity(daySpec, city, opponentLevel, toCity);
     }
 
     const hotelCity = effectiveType === "transfer" ? toCity : city;
@@ -117,7 +120,7 @@ export function buildTemplateItinerary(
       location: buildLocation({ ...daySpec, dayType: effectiveType }, city, fromCity, toCity),
       activity,
       hotelName: hotel?.name ?? "Hotel TBD",
-      hotelStars: options.hotelStars
+      hotelStars: hotel?.stars ?? primaryHotelStars
     };
   });
 }

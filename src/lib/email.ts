@@ -41,11 +41,10 @@ export async function sendPackageInquiryEmail(content: {
   phone: string;
   teamName?: string;
   preferredPackage: string;
-  opponentLevel: string;
+  opponentLevels: string[];
   cities: string[];
-  hotelStars: number;
+  hotelStars: number[];
   travelStart: string;
-  travelEnd?: string;
   generatedItinerary: CustomItineraryDay[];
   referenceHotelsShown: { city: string; name: string; stars: number }[];
   generationSource?: "llm" | "template";
@@ -76,10 +75,10 @@ export async function sendPackageInquiryEmail(content: {
     <h3>Preferences</h3>
     <ul>
       <li><b>Package:</b> ${escapeHtml(content.preferredPackage)}</li>
-      <li><b>Opponent level:</b> ${escapeHtml(content.opponentLevel)}</li>
+      <li><b>Opponent levels:</b> ${escapeHtml(content.opponentLevels.join(", "))}</li>
       <li><b>Cities:</b> ${escapeHtml(content.cities.join(", "))}</li>
-      <li><b>Hotel standard:</b> ${content.hotelStars} stars</li>
-      <li><b>Travel dates:</b> ${escapeHtml(content.travelStart)}${content.travelEnd ? ` → ${escapeHtml(content.travelEnd)}` : ""}</li>
+      <li><b>Hotel standards:</b> ${content.hotelStars.join(", ")} stars</li>
+      <li><b>Planning to visit:</b> ${escapeHtml(content.travelStart)}</li>
       ${content.generationSource ? `<li><b>Itinerary source:</b> ${content.generationSource === "llm" ? "AI-personalized" : "Template"}</li>` : ""}
     </ul>
     ${referenceList ? `<h3>Reference hotels shown</h3><ul>${referenceList}</ul>` : ""}

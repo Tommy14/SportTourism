@@ -13,11 +13,10 @@ import type { CustomItineraryDay } from "@/types/package-itinerary";
 type FlowStep = "detail" | "preferences" | "review";
 
 const DEFAULT_PREFERENCES: TourPreferences = {
-  opponentLevel: "",
+  opponentLevels: [],
   cities: [],
-  hotelStars: 4,
-  travelStart: "",
-  travelEnd: ""
+  hotelStars: [],
+  travelStart: ""
 };
 
 type PackageBookingFlowProps = {
@@ -75,9 +74,8 @@ export function PackageBookingFlow({ pkg, onClose }: PackageBookingFlowProps) {
           packageId: pkg.id,
           cities: preferences.cities,
           hotelStars: preferences.hotelStars,
-          opponentLevel: preferences.opponentLevel,
-          travelStart: preferences.travelStart,
-          travelEnd: preferences.travelEnd || undefined
+          opponentLevels: preferences.opponentLevels,
+          travelStart: preferences.travelStart
         })
       });
 

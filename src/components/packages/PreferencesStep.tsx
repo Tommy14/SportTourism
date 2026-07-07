@@ -4,11 +4,10 @@ import { getReferenceHotels } from "@/data/reference-hotels";
 import { HOTEL_STAR_OPTIONS, OPPONENT_LEVELS, PLAY_CITIES, type HotelStars } from "@/data/tour-options";
 
 export type TourPreferences = {
-  opponentLevel: string;
+  opponentLevels: string[];
   cities: string[];
-  hotelStars: HotelStars;
+  hotelStars: HotelStars[];
   travelStart: string;
-  travelEnd: string;
 };
 
 type PreferencesStepProps = {
@@ -31,7 +30,7 @@ export function PreferencesStep({
   onBack
 }: PreferencesStepProps) {
   const referenceHotels =
-    preferences.cities.length > 0 && preferences.hotelStars
+    preferences.cities.length > 0 && preferences.hotelStars.length > 0
       ? getReferenceHotels(preferences.cities, preferences.hotelStars)
       : [];
 
@@ -42,38 +41,57 @@ export function PreferencesStep({
     onChange({ ...preferences, cities });
   }
 
+  function toggleOpponentLevel(level: string) {
+    const opponentLevels = preferences.opponentLevels.includes(level)
+      ? preferences.opponentLevels.filter((l) => l !== level)
+      : [...preferences.opponentLevels, level];
+    onChange({ ...preferences, opponentLevels });
+  }
+
+  function toggleHotelStars(stars: HotelStars) {
+    const hotelStars = preferences.hotelStars.includes(stars)
+      ? preferences.hotelStars.filter((s) => s !== stars)
+      : [...preferences.hotelStars, stars];
+    onChange({ ...preferences, hotelStars });
+  }
+
   const canPreview =
     hasItinerary &&
-    Boolean(preferences.opponentLevel) &&
+    preferences.opponentLevels.length > 0 &&
     preferences.cities.length > 0 &&
+    preferences.hotelStars.length > 0 &&
     Boolean(preferences.travelStart);
 
   const missingFields: string[] = [];
   if (!hasItinerary) missingFields.push("package itinerary");
-  if (!preferences.opponentLevel) missingFields.push("opponent level");
+  if (!preferences.opponentLevels.length) missingFields.push("opponent level");
   if (!preferences.cities.length) missingFields.push("at least one city");
-  if (!preferences.travelStart) missingFields.push("start date");
+  if (!preferences.hotelStars.length) missingFields.push("hotel standard");
+  if (!preferences.travelStart) missingFields.push("planning to visit date");
 
   return (
     <div className="space-y-6">
       <div>
-        <p className="mb-2 text-sm font-semibold text-white">What types of opponents do you need to play with?</p>
+        <p className="mb-2 text-sm font-semibold text-white">What types of opponents do you need to play with? (multiple)</p>
         <div className="flex flex-wrap gap-2">
-          {OPPONENT_LEVELS.map((level) => (
-            <button
-              key={level}
-              type="button"
-              onClick={() => onChange({ ...preferences, opponentLevel: level })}
-              className={[
-                "rounded-full border px-3 py-1.5 text-sm transition",
-                preferences.opponentLevel === level
-                  ? "border-accent bg-accent/15 text-accent"
-                  : "border-white/15 bg-white/5 text-white/80 hover:border-white/30"
-              ].join(" ")}
-            >
-              {level}
-            </button>
-          ))}
+          {OPPONENT_LEVELS.map((level) => {
+            const selected = preferences.opponentLevels.includes(level);
+            return (
+              <button
+                key={level}
+                type="button"
+                onClick={() => toggleOpponentLevel(level)}
+                className={[
+                  "rounded-full border px-3 py-1.5 text-sm transition",
+                  selected
+                    ? "border-accent bg-accent/15 text-accent"
+                    : "border-white/15 bg-white/5 text-white/80 hover:border-white/30"
+                ].join(" ")}
+              >
+                {level}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -102,50 +120,41 @@ export function PreferencesStep({
       </div>
 
       <div>
-        <p className="mb-2 text-sm font-semibold text-white">Which hotel standard do you need?</p>
+        <p className="mb-2 text-sm font-semibold text-white">Which hotel standard do you need? (multiple)</p>
         <div className="flex flex-wrap gap-2">
-          {HOTEL_STAR_OPTIONS.map((stars) => (
-            <button
-              key={stars}
-              type="button"
-              onClick={() => onChange({ ...preferences, hotelStars: stars })}
-              className={[
-                "rounded-full border px-3 py-1.5 text-sm transition",
-                preferences.hotelStars === stars
-                  ? "border-accent bg-accent/15 text-accent"
-                  : "border-white/15 bg-white/5 text-white/80 hover:border-white/30"
-              ].join(" ")}
-            >
-              {stars} stars
-            </button>
-          ))}
+          {HOTEL_STAR_OPTIONS.map((stars) => {
+            const selected = preferences.hotelStars.includes(stars);
+            return (
+              <button
+                key={stars}
+                type="button"
+                onClick={() => toggleHotelStars(stars)}
+                className={[
+                  "rounded-full border px-3 py-1.5 text-sm transition",
+                  selected
+                    ? "border-accent bg-accent/15 text-accent"
+                    : "border-white/15 bg-white/5 text-white/80 hover:border-white/30"
+                ].join(" ")}
+              >
+                {stars} stars
+              </button>
+            );
+          })}
         </div>
       </div>
 
       <div>
         <p className="mb-2 text-sm font-semibold text-white">When are you planning to come?</p>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <label className="text-sm text-white/70">
-            Start date
-            <input
-              type="date"
-              required
-              value={preferences.travelStart}
-              onChange={(e) => onChange({ ...preferences, travelStart: e.target.value })}
-              className="input-dark mt-1 w-full"
-            />
-          </label>
-          <label className="text-sm text-white/70">
-            End date (optional)
-            <input
-              type="date"
-              value={preferences.travelEnd}
-              min={preferences.travelStart || undefined}
-              onChange={(e) => onChange({ ...preferences, travelEnd: e.target.value })}
-              className="input-dark mt-1 w-full"
-            />
-          </label>
-        </div>
+        <label className="text-sm text-white/70">
+          Planning to visit
+          <input
+            type="date"
+            required
+            value={preferences.travelStart}
+            onChange={(e) => onChange({ ...preferences, travelStart: e.target.value })}
+            className="input-dark mt-1 w-full"
+          />
+        </label>
       </div>
 
       {referenceHotels.length > 0 ? (
