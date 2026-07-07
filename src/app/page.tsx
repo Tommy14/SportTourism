@@ -591,7 +591,7 @@ export default async function Home() {
             <span className="badge-chip">Testimonials</span>
             <h2 className="mt-2 text-xl font-bold md:text-2xl lg:text-3xl">What Teams Say About Their Tours</h2>
           </div>
-          <div className="mt-4 grid gap-3 md:grid-cols-2 md:gap-4">
+          <div className="mt-4 grid items-start gap-3 md:grid-cols-2 md:gap-4">
             {(testimonials.length
               ? testimonials
               : [
@@ -606,7 +606,7 @@ export default async function Home() {
               return (
                 <blockquote
                   key={item.id}
-                  className="panel-card relative flex flex-col gap-4 overflow-hidden sm:flex-row sm:items-start"
+                  className="panel-card relative flex h-auto flex-col gap-4 overflow-hidden sm:flex-row sm:items-start"
                 >
                   <span className="pointer-events-none absolute -right-2 -top-3 select-none font-serif text-9xl leading-none text-accent/8">
                     &ldquo;
@@ -626,7 +626,7 @@ export default async function Home() {
                       🏏
                     </div>
                   )}
-                  <div className="min-w-0 flex-1">
+                  <div className="min-w-0 w-full sm:flex-1">
                     <p className="text-sm leading-relaxed text-white/80 md:text-base">
                       &ldquo;{item.quote}&rdquo;
                     </p>
