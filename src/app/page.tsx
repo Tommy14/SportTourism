@@ -379,22 +379,22 @@ export default async function Home() {
                   : tileRecords.filter((tile) => tile.groupKey === item.key).slice(0, 4);
           return (
             <section key={item.key} id={item.key} className="snap-section">
-              <div className="snap-section-inner snap-section-inner--stretch section-shell">
-                <article className="snap-topic-panel panel-card">
-                  <div className="snap-topic-header">
+              <div className="snap-section-inner snap-section-inner--stretch w-full max-w-none">
+                <article className="snap-topic-panel snap-topic-panel--full">
+                  <div className="snap-topic-header snap-topic-header--inset section-shell">
                     <span className="badge-chip">{item.subtitle}</span>
                     <h2>{item.title}</h2>
                     <p>{item.body}</p>
                   </div>
 
                   {item.key === "what-we-do" ? (
-                    <div className="snap-topic-body snap-topic-body--split">
-                      <div className="snap-fit-hero lg:rounded-2xl">
+                    <div className="snap-topic-body snap-topic-body--split snap-topic-body--full">
+                      <div className="snap-fit-hero snap-fit-hero--full">
                         <Image
                           src={("imageUrl" in item && item.imageUrl ? String(item.imageUrl) : null) ?? WHAT_WE_DO_HERO_SRC}
                           alt="What We Do banner"
                           fill
-                          sizes="(max-width: 1200px) 100vw, 1100px"
+                          sizes="100vw"
                           className="object-cover object-center"
                           unoptimized
                         />
@@ -408,9 +408,9 @@ export default async function Home() {
                           </p>
                         </div>
                       </div>
-                      <div className="snap-fit-grid snap-fit-grid--tiles grid-cols-2 lg:grid-cols-4">
+                      <div className="snap-fit-grid snap-fit-grid--tiles snap-fit-grid--full grid-cols-2 lg:grid-cols-4">
                         {tiles.map((tile) => (
-                          <div key={tile.id} className="snap-fit-tile rounded-xl border border-white/10 bg-black/20">
+                          <div key={tile.id} className="snap-fit-tile border border-white/10 bg-black/20">
                             <div className="snap-fit-tile-media">
                               <Image
                                 src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/5/54/Rangiri_Dambulla_International_Stadium.jpg"}
@@ -431,10 +431,10 @@ export default async function Home() {
                       </div>
                     </div>
                   ) : item.key === "what-we-have-done" ? (
-                    <div className="snap-topic-body snap-topic-body--tiles">
-                      <div className="snap-fit-grid snap-fit-grid--tiles grid-cols-2 lg:grid-cols-4">
+                    <div className="snap-topic-body snap-topic-body--tiles snap-topic-body--full">
+                      <div className="snap-fit-grid snap-fit-grid--tiles snap-fit-grid--full grid-cols-2 lg:grid-cols-4">
                         {tiles.map((tile) => (
-                          <div key={tile.id} className="snap-fit-tile rounded-xl border border-white/10 bg-black/20">
+                          <div key={tile.id} className="snap-fit-tile border border-white/10 bg-black/20">
                             <div className="snap-fit-tile-media">
                               <Image
                                 src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/2/23/R_Premadasa_Stadium.jpg"}
@@ -455,16 +455,16 @@ export default async function Home() {
                       </div>
                     </div>
                   ) : (
-                    <div className="snap-topic-body snap-topic-body--tiles">
-                      <div className="snap-fit-grid grid-cols-2">
+                    <div className="snap-topic-body snap-topic-body--tiles snap-topic-body--full">
+                      <div className="snap-fit-grid snap-fit-grid--full grid-cols-2">
                         {tiles.map((tile) => (
-                          <div key={tile.id} className="snap-fit-tile group relative overflow-hidden rounded-xl border border-white/10">
+                          <div key={tile.id} className="snap-fit-tile group relative overflow-hidden border border-white/10">
                             <div className="snap-fit-tile-media">
                               <Image
                                 src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/f/f7/Galle_International_Stadium.jpg"}
                                 alt={tile.title}
                                 fill
-                                sizes="(max-width: 768px) 50vw, 40vw"
+                                sizes="(max-width: 768px) 50vw, 50vw"
                                 className="object-cover"
                                 unoptimized
                               />
