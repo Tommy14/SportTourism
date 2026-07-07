@@ -227,14 +227,16 @@ body {
 .snap-topic-body--full {
   width: 100%;
   min-height: 0;
-  padding-left: 0;
-  padding-right: 0;
 }
 
 .snap-fit-hero--full {
-  border-radius: 0;
-  border-left: none;
-  border-right: none;
+  border-radius: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .snap-fit-hero--full {
+    border-radius: 1rem;
+  }
 }
 
 .snap-fit-grid--full {
