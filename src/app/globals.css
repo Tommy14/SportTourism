@@ -33,6 +33,10 @@ body {
   @apply mx-auto w-full max-w-6xl px-4 md:px-8 lg:px-10;
 }
 
+.section-shell-wide {
+  @apply mx-auto w-full px-4 md:px-6 lg:px-8 xl:px-10;
+}
+
 .pill-button {
   @apply inline-flex items-center justify-center rounded-full border px-5 py-2 text-sm font-semibold transition;
   border-color: color-mix(in srgb, var(--mint) 70%, transparent);

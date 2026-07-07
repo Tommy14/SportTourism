@@ -15,7 +15,7 @@ export function HeaderNav({ brand }: { brand: string }) {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#080b0d]/90 backdrop-blur-md">
-      <div className="section-shell flex h-16 items-center justify-between gap-4">
+      <div className="section-shell-wide flex h-16 items-center justify-between gap-4">
         <a href="#home" className="flex items-center gap-2.5 shrink-0">
           <img src="/logo.png" alt="Pitch to Paradise" className="h-8 w-8 rounded-md" />
           <span className="text-xs font-extrabold uppercase tracking-wider text-white">{brand}</span>
@@ -43,7 +43,7 @@ export function HeaderNav({ brand }: { brand: string }) {
       </div>
 
       {open && (
-        <div className="section-shell pb-4 md:hidden">
+        <div className="section-shell-wide pb-4 md:hidden">
           <nav className="panel-card flex flex-col gap-3 p-4 text-sm">
             {links.map((link) => (
               <a

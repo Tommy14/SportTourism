@@ -11,7 +11,7 @@ export function Footer({
 }) {
   return (
     <footer className="snap-section border-t border-white/10 bg-[#060a0c]">
-      <div className="snap-section-inner snap-section-inner--scroll section-shell">
+      <div className="snap-section-inner snap-section-inner--scroll section-shell-wide">
         <div className="snap-scroll-content">
         {/* Top banner */}
         <div className="mb-10 flex flex-col items-start justify-between gap-6 border-b border-white/10 pb-10 md:flex-row md:items-end">

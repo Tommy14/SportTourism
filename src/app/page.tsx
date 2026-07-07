@@ -379,7 +379,7 @@ export default async function Home() {
                   : tileRecords.filter((tile) => tile.groupKey === item.key).slice(0, 4);
           return (
             <section key={item.key} id={item.key} className="snap-section">
-              <div className="snap-section-inner snap-section-inner--stretch section-shell">
+              <div className="snap-section-inner snap-section-inner--stretch section-shell-wide">
                 <article className="snap-topic-panel snap-topic-panel--full">
                   <div className="snap-topic-header snap-topic-header--inset">
                     <span className="badge-chip">{item.subtitle}</span>
@@ -487,7 +487,7 @@ export default async function Home() {
 
       {/* ── Gallery ── */}
       <section id="gallery" className="snap-section bg-black/30">
-        <div className="snap-section-inner snap-section-inner--scroll section-shell">
+        <div className="snap-section-inner snap-section-inner--scroll section-shell-wide">
           <div className="snap-scroll-content">
             <div className="snap-fit-header mb-4 md:mb-6">
               <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
@@ -565,7 +565,7 @@ export default async function Home() {
 
       {/* ── Tour Packages ── */}
       <section id="packages" className="snap-section">
-        <div className="snap-section-inner snap-section-inner--stretch section-shell">
+        <div className="snap-section-inner snap-section-inner--stretch section-shell-wide">
           <div className="snap-fit-panel snap-fit-panel--fill">
             <div className="snap-fit-header text-center">
               <span className="badge-chip">Tour Packages</span>
@@ -585,7 +585,7 @@ export default async function Home() {
 
       {/* ── Testimonials ── */}
       <section id="testimonials" className="snap-section bg-black/25">
-        <div className="snap-section-inner snap-section-inner--scroll section-shell">
+        <div className="snap-section-inner snap-section-inner--scroll section-shell-wide">
           <div className="snap-scroll-content">
           <div className="snap-fit-header text-center md:text-left">
             <span className="badge-chip">Testimonials</span>
@@ -646,7 +646,7 @@ export default async function Home() {
 
       {/* ── FAQ ── */}
       <section id="faq" className="snap-section">
-        <div className="snap-section-inner snap-section-inner--scroll section-shell">
+        <div className="snap-section-inner snap-section-inner--scroll section-shell-wide">
           <div className="snap-scroll-content">
           <div className="snap-fit-header mb-4 text-center md:text-left">
             <span className="badge-chip">FAQ</span>
@@ -680,7 +680,7 @@ export default async function Home() {
 
       {/* ── Contact ── */}
       <section id="contact" className="snap-section bg-black/25">
-        <div className="snap-section-inner snap-section-inner--scroll section-shell">
+        <div className="snap-section-inner snap-section-inner--scroll section-shell-wide">
           <div className="snap-scroll-content">
           <div className="panel-card border-accent/20 p-4 md:p-6">
             <div className="mb-4 md:mb-6">
