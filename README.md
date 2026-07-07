@@ -6,7 +6,7 @@ One-page tourism + cricket package website with hidden admin portal, inquiry ema
 
 - Next.js (App Router)
 - Prisma + PostgreSQL (content + image blobs)
-- SMTP via Nodemailer
+- Resend (inquiry notification emails)
 
 ## Setup
 
@@ -21,6 +21,16 @@ One-page tourism + cricket package website with hidden admin portal, inquiry ema
    - `npm run prisma:seed`
 6. Start dev server:
    - `npm run dev`
+
+## Environment variables
+
+Required for production email delivery:
+
+- `RESEND_API_KEY` — Resend API key
+- `INQUIRY_TO_EMAIL` — destination inbox for inquiries
+- `INQUIRY_FROM_EMAIL` — verified sender address in Resend
+
+Also required: `DATABASE_URL`, `JWT_SECRET`. Optional: `OPENAI_API_KEY` / `OPENAI_MODEL` for AI itinerary personalization.
 
 ## Routes
 

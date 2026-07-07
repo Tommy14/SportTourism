@@ -1,6 +1,12 @@
+import path from "path";
+import { fileURLToPath } from "url";
+
+const projectRoot = path.dirname(fileURLToPath(import.meta.url));
+
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  outputFileTracingRoot: projectRoot,
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 2592000, // 30 days — revalidates only when image URL changes

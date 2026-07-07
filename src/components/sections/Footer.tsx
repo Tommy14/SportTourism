@@ -27,7 +27,7 @@ export function Footer({
         </div>
 
         {/* Columns */}
-        <div className="grid gap-8 text-sm text-white/70 md:grid-cols-4">
+        <div className="grid gap-8 text-sm text-white/70 md:grid-cols-3">
           <div>
             <div className="mb-3 flex items-center gap-2">
               <img src="/logo.png" alt="Pitch to Paradise" className="h-7 w-7 rounded" />
@@ -57,13 +57,6 @@ export function Footer({
               <a href="#faq" className="transition hover:text-accent">FAQ</a>
               <a href="#contact" className="transition hover:text-accent">Contact</a>
             </div>
-          </div>
-
-          <div>
-            <p className="mb-3 font-semibold text-white">Stay Updated</p>
-            <p className="mb-3 text-xs text-white/50">Get tour news and Sri Lanka cricket updates.</p>
-            <input placeholder="Your email address" className="input-dark mb-2" />
-            <button className="pill-button w-full text-sm">Subscribe</button>
           </div>
         </div>
 
