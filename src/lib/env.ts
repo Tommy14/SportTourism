@@ -1,17 +1,21 @@
 import { z } from "zod";
 
-const schema = z.object({
-  DATABASE_URL: z.string().min(1),
-  JWT_SECRET: z.string().min(16),
-  ADMIN_PATH_PREFIX: z.string().default("portal"),
-  SMTP_HOST: z.string().default(""),
-  SMTP_PORT: z.coerce.number().default(587),
-  SMTP_USER: z.string().default(""),
-  SMTP_PASS: z.string().default(""),
-  RESEND_API_KEY: z.string().default(""),
-  INQUIRY_TO_EMAIL: z.string().default(""),
-  INQUIRY_FROM_EMAIL: z.string().default("")
-});
+const schema = z
+  .object({
+    DATABASE_URL: z.string().min(1),
+    JWT_SECRET: z.string().min(16),
+    RESEND_API_KEY: z.string().default(""),
+    INQUIRY_TO_EMAIL: z.string().default(""),
+    INQUIRY_FROM_EMAIL: z.string().default("")
+  })
+  .refine(
+    (e) =>
+      process.env.NODE_ENV !== "production" ||
+      (e.RESEND_API_KEY && e.INQUIRY_TO_EMAIL && e.INQUIRY_FROM_EMAIL),
+    {
+      message: "RESEND_API_KEY, INQUIRY_TO_EMAIL, and INQUIRY_FROM_EMAIL are required in production"
+    }
+  );
 
 const parsed = schema.safeParse(process.env);
 if (!parsed.success) {

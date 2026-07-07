@@ -33,8 +33,6 @@ export async function sendInquiryEmail(content: {
     console.error("[email] Resend error:", error);
     throw new Error(error.message);
   }
-
-  console.log("[email] Contact email sent OK via Resend");
 }
 
 export async function sendPackageInquiryEmail(content: {
@@ -113,6 +111,4 @@ export async function sendPackageInquiryEmail(content: {
     console.error("[email] Resend error:", error);
     throw new Error(error.message);
   }
-
-  console.log("[email] Package inquiry email sent OK via Resend");
 }
