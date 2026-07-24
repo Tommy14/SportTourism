@@ -534,7 +534,7 @@ export default async function Home() {
                     {items.length === 0 ? (
                       <p className="text-sm text-white/40">No photos in this section yet.</p>
                     ) : (
-                    <div className="grid grid-cols-2 gap-2 md:grid-cols-3 md:gap-3">
+                    <div className="grid grid-cols-2 gap-2 md:grid-cols-3 md:gap-3 lg:grid-cols-4">
                       {items.map((item, idx) => (
                         <div key={item?.id ?? `${section.id}-${idx}`} className="group overflow-hidden rounded-lg border border-white/10 bg-[#0d1317] md:rounded-xl">
                           <div className="relative aspect-[4/3] w-full overflow-hidden">
@@ -542,7 +542,7 @@ export default async function Home() {
                               src={item?.imageUrl || GALLERY_FALLBACK_SRC[idx % GALLERY_FALLBACK_SRC.length]}
                               alt={item?.caption || GALLERY_FALLBACK_CAPTIONS[idx % GALLERY_FALLBACK_CAPTIONS.length]}
                               fill
-                              sizes="(max-width: 768px) 50vw, 33vw"
+                              sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                               className="object-cover transition duration-500 group-hover:scale-105"
                               unoptimized
                             />
