@@ -52,8 +52,8 @@ export function Footer({
             <div className="flex flex-col gap-1.5">
               <a href="#home" className="transition hover:text-accent">Home</a>
               <a href="#what-we-do" className="transition hover:text-accent">Services</a>
-              <a href="#packages" className="transition hover:text-accent">Tour Packages</a>
               <a href="#gallery" className="transition hover:text-accent">Gallery</a>
+              <a href="#packages" className="transition hover:text-accent">Tour Packages</a>
               <a href="#faq" className="transition hover:text-accent">FAQ</a>
               <a href="#contact" className="transition hover:text-accent">Contact</a>
             </div>
@@ -64,8 +64,6 @@ export function Footer({
         <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-5 text-xs text-white/40">
           <p>© {new Date().getFullYear()} {brandName}. All Rights Reserved.</p>
           <div className="flex items-center gap-4">
-            <a href="/portal/login" className="transition hover:text-white">Admin</a>
-            <span className="text-white/20">|</span>
             <span>Privacy Policy</span>
             <span className="text-white/20">|</span>
             <span>Terms &amp; Conditions</span>

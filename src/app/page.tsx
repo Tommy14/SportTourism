@@ -499,11 +499,11 @@ export default async function Home() {
                       : "Tour Moments & Team Spirit"}
                   </h2>
                 </div>
-                <p className="text-xs text-white/50 md:text-sm">
-                  {galleryPhotoCount
-                    ? `${galleryPhotoCount} photo${galleryPhotoCount === 1 ? "" : "s"}`
-                    : "Upload photos via the admin panel"}
-                </p>
+                {galleryPhotoCount > 0 && (
+                  <p className="text-xs text-white/50 md:text-sm">
+                    {`${galleryPhotoCount} photo${galleryPhotoCount === 1 ? "" : "s"}`}
+                  </p>
+                )}
               </div>
             </div>
 
