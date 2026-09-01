@@ -4,6 +4,7 @@ import { HeaderNav } from "@/components/sections/HeaderNav";
 import { PackageShowcase } from "@/components/sections/PackageShowcase";
 import { InquiryButton } from "@/components/ui/InquiryButton";
 import { getSiteContent } from "@/lib/content";
+import { imagePositionStyle } from "@/lib/image-position";
 import { toPackageShowcaseItems } from "@/lib/package-showcase";
 import Image from "next/image";
 
@@ -91,6 +92,7 @@ type TopicTileRecord = {
   title: string;
   body: string;
   imageUrl: string | null;
+  imagePosition?: string | null;
 };
 
 function buildWhatWeDoTiles(records: TopicTileRecord[]): TopicTileRecord[] {
@@ -128,7 +130,7 @@ function buildWhatWeDoTiles(records: TopicTileRecord[]): TopicTileRecord[] {
       };
     }
     const d = defaults[title];
-    return { id: -(i + 1), groupKey: "what-we-do", title, body: d.body, imageUrl: d.imageUrl };
+    return { id: -(i + 1), groupKey: "what-we-do", title, body: d.body, imageUrl: d.imageUrl, imagePosition: null };
   });
 }
 
@@ -177,7 +179,7 @@ function buildWhatWeHaveDoneTiles(records: TopicTileRecord[]): TopicTileRecord[]
         imageUrl: resolveTopicImageUrl(existing.imageUrl, d.imageUrl)
       };
     }
-    return { id: -(i + 1), groupKey: "what-we-have-done", title, body: d.body, imageUrl: d.imageUrl };
+    return { id: -(i + 1), groupKey: "what-we-have-done", title, body: d.body, imageUrl: d.imageUrl, imagePosition: null };
   });
 }
 
@@ -226,7 +228,7 @@ function buildWherePlayTiles(records: TopicTileRecord[]): TopicTileRecord[] {
         imageUrl: pickWherePlayImageUrl(existing.imageUrl, d.imageUrl)
       };
     }
-    return { id: -(i + 1), groupKey: "where-play", title, body: d.body, imageUrl: d.imageUrl };
+    return { id: -(i + 1), groupKey: "where-play", title, body: d.body, imageUrl: d.imageUrl, imagePosition: null };
   });
 }
 
@@ -238,23 +240,33 @@ export default async function Home() {
   const topicSections = sections.filter((item) => item.key !== "hero");
 
   const heroCoverPhoto = (hero?.imageUrl as string | null | undefined) ?? null;
+  const heroImagePosition = (hero?.imagePosition as string | null | undefined) ?? null;
 
-  const fallbackTopicTiles = [
-    { id: 1, groupKey: "what-we-do", title: "Accommodation", body: "Team-friendly hotel stays arranged close to training and match venues.", imageUrl: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1000&q=80" },
-    { id: 2, groupKey: "what-we-do", title: "Fixtures", body: "Competitive matches coordinated with suitable schools, clubs, and academies.", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/54/Rangiri_Dambulla_International_Stadium.jpg" },
-    { id: 3, groupKey: "what-we-do", title: "Transport", body: "Reliable team transport organized for airport pickups, grounds, and excursions.", imageUrl: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1000&q=80" },
-    { id: 4, groupKey: "what-we-do", title: "Special Coaching Sessions", body: "Expert coaching for batting, bowling and fielding tailored to your squad.", imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1000&q=80" },
-    { id: 5, groupKey: "what-we-have-done", title: "Club & Country Level Teams", body: "Hosted club sides and representative squads with fixtures, nets and full tour coordination.", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/2/23/R_Premadasa_Stadium.jpg" },
-    { id: 6, groupKey: "what-we-have-done", title: "School and Junior Tours", body: "Ran school and junior programs with age-appropriate schedules, supervision and travel.", imageUrl: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1000&q=80" },
-    { id: 7, groupKey: "what-we-have-done", title: "Player Adaption to Sri Lankan Arenas", body: "Helped visiting players adjust to local wickets, weather and ground characteristics across the island.", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f7/Galle_International_Stadium.jpg" },
-    { id: 8, groupKey: "what-we-have-done", title: "Coaching Sessions", body: "Delivered structured coaching blocks with specialist staff, video and intensive net work.", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/6/68/Indoor_cricket.jpg" },
-    { id: 9, groupKey: "where-play", title: "CMB", body: "Colombo-region grounds and clubs — city wickets, strong facilities and easy logistics.", imageUrl: WHERE_PLAY_IMAGE.cmb },
-    { id: 10, groupKey: "where-play", title: "Dambulla", body: "Central Province cricket around Dambulla — stadium-standard venues and training blocks.", imageUrl: WHERE_PLAY_IMAGE.dambulla },
-    { id: 11, groupKey: "where-play", title: "Galle", body: "Southern coastal cricket — historic fort setting, sea breeze and true low-country conditions.", imageUrl: WHERE_PLAY_IMAGE.galle },
-    { id: 12, groupKey: "where-play", title: "Indoor / Nets", body: "Indoor nets and outdoor practice wickets so weather never cancels a session.", imageUrl: WHERE_PLAY_IMAGE.indoorNets }
+  const fallbackTopicTiles: TopicTileRecord[] = [
+    { id: 1, groupKey: "what-we-do", title: "Accommodation", body: "Team-friendly hotel stays arranged close to training and match venues.", imageUrl: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1000&q=80", imagePosition: null },
+    { id: 2, groupKey: "what-we-do", title: "Fixtures", body: "Competitive matches coordinated with suitable schools, clubs, and academies.", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/5/54/Rangiri_Dambulla_International_Stadium.jpg", imagePosition: null },
+    { id: 3, groupKey: "what-we-do", title: "Transport", body: "Reliable team transport organized for airport pickups, grounds, and excursions.", imageUrl: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1000&q=80", imagePosition: null },
+    { id: 4, groupKey: "what-we-do", title: "Special Coaching Sessions", body: "Expert coaching for batting, bowling and fielding tailored to your squad.", imageUrl: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1000&q=80", imagePosition: null },
+    { id: 5, groupKey: "what-we-have-done", title: "Club & Country Level Teams", body: "Hosted club sides and representative squads with fixtures, nets and full tour coordination.", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/2/23/R_Premadasa_Stadium.jpg", imagePosition: null },
+    { id: 6, groupKey: "what-we-have-done", title: "School and Junior Tours", body: "Ran school and junior programs with age-appropriate schedules, supervision and travel.", imageUrl: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=1000&q=80", imagePosition: null },
+    { id: 7, groupKey: "what-we-have-done", title: "Player Adaption to Sri Lankan Arenas", body: "Helped visiting players adjust to local wickets, weather and ground characteristics across the island.", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f7/Galle_International_Stadium.jpg", imagePosition: null },
+    { id: 8, groupKey: "what-we-have-done", title: "Coaching Sessions", body: "Delivered structured coaching blocks with specialist staff, video and intensive net work.", imageUrl: "https://upload.wikimedia.org/wikipedia/commons/6/68/Indoor_cricket.jpg", imagePosition: null },
+    { id: 9, groupKey: "where-play", title: "CMB", body: "Colombo-region grounds and clubs — city wickets, strong facilities and easy logistics.", imageUrl: WHERE_PLAY_IMAGE.cmb, imagePosition: null },
+    { id: 10, groupKey: "where-play", title: "Dambulla", body: "Central Province cricket around Dambulla — stadium-standard venues and training blocks.", imageUrl: WHERE_PLAY_IMAGE.dambulla, imagePosition: null },
+    { id: 11, groupKey: "where-play", title: "Galle", body: "Southern coastal cricket — historic fort setting, sea breeze and true low-country conditions.", imageUrl: WHERE_PLAY_IMAGE.galle, imagePosition: null },
+    { id: 12, groupKey: "where-play", title: "Indoor / Nets", body: "Indoor nets and outdoor practice wickets so weather never cancels a session.", imageUrl: WHERE_PLAY_IMAGE.indoorNets, imagePosition: null }
   ];
 
-  const tileRecords = topicTiles.length ? topicTiles : fallbackTopicTiles;
+  const tileRecords: TopicTileRecord[] = topicTiles.length
+    ? topicTiles.map((tile) => ({
+        id: tile.id,
+        groupKey: tile.groupKey,
+        title: tile.title,
+        body: tile.body,
+        imageUrl: tile.imageUrl,
+        imagePosition: tile.imagePosition
+      }))
+    : fallbackTopicTiles;
   const topicGroupOrder = ["what-we-do", "what-we-have-done", "where-play"];
 
   const packageCards = toPackageShowcaseItems(
@@ -300,7 +312,8 @@ export default async function Home() {
                   alt="Hero cover"
                   fill
                   sizes="100vw"
-                  className="object-cover object-center"
+                  className="object-cover"
+                  style={imagePositionStyle(heroImagePosition)}
                   priority
                   unoptimized
                 />
@@ -394,7 +407,8 @@ export default async function Home() {
                           alt="What We Do banner"
                           fill
                           sizes="100vw"
-                          className="object-cover object-center"
+                          className="object-cover"
+                          style={imagePositionStyle("imagePosition" in item ? (item.imagePosition as string | null) : null)}
                           unoptimized
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10" />
@@ -417,6 +431,7 @@ export default async function Home() {
                                 fill
                                 sizes="(max-width: 640px) 50vw, 25vw"
                                 className="object-cover"
+                                style={imagePositionStyle(tile.imagePosition)}
                                 unoptimized
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -441,6 +456,7 @@ export default async function Home() {
                                 fill
                                 sizes="(max-width: 640px) 50vw, 25vw"
                                 className="object-cover"
+                                style={imagePositionStyle(tile.imagePosition)}
                                 unoptimized
                               />
                               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -465,6 +481,7 @@ export default async function Home() {
                                 fill
                                 sizes="(max-width: 768px) 50vw, 50vw"
                                 className="object-cover"
+                                style={imagePositionStyle(tile.imagePosition)}
                                 unoptimized
                               />
                             </div>
@@ -528,6 +545,7 @@ export default async function Home() {
                               fill
                               sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                               className="object-cover transition duration-500 group-hover:scale-105"
+                              style={imagePositionStyle(item?.imagePosition)}
                               unoptimized
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
@@ -603,6 +621,7 @@ export default async function Home() {
                         fill
                         sizes="56px"
                         className="object-cover"
+                        style={imagePositionStyle("imagePosition" in item ? (item.imagePosition as string | null) : null)}
                       />
                     </div>
                   ) : (

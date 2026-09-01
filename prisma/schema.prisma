@@ -23,8 +23,9 @@ model SectionContent {
   title     String
   subtitle  String?
   body      String
-  imageUrl  String?
-  updatedAt DateTime @updatedAt
+  imageUrl      String?
+  imagePosition String?
+  updatedAt     DateTime @updatedAt
 }
 
 model Package {
@@ -34,6 +35,7 @@ model Package {
   inclusions    String
   pricingNote   String
   imageUrl      String?
+  imagePosition String?
   itineraryJson Json?
   sortOrder     Int      @default(0)
   createdAt     DateTime @default(now())
@@ -53,11 +55,12 @@ model GalleryItem {
   id        Int             @id @default(autoincrement())
   sectionId Int?
   section   GallerySection? @relation(fields: [sectionId], references: [id], onDelete: SetNull)
-  imageUrl  String
-  caption   String
-  sortOrder Int             @default(0)
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
+  imageUrl      String
+  imagePosition String?
+  caption       String
+  sortOrder     Int             @default(0)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 }
 
 model Testimonial {
@@ -65,10 +68,11 @@ model Testimonial {
   name      String
   team      String
   quote     String
-  imageUrl  String?
-  sortOrder Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  imageUrl      String?
+  imagePosition String?
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model FaqItem {
@@ -85,10 +89,11 @@ model TopicTile {
   groupKey  String
   title     String
   body      String
-  imageUrl  String?
-  sortOrder Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  imageUrl      String?
+  imagePosition String?
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Inquiry {

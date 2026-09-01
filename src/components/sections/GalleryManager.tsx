@@ -1,10 +1,13 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { imagePositionStyle } from "@/lib/image-position";
+import { ImageFitPicker } from "@/components/sections/ImageFitPicker";
 
 interface GalleryImage {
   id: number;
   imageUrl: string;
+  imagePosition?: string | null;
   caption: string;
   sortOrder: number;
 }
@@ -62,6 +65,7 @@ export function GalleryManager({ initialSections }: GalleryManagerProps) {
   const [status, setStatus] = useState("");
   const [uploadingFor, setUploadingFor] = useState<number | null>(null);
   const fileRefs = useRef<Record<number, HTMLInputElement | null>>({});
+  const positionSaveTimers = useRef<Record<number, ReturnType<typeof setTimeout>>>({});
 
   const canAddSection = sections.length < 2;
 
@@ -131,12 +135,26 @@ export function GalleryManager({ initialSections }: GalleryManagerProps) {
     const item = section?.items.find((i) => i.id === imageId);
     if (!item || caption === item.caption) return;
     try {
-      await apiFetch({ type: "gallery", id: imageId, payload: { caption } });
+      await apiFetch({ type: "gallery", id: imageId, payload: { caption, imagePosition: item.imagePosition ?? null } });
       setSections((prev) => prev.map((s) =>
         s.id === sectionId ? { ...s, items: s.items.map((i) => i.id === imageId ? { ...i, caption } : i) } : s
       ));
       setStatus("Caption saved.");
     } catch (e) { setStatus((e as Error).message); }
+  }
+
+  async function saveImagePosition(sectionId: number, imageId: number, imagePosition: string | null, caption: string) {
+    try {
+      await apiFetch({ type: "gallery", id: imageId, payload: { caption, imagePosition } });
+      setStatus("Image fit saved.");
+    } catch (e) { setStatus((e as Error).message); }
+  }
+
+  function scheduleSaveImagePosition(sectionId: number, imageId: number, imagePosition: string | null, caption: string) {
+    clearTimeout(positionSaveTimers.current[imageId]);
+    positionSaveTimers.current[imageId] = setTimeout(() => {
+      void saveImagePosition(sectionId, imageId, imagePosition, caption);
+    }, 400);
   }
 
   async function deleteImage(sectionId: number, imageId: number) {
@@ -198,12 +216,17 @@ export function GalleryManager({ initialSections }: GalleryManagerProps) {
 
           <div className="p-5">
             <p className="mb-3 text-xs text-white/35">Edit captions below — click outside the field to save.</p>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {section.items.map((img) => (
-                <div key={img.id} className="group relative flex flex-col gap-2">
-                  <div className="relative aspect-video overflow-hidden rounded-xl border border-white/10 bg-black/30">
+                <div key={img.id} className="group relative flex flex-col gap-2 rounded-xl border border-white/10 bg-black/20 p-3">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl border border-white/10 bg-black/30">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img.imageUrl} alt={img.caption} className="h-full w-full object-cover" />
+                    <img
+                      src={img.imageUrl}
+                      alt={img.caption}
+                      className="h-full w-full object-cover"
+                      style={imagePositionStyle(img.imagePosition)}
+                    />
                     <button
                       type="button"
                       onClick={() => void deleteImage(section.id, img.id)}
@@ -211,6 +234,20 @@ export function GalleryManager({ initialSections }: GalleryManagerProps) {
                       className="absolute right-1.5 top-1.5 rounded-full bg-black/80 p-1.5 text-xs leading-none text-red-400 opacity-100 transition hover:bg-red-500/30 md:opacity-0 md:group-hover:opacity-100"
                     >✕</button>
                   </div>
+                  <ImageFitPicker
+                    compact
+                    imageUrl={img.imageUrl}
+                    value={img.imagePosition}
+                    aspectRatio="4/3"
+                    onChange={(imagePosition) => {
+                      setSections((prev) => prev.map((s) =>
+                        s.id === section.id
+                          ? { ...s, items: s.items.map((i) => i.id === img.id ? { ...i, imagePosition } : i) }
+                          : s
+                      ));
+                      scheduleSaveImagePosition(section.id, img.id, imagePosition, captionDrafts[img.id] ?? img.caption);
+                    }}
+                  />
                   <input
                     value={captionDrafts[img.id] ?? img.caption}
                     onChange={(e) => setCaptionDrafts((prev) => ({ ...prev, [img.id]: e.target.value }))}
@@ -224,7 +261,7 @@ export function GalleryManager({ initialSections }: GalleryManagerProps) {
               {section.items.length < 10 && (
                 <div
                   onClick={() => fileRefs.current[section.id]?.click()}
-                  className="flex aspect-video cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-white/20 bg-white/[0.02] text-white/30 transition hover:border-accent/40 hover:text-accent"
+                  className="flex aspect-[4/3] cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-white/20 bg-white/[0.02] text-white/30 transition hover:border-accent/40 hover:text-accent"
                 >
                   {uploadingFor === section.id ? (
                     <span className="text-xs">Uploading…</span>

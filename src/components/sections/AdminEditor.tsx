@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { imagePositionStyle } from "@/lib/image-position";
+import { getPickerAspectRatio, ImageFitPicker } from "@/components/sections/ImageFitPicker";
 
 type Item = Record<string, string | number | null>;
 
 const PAYLOAD_SKIP  = new Set(["id", "key", "groupKey", "createdAt", "updatedAt", "draftKey"]);
-const DISPLAY_SKIP  = new Set(["id", "groupKey", "createdAt", "updatedAt", "draftKey"]);
+const DISPLAY_SKIP  = new Set(["id", "groupKey", "createdAt", "updatedAt", "draftKey", "imagePosition"]);
 const TEXTAREA_FIELDS = new Set(["body", "quote", "answer", "inclusions", "caption"]);
 const CREATABLE_TYPES = new Set(["package", "faq", "testimonial", "gallery"]);
 const DELETABLE_TYPES = new Set(["package", "faq", "testimonial"]);
@@ -81,10 +83,10 @@ export function AdminEditor({
   function addRow() {
     const base = { id: 0, sortOrder: nextSortOrder(rows), draftKey: crypto.randomUUID() };
     const templates: Record<string, Item> = {
-      package:     { ...base, title: "", duration: "", inclusions: "", pricingNote: "", imageUrl: null, itineraryJson: null },
+      package:     { ...base, title: "", duration: "", inclusions: "", pricingNote: "", imageUrl: null, imagePosition: null, itineraryJson: null },
       faq:         { ...base, question: "", answer: "" },
-      testimonial: { ...base, name: "", team: "", quote: "", imageUrl: null },
-      gallery:     { ...base, imageUrl: "", caption: "" }
+      testimonial: { ...base, name: "", team: "", quote: "", imageUrl: null, imagePosition: null },
+      gallery:     { ...base, imageUrl: "", caption: "", imagePosition: null }
     };
     if (templates[type]) setRows((r) => [...r, templates[type]]);
   }
@@ -363,6 +365,7 @@ export function AdminEditor({
                           src={String(row.imageUrl)}
                           alt="preview"
                           className="h-24 w-36 shrink-0 rounded-lg border border-white/10 object-cover"
+                          style={imagePositionStyle(typeof row.imagePosition === "string" ? row.imagePosition : null)}
                         />
                       ) : (
                         <div className="flex h-24 w-36 shrink-0 items-center justify-center rounded-lg border border-dashed border-white/15 bg-white/5 text-3xl opacity-30">
@@ -394,6 +397,18 @@ export function AdminEditor({
                         <p className="text-xs text-white/35">Or paste a URL in the Image URL field above</p>
                       </div>
                     </div>
+                    {row.imageUrl ? (
+                      <ImageFitPicker
+                        imageUrl={String(row.imageUrl)}
+                        value={typeof row.imagePosition === "string" ? row.imagePosition : null}
+                        aspectRatio={getPickerAspectRatio(type, row)}
+                        onChange={(imagePosition) => {
+                          const next = [...rows];
+                          next[index] = { ...next[index], imagePosition };
+                          setRows(next);
+                        }}
+                      />
+                    ) : null}
                   </div>
                 )}
 

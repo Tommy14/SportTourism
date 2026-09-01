@@ -2,6 +2,7 @@
 
 import { PackageBookingFlow } from "@/components/packages/PackageBookingFlow";
 import type { PackageItinerary } from "@/types/package-itinerary";
+import { imagePositionStyle } from "@/lib/image-position";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -12,6 +13,7 @@ export type PackageShowcaseItem = {
   inclusions: string;
   pricingNote: string;
   imageUrl: string | null;
+  imagePosition?: string | null;
   itineraryJson: PackageItinerary | null;
 };
 
@@ -49,7 +51,7 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
               {/* Image */}
               <div className="relative aspect-[16/10] w-full flex-shrink-0 overflow-hidden">
                 {item.imageUrl ? (
-                  <Image src={item.imageUrl} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" unoptimized />
+                  <Image src={item.imageUrl} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" style={imagePositionStyle(item.imagePosition)} unoptimized />
                 ) : (
                   <div className={`flex h-full w-full items-center justify-center ${featured ? "bg-gradient-to-br from-accent/20 to-accentSoft/10" : "bg-gradient-to-br from-white/5 to-white/[0.02]"}`}>
                     <svg viewBox="0 0 64 64" className="h-16 w-16 opacity-15" fill="none">
@@ -130,7 +132,7 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
                 {/* Image */}
                 <div className="relative h-32 w-full flex-shrink-0 overflow-hidden lg:h-36">
                   {item.imageUrl ? (
-                    <Image src={item.imageUrl} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" unoptimized />
+                    <Image src={item.imageUrl} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" style={imagePositionStyle(item.imagePosition)} unoptimized />
                   ) : (
                     <div className={`flex h-full w-full items-center justify-center ${featured ? "bg-gradient-to-br from-accent/20 to-accentSoft/10" : "bg-gradient-to-br from-white/5 to-white/[0.02]"}`}>
                       <svg viewBox="0 0 64 64" className="h-12 w-12 opacity-15" fill="none">

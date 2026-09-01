@@ -20,12 +20,15 @@ const packageItinerarySchema = z.object({
   )
 });
 
+const imagePositionField = z.union([z.string().max(32), z.null()]).optional();
+
 const packageCreatePayload = z.object({
   title: z.string().min(1),
   duration: z.string(),
   inclusions: z.string(),
   pricingNote: z.string(),
   imageUrl: z.union([z.string(), z.null()]).optional(),
+  imagePosition: imagePositionField,
   itineraryJson: z.union([packageItinerarySchema, z.null()]).optional(),
   sortOrder: z.coerce.number().int().optional()
 });
@@ -41,6 +44,7 @@ const testimonialCreatePayload = z.object({
   team: z.string(),
   quote: z.string().min(1),
   imageUrl: z.union([z.string(), z.null()]).optional(),
+  imagePosition: imagePositionField,
   sortOrder: z.coerce.number().int().optional()
 });
 
@@ -48,6 +52,7 @@ const galleryCreatePayload = z.object({
   sectionId: z.number().int(),
   imageUrl: z.string().min(1),
   caption: z.string(),
+  imagePosition: imagePositionField,
   sortOrder: z.coerce.number().int().optional()
 });
 
@@ -101,7 +106,7 @@ export async function POST(request: Request) {
     if (count >= 10) return NextResponse.json({ error: "Maximum of 10 images per section" }, { status: 400 });
     const maxSort = await db.galleryItem.aggregate({ _max: { sortOrder: true }, where: { sectionId: p.sectionId } });
     const created = await db.galleryItem.create({
-      data: { sectionId: p.sectionId, imageUrl: p.imageUrl, caption: p.caption, sortOrder: p.sortOrder ?? (maxSort._max.sortOrder ?? 0) + 1 }
+      data: { sectionId: p.sectionId, imageUrl: p.imageUrl, caption: p.caption, imagePosition: p.imagePosition ?? null, sortOrder: p.sortOrder ?? (maxSort._max.sortOrder ?? 0) + 1 }
     });
     return NextResponse.json({ ok: true, id: created.id });
   }
@@ -112,7 +117,7 @@ export async function POST(request: Request) {
     const p = parsed.data;
     const maxSort = await db.package.aggregate({ _max: { sortOrder: true } });
     const created = await db.package.create({
-      data: { title: p.title, duration: p.duration, inclusions: p.inclusions, pricingNote: p.pricingNote, imageUrl: p.imageUrl ?? null, itineraryJson: p.itineraryJson ?? Prisma.DbNull, sortOrder: p.sortOrder ?? (maxSort._max.sortOrder ?? 0) + 1 }
+      data: { title: p.title, duration: p.duration, inclusions: p.inclusions, pricingNote: p.pricingNote, imageUrl: p.imageUrl ?? null, imagePosition: p.imagePosition ?? null, itineraryJson: p.itineraryJson ?? Prisma.DbNull, sortOrder: p.sortOrder ?? (maxSort._max.sortOrder ?? 0) + 1 }
     });
     return NextResponse.json({ ok: true, id: created.id });
   }
@@ -131,7 +136,7 @@ export async function POST(request: Request) {
     if (!parsed.success) return NextResponse.json({ error: "Invalid testimonial fields" }, { status: 400 });
     const p = parsed.data;
     const maxSort = await db.testimonial.aggregate({ _max: { sortOrder: true } });
-    const created = await db.testimonial.create({ data: { name: p.name, team: p.team, quote: p.quote, imageUrl: p.imageUrl ?? null, sortOrder: p.sortOrder ?? (maxSort._max.sortOrder ?? 0) + 1 } });
+    const created = await db.testimonial.create({ data: { name: p.name, team: p.team, quote: p.quote, imageUrl: p.imageUrl ?? null, imagePosition: p.imagePosition ?? null, sortOrder: p.sortOrder ?? (maxSort._max.sortOrder ?? 0) + 1 } });
     return NextResponse.json({ ok: true, id: created.id });
   }
 
