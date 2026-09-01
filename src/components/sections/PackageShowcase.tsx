@@ -27,7 +27,7 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
   return (
     <div className="flex h-full min-h-0 flex-col">
       {/* ── Mobile: vertical stack ── */}
-      <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-hidden md:hidden">
+      <div className="flex flex-col gap-4 md:hidden">
         {cards.map((item, idx) => {
           const featured = idx === featuredIndex;
           const highlights = item.inclusions
@@ -40,14 +40,14 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
             <article
               key={item.id}
               className={[
-                "flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border shadow-lg",
+                "flex flex-col overflow-hidden rounded-xl border shadow-lg",
                 featured
                   ? "border-accent/50 bg-panel shadow-accent/10"
                   : "border-white/10 bg-[#0e1318]"
               ].join(" ")}
             >
               {/* Image */}
-              <div className="relative h-[22%] min-h-[3.5rem] max-h-[5rem] w-full flex-shrink-0 overflow-hidden">
+              <div className="relative aspect-[16/10] w-full flex-shrink-0 overflow-hidden">
                 {item.imageUrl ? (
                   <Image src={item.imageUrl} alt={item.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" unoptimized />
                 ) : (
@@ -73,25 +73,30 @@ export function PackageShowcase({ packages }: PackageShowcaseProps) {
               </div>
 
               {/* Body */}
-              <div className="flex min-h-0 flex-1 flex-col p-3">
-                <h3 className={`shrink-0 font-bold leading-snug ${featured ? "text-base" : "text-sm"}`}>
+              <div className="flex flex-col p-4">
+                <h3 className={`font-bold leading-snug ${featured ? "text-lg" : "text-base"}`}>
                   {item.title}
                 </h3>
-                <ul className="mt-1 flex min-h-0 flex-1 flex-col justify-center gap-0.5 overflow-hidden">
+                <ul className="mt-3 flex flex-col gap-2">
                   {highlights.map((highlight, i) => (
-                    <li key={i} className="flex items-start gap-1.5 text-[10px] text-white/75">
-                      <span className="mt-[2px] shrink-0 text-[8px] text-accent">✦</span>
-                      <span className="line-clamp-1">{highlight}</span>
+                    <li key={i} className="flex items-start gap-2 text-xs text-white/75">
+                      <span className="mt-[3px] shrink-0 text-[9px] text-accent">✦</span>
+                      <span>{highlight}</span>
                     </li>
                   ))}
                 </ul>
-                <button
-                  type="button"
-                  className="ghost-button mt-1 shrink-0 w-full py-1.5 text-[10px]"
-                  onClick={() => setOpenPackage(item)}
-                >
-                  View Itinerary
-                </button>
+                <div className="mt-4">
+                  <p className="text-xs text-white/35">
+                    {item.pricingNote || "Pricing available on enquiry — fully custom quotes"}
+                  </p>
+                  <button
+                    type="button"
+                    className="ghost-button mt-2 w-full py-2 text-xs"
+                    onClick={() => setOpenPackage(item)}
+                  >
+                    View Itinerary
+                  </button>
+                </div>
               </div>
             </article>
           );

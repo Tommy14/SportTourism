@@ -29,16 +29,38 @@ export function HeaderNav({ brand }: { brand: string }) {
           ))}
         </nav>
 
-        <a href="#contact" className="pill-button hidden shrink-0 text-xs md:inline-flex">
+        <a href="#contact" className="pill-button max-md:hidden shrink-0 text-xs md:inline-flex">
           Contact Us
         </a>
 
         <button
           onClick={() => setOpen((v) => !v)}
-          className="rounded-lg border border-white/20 px-3 py-2 text-xs font-semibold md:hidden"
+          className="rounded-lg border border-white/20 p-2.5 text-white md:hidden"
           aria-label="Toggle menu"
+          aria-expanded={open}
         >
-          {open ? "Close" : "Menu"}
+          <svg
+            viewBox="0 0 24 24"
+            className="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            aria-hidden="true"
+          >
+            {open ? (
+              <>
+                <line x1="6" y1="6" x2="18" y2="18" />
+                <line x1="18" y1="6" x2="6" y2="18" />
+              </>
+            ) : (
+              <>
+                <line x1="4" y1="7" x2="20" y2="7" />
+                <line x1="4" y1="12" x2="20" y2="12" />
+                <line x1="4" y1="17" x2="20" y2="17" />
+              </>
+            )}
+          </svg>
         </button>
       </div>
 
