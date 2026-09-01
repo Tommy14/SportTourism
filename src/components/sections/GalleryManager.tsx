@@ -42,8 +42,21 @@ async function apiFetch(payload: Record<string, unknown>) {
   return res.json() as Promise<{ ok: boolean; id?: number }>;
 }
 
+function buildCaptionDrafts(sections: GallerySectionData[]): Record<number, string> {
+  const drafts: Record<number, string> = {};
+  for (const section of sections) {
+    for (const item of section.items) {
+      drafts[item.id] = item.caption;
+    }
+  }
+  return drafts;
+}
+
 export function GalleryManager({ initialSections }: GalleryManagerProps) {
   const [sections, setSections] = useState<GallerySectionData[]>(initialSections);
+  const [captionDrafts, setCaptionDrafts] = useState<Record<number, string>>(() =>
+    buildCaptionDrafts(initialSections)
+  );
   const [newSectionTitle, setNewSectionTitle] = useState("");
   const [creating, setCreating] = useState(false);
   const [status, setStatus] = useState("");
@@ -71,7 +84,12 @@ export function GalleryManager({ initialSections }: GalleryManagerProps) {
     if (!confirm("Delete this section and all its images?")) return;
     try {
       await apiFetch({ type: "gallerySection", delete: true, id: sectionId, payload: {} });
-      setSections((prev) => prev.filter((s) => s.id !== sectionId));
+      setSections((prev) => {
+        const next = prev.filter((s) => s.id !== sectionId);
+        setCaptionDrafts(buildCaptionDrafts(next));
+        return next;
+      });
+      setStatus("Section deleted.");
     } catch (e) { setStatus((e as Error).message); }
   }
 
@@ -79,6 +97,7 @@ export function GalleryManager({ initialSections }: GalleryManagerProps) {
     try {
       await apiFetch({ type: "gallerySection", id: sectionId, payload: { title } });
       setSections((prev) => prev.map((s) => s.id === sectionId ? { ...s, title } : s));
+      setStatus("Section title saved.");
     } catch (e) { setStatus((e as Error).message); }
   }
 
@@ -97,6 +116,8 @@ export function GalleryManager({ initialSections }: GalleryManagerProps) {
       });
       const newImg: GalleryImage = { id: res.id!, imageUrl, caption: "", sortOrder: section.items.length + 1 };
       setSections((prev) => prev.map((s) => s.id === sectionId ? { ...s, items: [...s.items, newImg] } : s));
+      setCaptionDrafts((prev) => ({ ...prev, [newImg.id]: "" }));
+      setStatus("Image uploaded.");
     } catch (e) { setStatus((e as Error).message); }
     finally {
       setUploadingFor(null);
@@ -104,21 +125,33 @@ export function GalleryManager({ initialSections }: GalleryManagerProps) {
     }
   }
 
-  async function updateCaption(sectionId: number, imageId: number, caption: string) {
+  async function saveCaption(sectionId: number, imageId: number) {
+    const caption = (captionDrafts[imageId] ?? "").trim();
+    const section = sections.find((s) => s.id === sectionId);
+    const item = section?.items.find((i) => i.id === imageId);
+    if (!item || caption === item.caption) return;
     try {
       await apiFetch({ type: "gallery", id: imageId, payload: { caption } });
       setSections((prev) => prev.map((s) =>
         s.id === sectionId ? { ...s, items: s.items.map((i) => i.id === imageId ? { ...i, caption } : i) } : s
       ));
+      setStatus("Caption saved.");
     } catch (e) { setStatus((e as Error).message); }
   }
 
   async function deleteImage(sectionId: number, imageId: number) {
+    if (!confirm("Delete this image?")) return;
     try {
       await apiFetch({ type: "gallery", delete: true, id: imageId, payload: {} });
       setSections((prev) => prev.map((s) =>
         s.id === sectionId ? { ...s, items: s.items.filter((i) => i.id !== imageId) } : s
       ));
+      setCaptionDrafts((prev) => {
+        const next = { ...prev };
+        delete next[imageId];
+        return next;
+      });
+      setStatus("Image deleted.");
     } catch (e) { setStatus((e as Error).message); }
   }
 
@@ -153,8 +186,9 @@ export function GalleryManager({ initialSections }: GalleryManagerProps) {
           <div className="flex items-center gap-3 border-b border-white/8 px-5 py-4">
             <input
               defaultValue={section.title}
-              onBlur={(e) => { const t = e.currentTarget.value.trim(); if (t && t !== section.title) updateSectionTitle(section.id, t); }}
+              onBlur={(e) => { const t = e.currentTarget.value.trim(); if (t && t !== section.title) void updateSectionTitle(section.id, t); }}
               className="flex-1 bg-transparent text-base font-semibold text-white outline-none focus:underline focus:decoration-accent"
+              aria-label="Section title"
             />
             <span className="shrink-0 text-xs text-white/40">{section.items.length}/10 images</span>
             <button onClick={() => deleteSection(section.id)} className="shrink-0 rounded-lg border border-red-500/20 px-3 py-1 text-xs font-semibold text-red-400 transition hover:bg-red-500/10">
@@ -163,6 +197,7 @@ export function GalleryManager({ initialSections }: GalleryManagerProps) {
           </div>
 
           <div className="p-5">
+            <p className="mb-3 text-xs text-white/35">Edit captions below — click outside the field to save.</p>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
               {section.items.map((img) => (
                 <div key={img.id} className="group relative flex flex-col gap-2">
@@ -170,14 +205,17 @@ export function GalleryManager({ initialSections }: GalleryManagerProps) {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={img.imageUrl} alt={img.caption} className="h-full w-full object-cover" />
                     <button
-                      onClick={() => deleteImage(section.id, img.id)}
-                      className="absolute right-1.5 top-1.5 rounded-full bg-black/70 p-1 text-[10px] leading-none text-red-400 opacity-0 transition group-hover:opacity-100"
+                      type="button"
+                      onClick={() => void deleteImage(section.id, img.id)}
+                      aria-label="Delete image"
+                      className="absolute right-1.5 top-1.5 rounded-full bg-black/80 p-1.5 text-xs leading-none text-red-400 opacity-100 transition hover:bg-red-500/30 md:opacity-0 md:group-hover:opacity-100"
                     >✕</button>
                   </div>
                   <input
-                    defaultValue={img.caption}
-                    onBlur={(e) => { const c = e.currentTarget.value.trim(); if (c !== img.caption) updateCaption(section.id, img.id, c); }}
-                    placeholder="Caption"
+                    value={captionDrafts[img.id] ?? img.caption}
+                    onChange={(e) => setCaptionDrafts((prev) => ({ ...prev, [img.id]: e.target.value }))}
+                    onBlur={() => void saveCaption(section.id, img.id)}
+                    placeholder="Caption — click outside to save"
                     className="w-full rounded-lg border border-white/8 bg-transparent px-2 py-1 text-xs text-white/60 outline-none focus:border-accent/50 focus:text-white"
                   />
                 </div>

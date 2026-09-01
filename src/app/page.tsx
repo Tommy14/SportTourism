@@ -234,7 +234,6 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const { settings, sections, topicTiles, packages, faqs, testimonials, gallerySections } = await getSiteContent();
-  const galleryPhotoCount = gallerySections.reduce((sum, section) => sum + section.items.length, 0);
   const hero = sections.find((item) => item.key === "hero");
   const topicSections = sections.filter((item) => item.key !== "hero");
 
@@ -456,9 +455,9 @@ export default async function Home() {
                     </div>
                   ) : (
                     <div className="snap-topic-body snap-topic-body--tiles snap-topic-body--full">
-                      <div className="snap-fit-grid snap-fit-grid--full grid-cols-2">
+                      <div className="snap-fit-grid snap-fit-grid--tiles snap-fit-grid--full grid-cols-2">
                         {tiles.map((tile) => (
-                          <div key={tile.id} className="snap-fit-tile group relative overflow-hidden rounded-xl border border-white/10">
+                          <div key={tile.id} className="snap-fit-tile rounded-xl border border-white/10 bg-black/20">
                             <div className="snap-fit-tile-media">
                               <Image
                                 src={tile.imageUrl || "https://upload.wikimedia.org/wikipedia/commons/f/f7/Galle_International_Stadium.jpg"}
@@ -468,11 +467,10 @@ export default async function Home() {
                                 className="object-cover"
                                 unoptimized
                               />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
                             </div>
-                            <div className="absolute bottom-0 left-0 right-0 p-4">
-                              <h3 className="text-sm font-semibold md:text-base">{tile.title}</h3>
-                              <p className="mt-1 text-xs text-white/70 leading-relaxed md:text-sm">{tile.body}</p>
+                            <div className="snap-fit-tile-caption">
+                              <h3>{tile.title}</h3>
+                              <p>{tile.body}</p>
                             </div>
                           </div>
                         ))}
@@ -490,20 +488,13 @@ export default async function Home() {
         <div className="snap-section-inner snap-section-inner--scroll section-shell-wide">
           <div className="snap-scroll-content">
             <div className="snap-fit-header mb-4 md:mb-6">
-              <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-                <div>
-                  <span className="badge-chip">Gallery</span>
-                  <h2 className="mt-2 text-xl font-bold md:text-2xl lg:text-3xl">
-                    {gallerySections.length === 1
-                      ? gallerySections[0].title
-                      : "Tour Moments & Team Spirit"}
-                  </h2>
-                </div>
-                {galleryPhotoCount > 0 && (
-                  <p className="text-xs text-white/50 md:text-sm">
-                    {`${galleryPhotoCount} photo${galleryPhotoCount === 1 ? "" : "s"}`}
-                  </p>
-                )}
+              <div>
+                <span className="badge-chip">Gallery</span>
+                <h2 className="mt-2 text-xl font-bold md:text-2xl lg:text-3xl">
+                  {gallerySections.length === 1
+                    ? gallerySections[0].title
+                    : "Tour Moments & Team Spirit"}
+                </h2>
               </div>
             </div>
 
@@ -522,14 +513,7 @@ export default async function Home() {
                 return (
                   <div key={section.id}>
                     {gallerySections.length > 1 ? (
-                      <div className="mb-3 flex flex-col gap-1 md:mb-4 md:flex-row md:items-end md:justify-between">
-                        <h3 className="text-lg font-semibold md:text-xl">{section.title}</h3>
-                        {section.items.length > 0 ? (
-                          <p className="text-xs text-white/45 md:text-sm">
-                            {section.items.length} photo{section.items.length === 1 ? "" : "s"}
-                          </p>
-                        ) : null}
-                      </div>
+                      <h3 className="mb-3 text-lg font-semibold md:mb-4 md:text-xl">{section.title}</h3>
                     ) : null}
                     {items.length === 0 ? (
                       <p className="text-sm text-white/40">No photos in this section yet.</p>

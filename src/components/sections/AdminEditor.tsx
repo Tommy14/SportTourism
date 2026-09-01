@@ -8,6 +8,7 @@ const PAYLOAD_SKIP  = new Set(["id", "key", "groupKey", "createdAt", "updatedAt"
 const DISPLAY_SKIP  = new Set(["id", "groupKey", "createdAt", "updatedAt", "draftKey"]);
 const TEXTAREA_FIELDS = new Set(["body", "quote", "answer", "inclusions", "caption"]);
 const CREATABLE_TYPES = new Set(["package", "faq", "testimonial", "gallery"]);
+const DELETABLE_TYPES = new Set(["package", "faq", "testimonial"]);
 
 const TYPE_HIDDEN_FIELDS: Partial<Record<string, Set<string>>> = {
   package:  new Set(["pricingNote"]),
@@ -132,6 +133,27 @@ export function AdminEditor({
     setRowStatus(row, response.ok ? "saved" : `error:${result.error || "Save failed"}`);
   }
 
+  async function deleteRow(row: Item, index: number) {
+    const isNew = Number(row.id) === 0;
+    if (isNew) {
+      setRows((prev) => prev.filter((_, i) => i !== index));
+      return;
+    }
+    if (!window.confirm("Delete this item permanently?")) return;
+    setRowStatus(row, "saving");
+    const response = await fetch("/api/admin/content", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type, delete: true, id: row.id, payload: {} })
+    });
+    const result = (await response.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+    if (response.ok) {
+      setRows((prev) => prev.filter((_, i) => i !== index));
+      return;
+    }
+    setRowStatus(row, `error:${result.error || "Delete failed"}`);
+  }
+
   async function onUpload(index: number, file: File) {
     setUploadingRows((prev) => new Set(prev).add(index));
     const form = new FormData();
@@ -146,6 +168,7 @@ export function AdminEditor({
   }
 
   const canAdd = CREATABLE_TYPES.has(type);
+  const canDelete = DELETABLE_TYPES.has(type);
 
   return (
     <div>
@@ -381,8 +404,8 @@ export function AdminEditor({
                   </div>
                 )}
 
-                {/* Save button */}
-                <div className="mt-5 flex items-center gap-3 border-t border-white/8 pt-5">
+                {/* Save / Delete */}
+                <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-white/8 pt-5">
                   <button
                     type="button"
                     disabled={isSaving}
@@ -391,6 +414,16 @@ export function AdminEditor({
                   >
                     {isSaving ? "Saving…" : isNew ? "Create" : "Save Changes"}
                   </button>
+                  {canDelete && (
+                    <button
+                      type="button"
+                      disabled={isSaving}
+                      onClick={() => void deleteRow(row, index)}
+                      className="rounded-full border border-red-500/30 bg-red-500/10 px-5 py-2 text-sm font-semibold text-red-400 transition hover:bg-red-500/20 disabled:opacity-50"
+                    >
+                      Delete
+                    </button>
+                  )}
                   {isSaved && (
                     <span className="flex items-center gap-1.5 text-sm text-accent">
                       <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent/20 text-xs">✓</span>
