@@ -333,10 +333,25 @@ body {
   grid-template-rows: minmax(0, 1fr) auto;
 }
 
+/* 2×2 tile grids: two equal image rows (where-play) */
+.snap-fit-grid--tiles-2x2 {
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.snap-fit-grid--tiles-2x2 > .snap-fit-tile {
+  grid-row: auto;
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+
 @supports (grid-template-rows: subgrid) {
   .snap-fit-grid--tiles > .snap-fit-tile {
     grid-template-rows: subgrid;
     grid-row: span 2;
+  }
+
+  .snap-fit-grid--tiles-2x2 > .snap-fit-tile {
+    grid-row: auto;
+    grid-template-rows: minmax(0, 1fr) auto;
   }
 }
 

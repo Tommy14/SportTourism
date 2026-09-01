@@ -455,7 +455,7 @@ export default async function Home() {
                     </div>
                   ) : (
                     <div className="snap-topic-body snap-topic-body--tiles snap-topic-body--full">
-                      <div className="snap-fit-grid snap-fit-grid--tiles snap-fit-grid--full grid-cols-2">
+                      <div className="snap-fit-grid snap-fit-grid--tiles snap-fit-grid--tiles-2x2 snap-fit-grid--full grid-cols-2">
                         {tiles.map((tile) => (
                           <div key={tile.id} className="snap-fit-tile rounded-xl border border-white/10 bg-black/20">
                             <div className="snap-fit-tile-media">
